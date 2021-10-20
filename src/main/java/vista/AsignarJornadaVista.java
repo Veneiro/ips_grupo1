@@ -138,24 +138,12 @@ public class AsignarJornadaVista extends JDialog {
 		entradaLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		jornadaPanel.add(entradaLabel);
 
-		horaSalidaSpinner = new JSpinner();
-		horaSalidaSpinner.setModel(new SpinnerDateModel(new Date(1633701600000L), null, null, Calendar.HOUR_OF_DAY));
-		JSpinner.DateEditor he = new JSpinner.DateEditor(horaSalidaSpinner, "HH:mm");
-		horaSalidaSpinner.setEditor(he);
-		horaSalidaSpinner.setBounds(395, 220, 50, 20);
-		jornadaPanel.add(horaSalidaSpinner);
+		
 
 		salidaLabel = new JLabel("Salida");
 		salidaLabel.setBounds(395, 202, 36, 15);
 		salidaLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		jornadaPanel.add(salidaLabel);
-
-		horaEntradaSpinner = new JSpinner();
-		horaEntradaSpinner.setModel(new SpinnerDateModel(new Date(1633672800000L), null, null, Calendar.HOUR_OF_DAY));
-		he = new JSpinner.DateEditor(horaEntradaSpinner, "HH:mm");
-		horaEntradaSpinner.setEditor(he);
-		horaEntradaSpinner.setBounds(176, 220, 50, 20);
-		jornadaPanel.add(horaEntradaSpinner);
 
 		separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
@@ -218,5 +206,21 @@ public class AsignarJornadaVista extends JDialog {
 		finCalendar.setBounds(395, 64, 194, 127);
 		finCalendar.setDate((Date) salidaSpinner.getValue());
 		jornadaPanel.add(finCalendar);
+		
+
+
+		horaEntradaSpinner = new JSpinner();
+		horaEntradaSpinner.setModel(new SpinnerDateModel(comienzoCalendar.getDate(), null, null, Calendar.HOUR_OF_DAY));
+		JSpinner.DateEditor he = new JSpinner.DateEditor(horaEntradaSpinner, "HH:mm");
+		horaEntradaSpinner.setEditor(he);
+		horaEntradaSpinner.setBounds(176, 220, 50, 20);
+		jornadaPanel.add(horaEntradaSpinner);
+		
+		horaSalidaSpinner = new JSpinner();
+		horaSalidaSpinner.setModel(new SpinnerDateModel(finCalendar.getDate(), null, null, Calendar.HOUR_OF_DAY));
+		 he = new JSpinner.DateEditor(horaSalidaSpinner, "HH:mm");
+		horaSalidaSpinner.setEditor(he);
+		horaSalidaSpinner.setBounds(395, 220, 50, 20);
+		jornadaPanel.add(horaSalidaSpinner);
 	}
 }

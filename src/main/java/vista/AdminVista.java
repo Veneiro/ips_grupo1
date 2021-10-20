@@ -22,10 +22,9 @@ import logic.CrearCitas;
 import modelo.CitaModelo;
 import modelo.PacienteModelo;
 
-public class InicioVista {
+public class AdminVista {
 
 	private JFrame frmIhospitalMain;
-	private JButton btnCita;
 
 	/**
 	 * Launch the application.
@@ -34,7 +33,7 @@ public class InicioVista {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					InicioVista window = new InicioVista();
+					AdminVista window = new AdminVista();
 					window.frmIhospitalMain.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,7 +45,7 @@ public class InicioVista {
 	/**
 	 * Create the application.
 	 */
-	public InicioVista() {
+	public AdminVista() {
 		initialize();
 	}
 
@@ -60,19 +59,10 @@ public class InicioVista {
 		frmIhospitalMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmIhospitalMain.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		frmIhospitalMain.setLocationRelativeTo(null);
-		JLabel lblNewLabel = new JLabel("iHospital");
+		JLabel lblNewLabel = new JLabel("Administrador");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		frmIhospitalMain.getContentPane().add(lblNewLabel);
-
-		JButton btnCitasAdmin = new JButton("Lista Citas Admin");
-		btnCitasAdmin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ListaCitasAdminControlador controller = new ListaCitasAdminControlador(new ListaCitasAdminVista(),
-						new CitaModelo(), new PacienteModelo());
-				controller.inicializar();
-			}
-		});
 
 		JButton btnCita_1 = new JButton("Crear cita");
 		btnCita_1.addActionListener(new ActionListener() {
@@ -83,7 +73,6 @@ public class InicioVista {
 			}
 		});
 		frmIhospitalMain.getContentPane().add(btnCita_1);
-		frmIhospitalMain.getContentPane().add(getBtnCita());
 
 		JButton btnAsignarJornada = new JButton("Asignar jornadas");
 		btnAsignarJornada.addActionListener(new ActionListener() {
@@ -104,39 +93,5 @@ public class InicioVista {
 			}
 		});
 		frmIhospitalMain.getContentPane().add(btnCalendarioCitas);
-
-		JButton btnAsignarPrescripcion = new JButton("Asignar prescripci\u00F3n");
-		btnAsignarPrescripcion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PrescripcionesControlador pC = new PrescripcionesControlador();
-				pC.inicializar();
-			}
-		});
-		frmIhospitalMain.getContentPane().add(btnAsignarPrescripcion);
-		frmIhospitalMain.getContentPane().add(btnCitasAdmin);
-
-		JButton btnCitasMedico = new JButton("Lista de Citas Medico");
-		btnCitasMedico.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ListaCitasAcudioControlador controller = new ListaCitasAcudioControlador(new CitaModelo(),
-						new ListaCitasAcudioVista(), new PacienteModelo(), 1);
-				controller.inicializar();
-			}
-		});
-		frmIhospitalMain.getContentPane().add(btnCitasMedico);
-	}
-
-	private JButton getBtnCita() {
-		if (btnCita == null) {
-			btnCita = new JButton("Controlar Cita");
-			btnCita.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					PacienteControlador controller = new PacienteControlador(new PacienteModelo(),
-							new AppointmentView());
-					controller.initialize();
-				}
-			});
-		}
-		return btnCita;
 	}
 }

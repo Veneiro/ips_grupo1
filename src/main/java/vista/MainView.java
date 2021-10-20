@@ -70,9 +70,8 @@ public class MainView {
 		JButton btnAdmin = new JButton("Administrador");
 		btnAdmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListaCitasAdminControlador controller = new ListaCitasAdminControlador(new ListaCitasAdminVista(),
-						new CitaModelo(), new PacienteModelo());
-				controller.inicializar();
+				AdminVista iV = new AdminVista();
+				iV.main(null);
 			}
 		});
 		btnAdmin.setBounds(10, 11, 134, 23);

@@ -59,6 +59,7 @@ public class JornadasControlador {
 
 		vista_jornadas.getEntradaSpinner().addChangeListener(e -> SwingUtil.exceptionWrapper(() -> vista_jornadas
 				.getComienzoCalendar().setDate((Date) vista_jornadas.getEntradaSpinner().getValue())));
+
 		vista_jornadas.getSalidaSpinner().addChangeListener(e -> SwingUtil.exceptionWrapper(
 				() -> vista_jornadas.getFinCalendar().setDate((Date) vista_jornadas.getSalidaSpinner().getValue())));
 
@@ -106,19 +107,22 @@ public class JornadasControlador {
 			j = new JornadaLaboralDto(
 					vista_jornadas.getEmpleadoComboBox()
 							.getItemAt(vista_jornadas.getEmpleadoComboBox().getSelectedIndex()),
-					(dateFormat.parse(vista_jornadas.getEntradaSpinner().getValue().toString())),
+					(dateFormat.parse(vista_jornadas.getComienzoCalendar().getDate().toString())),
+					(dateFormat.parse(vista_jornadas.getFinCalendar().getDate().toString())),
 					(dateFormat.parse(vista_jornadas.getHoraEntradaSpinner().getValue().toString())),
-					(dateFormat.parse(vista_jornadas.getSalidaSpinner().getValue().toString())),
 					(dateFormat.parse(vista_jornadas.getHoraSalidaSpinner().getValue().toString())),
 					vista_jornadas.getLunesCheckBox().isSelected(), vista_jornadas.getMartesCheckBox().isSelected(),
 					vista_jornadas.getMiercolesCheckBox().isSelected(), vista_jornadas.getJuevesCheckBox().isSelected(),
 					vista_jornadas.getViernesCheckBox().isSelected(), vista_jornadas.getSabadoCheckBox().isSelected(),
 					vista_jornadas.getDomingoCheckBox().isSelected());
 
-			if (j.getDiaFin().before(j.getDiaComienzo()))
+			if (j.getDiaFin().before(j.getDiaComienzo())
+					|| (j.getDiaComienzo().equals(j.getDiaFin()) && j.getHoraSalida().before(j.getHoraEntrada())))
 				JOptionPane.showMessageDialog(vista_jornadas, "La fecha de comienzo debe ser anterior a la de fin.");
-
-			modelo_jornada.addJornada(j);
+			else {
+				modelo_jornada.addJornada(j);
+				JOptionPane.showMessageDialog(vista_jornadas, "Jornada añadida correctamente.");
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
