@@ -33,4 +33,9 @@ public class CitaModelo {
 		String sql = "SELECT * FROM TCITAS c WHERE c.fecha = ? AND c.id_medico = ?";
 		return db.executeQueryPojo(CitaDto.class, sql, fecha, idMedico);
 	}
+
+	public List<CitaDto> getAllCitasFecha(String fecha) {
+		String sql = "SELECT * FROM TCITAS c WHERE c.fecha = ?";
+		return db.executeQueryPojo(CitaDto.class, sql, fecha);
+	}
 }

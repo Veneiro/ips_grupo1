@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Rectangle;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import lombok.Getter;
 
 @Getter
-public class ListaCalendarioCitasVista extends JDialog {
+public class ListaCalendarioCitasVista extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textFieldFecha;
@@ -25,6 +25,7 @@ public class ListaCalendarioCitasVista extends JDialog {
 	private JScrollPane scrollPaneCitas;
 	private JPanel panelIntroducirFecha;
 	private JTable table;
+	private JButton btnGestionarCita;
 	
 	
 	public ListaCalendarioCitasVista() {
@@ -36,7 +37,6 @@ public class ListaCalendarioCitasVista extends JDialog {
 		panelIntroducirFecha = new JPanel();
 		getContentPane().add(panelIntroducirFecha, BorderLayout.NORTH);
 		setBounds(new Rectangle(300, 300, 470, 305));
-		setModal(true);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -53,6 +53,9 @@ public class ListaCalendarioCitasVista extends JDialog {
 		btnBuscar = new JButton("Buscar");
 		panelIntroducirFecha.add(btnBuscar);
 		
+		btnGestionarCita = new JButton("Gestionar Cita");
+		panelIntroducirFecha.add(btnGestionarCita);
+		
 		scrollPaneCitas = new JScrollPane();
 		getContentPane().add(scrollPaneCitas, BorderLayout.CENTER);
 		
@@ -61,7 +64,8 @@ public class ListaCalendarioCitasVista extends JDialog {
 			new Object[][] {
 			},
 			new String[] {
-				"idPaciente", "Nombre", "Apellido", "Fecha", "Hora", "Informacion"
+					"Nombre", "Fecha", "Hora Inicio", "Hora fin",
+		    		"Informacion", "Acudio"
 			}
 		));
 		scrollPaneCitas.setViewportView(table);

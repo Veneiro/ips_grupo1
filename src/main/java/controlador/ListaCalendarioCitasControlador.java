@@ -55,20 +55,20 @@ public class ListaCalendarioCitasControlador {
 		
 		List<CitaDto> citas = cm.getCitasFecha(fecha, idMedico);
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
-	    String header[] = new String[] { "idPaciente", "Nombre", "Apellido",
-	            "Fecha", "Hora", "Informacion" };
+	    String header[] = new String[] { "Nombre", "Fecha", "Hora Inicio", "Hora fin",
+	    									"Informacion", "Acudio" };
 	    dm.setColumnIdentifiers(header);
 	    
 
 		for (CitaDto c : citas) {
 			PacienteDto p = pm.getPacienteById(c.getId_paciente()).get(0);
 			Vector<Object> data = new Vector<Object>();
-	        data.add(p.getId());
 	        data.add(p.getNombre());
-	        data.add(p.getApellido());
 	        data.add(c.getFecha());
 	        data.add(c.getHorario_inicio());
+	        data.add(c.getHorario_fin());
 	        data.add(c.getInformacion());
+	        data.add(c.getAcudio());
 			dm.addRow(data);
 		}
 		lccv.getTable().setModel(dm);

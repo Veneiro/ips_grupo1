@@ -12,11 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import controlador.JornadasControlador;
-import controlador.ListaCalendarioCitasControlador;
-import controlador.ListaCitasAcudioControlador;
-import controlador.ListaCitasAdminControlador;
-import controlador.PacienteControlador;
-import controlador.PrescripcionesControlador;
+import controlador.ListaCalendarioCitasAdminControlador;
 import logic.Admin;
 import logic.CrearCitas;
 import modelo.CitaModelo;
@@ -87,8 +83,8 @@ public class AdminVista {
 		JButton btnCalendarioCitas = new JButton("Calendario de citas");
 		btnCalendarioCitas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListaCalendarioCitasControlador controller = new ListaCalendarioCitasControlador(
-						new ListaCalendarioCitasVista(), new CitaModelo(), new PacienteModelo(), 1);
+				ListaCalendarioCitasAdminControlador controller = new ListaCalendarioCitasAdminControlador(
+						new ListaCalendarioCitasAdminVista(), new CitaModelo(), new PacienteModelo());
 				controller.inicializar();
 			}
 		});
