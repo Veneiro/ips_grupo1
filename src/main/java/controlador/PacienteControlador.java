@@ -36,8 +36,6 @@ public class PacienteControlador {
 				e -> SwingUtil.exceptionWrapper(() -> updateList()));
 		vista_cita.getBtnContinueButton().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> insertCitaToDB()));
-		vista_cita.getBtnUrgente().addActionListener(
-				e -> SwingUtil.exceptionWrapper(() -> sendMail()));
 		vista_cita.getBtnAddCause().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> addCause()));
 		showVistaCita();
@@ -48,25 +46,6 @@ public class PacienteControlador {
 				new CauseModel(), new AddCauseView(), new NonExistenceView());
 		controller.initialize();
 		updateList();
-	}
-
-	private void sendMail() {
-		int id = 0;
-		String hora = "";
-		List<CitaDto> citas = cm.getCitasList();
-		String msg = "================================\n";
-		msg += "==========CITA URGENTE==========\n";
-		msg += "================================\n";
-		for (CitaDto cita : citas) {
-			if (cita.getId() == id) {
-				msg += "Usted, con id " + cita.getId_medico()
-						+ " tiene una cita urgente con el paciente "
-						+ cita.getId_paciente() + ".\n";
-				hora = cita.getHorario_inicio();
-			}
-		}
-		msg += "Esta cita está FECHADA para las " + hora + " horas";
-		SendEmail.main("Ha recibido una CITA URGENTE", msg);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

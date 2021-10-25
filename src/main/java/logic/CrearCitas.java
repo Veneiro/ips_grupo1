@@ -55,8 +55,9 @@ public class CrearCitas {
 	 * @param ubicacion opcional
 	 * @param horaInicio opcional
 	 * @param horaFin opcional
+	 * @return 
 	 */
-	public void crearCita(PacienteDto paciente, String infoContacto, String ubicacion, LocalTime horaInicio,
+	public Cita crearCita(PacienteDto paciente, String infoContacto, String ubicacion, LocalTime horaInicio,
 			LocalTime horaFin) {
 		Cita cita = new Cita(paciente, medicosElegidos);
 		cita.setContacto(infoContacto);
@@ -64,6 +65,7 @@ public class CrearCitas {
 		cita.setHorario_inicio(horaInicio);
 		cita.setHorario_fin(horaFin);
 		cita.grabar();
+		return cita;
 	}
 
 	/**

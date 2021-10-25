@@ -27,26 +27,11 @@ public class AdminVista {
 	private JFrame frmIhospitalMain;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdminVista window = new AdminVista();
-					window.frmIhospitalMain.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public AdminVista() {
 		initialize();
+		frmIhospitalMain.setVisible(true);
 	}
 
 	/**
@@ -56,7 +41,7 @@ public class AdminVista {
 		frmIhospitalMain = new JFrame();
 		frmIhospitalMain.setTitle("iHospital : Main Window");
 		frmIhospitalMain.setBounds(100, 100, 453, 306);
-		frmIhospitalMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmIhospitalMain.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmIhospitalMain.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		frmIhospitalMain.setLocationRelativeTo(null);
 		JLabel lblNewLabel = new JLabel("Administrador");

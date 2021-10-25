@@ -71,7 +71,6 @@ public class MainView {
 		btnAdmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AdminVista iV = new AdminVista();
-				iV.main(null);
 			}
 		});
 		btnAdmin.setBounds(10, 11, 134, 23);

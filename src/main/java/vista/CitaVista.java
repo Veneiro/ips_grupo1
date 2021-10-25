@@ -22,10 +22,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import controlador.AdministradorControlador;
 import dtos.MedicoDto;
 import dtos.PacienteDto;
 import logic.Admin;
+import logic.Cita;
 import logic.CrearCitas;
+import javax.swing.JCheckBox;
+import javax.swing.SwingConstants;
 
 /**
  * @author Santiago
@@ -61,6 +65,8 @@ public class CitaVista extends JDialog {
 	private JLabel lblFin;
 	private JTextField txtHoraInicio;
 	private JTextField txtHoraFin;
+	private JCheckBox chckbxUrgente;
+	private AdministradorControlador ac = new AdministradorControlador();
 
 	/**
 	 * Create the frame.
@@ -99,6 +105,7 @@ public class CitaVista extends JDialog {
 		contentPane.add(getLblFin());
 		contentPane.add(getTxtHoraInicio());
 		contentPane.add(getTxtHoraFin());
+		contentPane.add(getChckbxUrgente());
 	}
 	
 	public void visible(boolean visible) {
@@ -276,7 +283,11 @@ public class CitaVista extends JDialog {
 		String infoContacto = cadenaVaciaANull(getTxtContacto().getText());
 		
 		PacienteDto p = (PacienteDto) getCbPacientes().getSelectedItem();
-		creadorCitas.crearCita(p, infoContacto, ubicacion, horarioInicio, horarioFin);
+		Cita cita = creadorCitas.crearCita(p, infoContacto, ubicacion, horarioInicio, horarioFin);
+		
+		if(getChckbxUrgente().isEnabled()) {
+			ac.avisoUrgente(cita);
+		}
 	}
 
 	private String cadenaVaciaANull(String ubicacion) {
@@ -423,5 +434,13 @@ public class CitaVista extends JDialog {
 			txtHoraFin.setColumns(10);
 		}
 		return txtHoraFin;
+	}
+	private JCheckBox getChckbxUrgente() {
+		if (chckbxUrgente == null) {
+			chckbxUrgente = new JCheckBox("CITA URGENTE");
+			chckbxUrgente.setHorizontalAlignment(SwingConstants.CENTER);
+			chckbxUrgente.setBounds(312, 325, 116, 23);
+		}
+		return chckbxUrgente;
 	}
 }

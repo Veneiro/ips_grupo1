@@ -35,7 +35,6 @@ public class AppointmentView extends JDialog {
 	private JButton continueButton;
 	private JButton btnUpdate;
 	private JScrollPane scrollPane;
-	private JButton btnUrgente;
 
 	/**
 	 * Create the dialog.
@@ -61,7 +60,6 @@ public class AppointmentView extends JDialog {
 		pnEntryOut.add(getSpOutHour());
 		pnEntryOut.add(getSpOutMin());
 		pnEntryOut.add(getLblOutHour());
-		pnEntryOut.add(getBtnUrgente());
 		contentPanel.add(getBtnUpdate());
 		{
 			JPanel buttonPane = new JPanel();
@@ -176,14 +174,6 @@ public class AppointmentView extends JDialog {
 			scrollPane.setViewportView(getListCauses());
 		}
 		return scrollPane;
-	}
-	public JButton getBtnUrgente() {
-		if (btnUrgente == null) {
-			btnUrgente = new JButton("CITA URGENTE");
-			btnUrgente.setBackground(Color.RED);
-			btnUrgente.setBounds(38, 61, 346, 23);
-		}
-		return btnUrgente;
 	}
 	
 	

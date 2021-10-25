@@ -1,4 +1,4 @@
-package controlador;
+package logic;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class CreadorCitas {
 	 * @param horaInicio opcional
 	 * @param horaFin opcional
 	 */
-	public void crearCita(PacienteDto paciente, String infoContacto, String ubicacion, LocalTime horaInicio,
+	public Cita crearCita(PacienteDto paciente, String infoContacto, String ubicacion, LocalTime horaInicio,
 			LocalTime horaFin) {
 		Cita cita = new Cita(paciente, medicosElegidos);
 		cita.setContacto(infoContacto);
@@ -64,6 +64,7 @@ public class CreadorCitas {
 		cita.setHorario_inicio(horaInicio);
 		cita.setHorario_fin(horaFin);
 		cita.grabar();
+		return cita;
 	}
 
 	/**
