@@ -37,7 +37,9 @@ public class AsignarJornadaVista extends JDialog {
 	 */
 	private static final long serialVersionUID = 5414909378345343884L;
 	private JPanel contentPane;
+	private JPanel medicoPanel;
 	private JLabel TrabajadorLabel;
+	private JComboBox<String> empleadoComboBox;
 	private JButton añadirButton;
 	private JPanel jornadaPanel;
 	private JLabel entradaLabel;
@@ -76,15 +78,20 @@ public class AsignarJornadaVista extends JDialog {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
 		setLocationRelativeTo(null);
-		contentPane.setLayout(null);
+		
+		medicoPanel = new JPanel();
+		contentPane.add(medicoPanel, BorderLayout.NORTH);
+		medicoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		empleadoComboBox = new JComboBox<>();
+		medicoPanel.add(empleadoComboBox);
 
 		añadirButton = new JButton("A\u00F1adir");
-		añadirButton.setBounds(5, 313, 874, 23);
-		contentPane.add(añadirButton);
+		contentPane.add(añadirButton, BorderLayout.SOUTH);
 
 		jornadaPanel = new JPanel();
-		jornadaPanel.setBounds(5, 5, 874, 308);
 		jornadaPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		contentPane.add(jornadaPanel);
 		jornadaPanel.setLayout(null);
@@ -214,14 +221,14 @@ public class AsignarJornadaVista extends JDialog {
 						tipoEmpleadoComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "M\u00E9dico/a", "Enfermero/a" }));
 						tipoEmpleadoComboBox.setSelectedIndex(0);
 						
-						lblBuscar = new JLabel("Buscar");
-						lblBuscar.setBounds(613, 45, 36, 15);
-						jornadaPanel.add(lblBuscar);
-						
 						buscarTextField = new JTextField();
-						buscarTextField.setBounds(659, 42, 205, 20);
+						buscarTextField.setBounds(654, 42, 210, 20);
 						jornadaPanel.add(buscarTextField);
 						buscarTextField.setToolTipText("Buscar empleado");
 						buscarTextField.setColumns(10);
+						
+						lblBuscar = new JLabel("Buscar");
+						lblBuscar.setBounds(608, 42, 36, 20);
+						jornadaPanel.add(lblBuscar);
 	}
 }
