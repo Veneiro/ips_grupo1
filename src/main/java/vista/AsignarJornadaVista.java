@@ -228,8 +228,11 @@ public class AsignarJornadaVista extends JDialog {
 	scrollPaneEmpleados.setBounds(618, 73, 246, 224);
 	jornadaPanel.add(scrollPaneEmpleados);
 
-	modeloTabla = new NoEditableTableModel(new String[] { "Nombre" }, 1);
+	modeloTabla = new NoEditableTableModel(new String[] { "Nombre" }, 0);
 	tableEmpleados = new JTable(modeloTabla);
+	Object[] fila = new Object[1];
+	fila[0] = "Pepe";
+	modeloTabla.addRow(fila);
 	scrollPaneEmpleados.setViewportView(tableEmpleados);
     }
 }
