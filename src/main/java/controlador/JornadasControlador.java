@@ -69,7 +69,7 @@ public class JornadasControlador {
     }
 
     private void cargarListaEmpleados() {
-	vista_jornadas.getTableEmpleados().setModel(new NoEditableTableModel(new String[] { "Nombre" }, 0));
+	vista_jornadas.getTableEmpleados().setModel(new NoEditableTableModel(new String[] { "Nombre" }, 1));
 
 	if (vista_jornadas.getBuscarTextField().getText().trim().isEmpty()) {
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 0)
