@@ -37,9 +37,7 @@ public class AsignarJornadaVista extends JDialog {
 	 */
 	private static final long serialVersionUID = 5414909378345343884L;
 	private JPanel contentPane;
-	private JPanel medicoPanel;
 	private JLabel TrabajadorLabel;
-	private JComboBox<String> empleadoComboBox;
 	private JButton añadirButton;
 	private JPanel jornadaPanel;
 	private JLabel entradaLabel;
@@ -63,6 +61,7 @@ public class AsignarJornadaVista extends JDialog {
 	private JCheckBox SabadoCheckBox;
 	private JCheckBox DomingoCheckBox;
 	private JTextField buscarTextField;
+	private JLabel lblBuscar;
 
 
 	/**
@@ -70,41 +69,22 @@ public class AsignarJornadaVista extends JDialog {
 	 */
 	public AsignarJornadaVista() {
 		setTitle("iHospital : Asignar Jornada");
-		setBounds(100, 100, 654, 380);
+		setBounds(100, 100, 900, 380);
 		setModal(true);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setLocationRelativeTo(null);
-		
-		medicoPanel = new JPanel();
-		contentPane.add(medicoPanel, BorderLayout.NORTH);
-		medicoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		TrabajadorLabel = new JLabel("Empleado/a :");
-		TrabajadorLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		medicoPanel.add(TrabajadorLabel);
-
-		tipoEmpleadoComboBox = new JComboBox<String>();
-		tipoEmpleadoComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "M\u00E9dico/a", "Enfermero/a" }));
-		tipoEmpleadoComboBox.setSelectedIndex(0);
-		medicoPanel.add(tipoEmpleadoComboBox);
-		
-		buscarTextField = new JTextField();
-		buscarTextField.setToolTipText("Buscar empleado");
-		buscarTextField.setColumns(10);
-		medicoPanel.add(buscarTextField);
-
-		empleadoComboBox = new JComboBox<>();
-		medicoPanel.add(empleadoComboBox);
+		contentPane.setLayout(null);
 
 		añadirButton = new JButton("A\u00F1adir");
-		contentPane.add(añadirButton, BorderLayout.SOUTH);
+		añadirButton.setBounds(5, 313, 874, 23);
+		contentPane.add(añadirButton);
 
 		jornadaPanel = new JPanel();
+		jornadaPanel.setBounds(5, 5, 874, 308);
 		jornadaPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		contentPane.add(jornadaPanel);
 		jornadaPanel.setLayout(null);
@@ -222,5 +202,26 @@ public class AsignarJornadaVista extends JDialog {
 		horaSalidaSpinner.setEditor(he);
 		horaSalidaSpinner.setBounds(395, 220, 50, 20);
 		jornadaPanel.add(horaSalidaSpinner);
+		
+				TrabajadorLabel = new JLabel("Empleado/a :");
+				TrabajadorLabel.setBounds(598, 13, 81, 15);
+				jornadaPanel.add(TrabajadorLabel);
+				TrabajadorLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+				
+						tipoEmpleadoComboBox = new JComboBox<String>();
+						tipoEmpleadoComboBox.setBounds(689, 11, 175, 20);
+						jornadaPanel.add(tipoEmpleadoComboBox);
+						tipoEmpleadoComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "M\u00E9dico/a", "Enfermero/a" }));
+						tipoEmpleadoComboBox.setSelectedIndex(0);
+						
+						lblBuscar = new JLabel("Buscar");
+						lblBuscar.setBounds(613, 45, 36, 15);
+						jornadaPanel.add(lblBuscar);
+						
+						buscarTextField = new JTextField();
+						buscarTextField.setBounds(659, 42, 205, 20);
+						jornadaPanel.add(buscarTextField);
+						buscarTextField.setToolTipText("Buscar empleado");
+						buscarTextField.setColumns(10);
 	}
 }
