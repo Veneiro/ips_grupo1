@@ -69,7 +69,7 @@ public class JornadasControlador {
     }
 
     private void cargarListaEmpleados() {
-	vista_jornadas.getTableEmpleados().setModel(new NoEditableTableModel(new String[] { "Nombre" }, 1));
+	vista_jornadas.setModeloTabla(new NoEditableTableModel(new String[] { "Nombre" }, 0));
 
 	if (vista_jornadas.getBuscarTextField().getText().trim().isEmpty()) {
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 0)
@@ -91,6 +91,8 @@ public class JornadasControlador {
 		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getNombre() });
 		}
 	}
+
+	vista_jornadas.getTableEmpleados().setModel(vista_jornadas.getModeloTabla());
 
 	if (vista_jornadas.getModeloTabla().getRowCount() == 0)
 	    vista_jornadas.getAñadirButton().setEnabled(false);
