@@ -1,8 +1,6 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
@@ -17,8 +15,10 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
@@ -28,199 +28,211 @@ import javax.swing.border.LineBorder;
 import com.toedter.calendar.JCalendar;
 
 import lombok.Getter;
+import util.NoEditableTableModel;
 
 @Getter
 public class AsignarJornadaVista extends JDialog {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5414909378345343884L;
-	private JPanel contentPane;
-	private JPanel medicoPanel;
-	private JLabel TrabajadorLabel;
-	private JComboBox<String> empleadoComboBox;
-	private JButton añadirButton;
-	private JPanel jornadaPanel;
-	private JLabel entradaLabel;
-	private JLabel salidaLabel;
-	private JSpinner horaEntradaSpinner;
-	private JLabel lblComienzo;
-	private JLabel lblFin;
-	private JSpinner entradaSpinner;
-	private JSpinner salidaSpinner;
-	private JSpinner horaSalidaSpinner;
-	private JSeparator separator;
-	private JComboBox<String> tipoEmpleadoComboBox;
-	private JCalendar comienzoCalendar;
-	private JCalendar finCalendar;
-	private JPanel panel;
-	private JCheckBox LunesCheckBox;
-	private JCheckBox MartesCheckBox;
-	private JCheckBox MiercolesCheckBox;
-	private JCheckBox JuevesCheckBox;
-	private JCheckBox ViernesCheckBox;
-	private JCheckBox SabadoCheckBox;
-	private JCheckBox DomingoCheckBox;
-	private JTextField buscarTextField;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5414909378345343884L;
+    private JPanel contentPane;
+    private JLabel TrabajadorLabel;
+    private JButton añadirButton;
+    private JPanel jornadaPanel;
+    private JLabel entradaLabel;
+    private JLabel salidaLabel;
+    private JSpinner horaEntradaSpinner;
+    private JLabel lblComienzo;
+    private JLabel lblFin;
+    private JSpinner entradaSpinner;
+    private JSpinner salidaSpinner;
+    private JSpinner horaSalidaSpinner;
+    private JSeparator separator;
+    private JComboBox<String> tipoEmpleadoComboBox;
+    private JCalendar comienzoCalendar;
+    private JCalendar finCalendar;
+    private JPanel panel;
+    private JCheckBox LunesCheckBox;
+    private JCheckBox MartesCheckBox;
+    private JCheckBox MiercolesCheckBox;
+    private JCheckBox JuevesCheckBox;
+    private JCheckBox ViernesCheckBox;
+    private JCheckBox SabadoCheckBox;
+    private JCheckBox DomingoCheckBox;
+    private JTextField buscarTextField;
+    private JLabel lblBuscar;
+    private JScrollPane scrollPaneEmpleados;
+    private JTable tableEmpleados;
+    private NoEditableTableModel modeloTabla;
 
+    /**
+     * Create the frame.
+     */
+    public AsignarJornadaVista() {
+	setTitle("iHospital : Asignar Jornada");
+	setBounds(100, 100, 900, 380);
+	setModal(true);
+	setResizable(false);
+	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+	contentPane = new JPanel();
+	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+	setContentPane(contentPane);
+	setLocationRelativeTo(null);
+	contentPane.setLayout(null);
 
-	/**
-	 * Create the frame.
-	 */
-	public AsignarJornadaVista() {
-		setTitle("iHospital : Asignar Jornada");
-		setBounds(100, 100, 654, 380);
-		setModal(true);
-		setResizable(false);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setLocationRelativeTo(null);
-		
-		medicoPanel = new JPanel();
-		contentPane.add(medicoPanel, BorderLayout.NORTH);
-		medicoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+	añadirButton = new JButton("A\u00F1adir");
+	añadirButton.setBounds(5, 313, 874, 23);
+	contentPane.add(añadirButton);
 
-		TrabajadorLabel = new JLabel("Empleado/a :");
-		TrabajadorLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		medicoPanel.add(TrabajadorLabel);
+	jornadaPanel = new JPanel();
+	jornadaPanel.setBounds(5, 5, 874, 308);
+	jornadaPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+	contentPane.add(jornadaPanel);
+	jornadaPanel.setLayout(null);
 
-		tipoEmpleadoComboBox = new JComboBox<String>();
-		tipoEmpleadoComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "M\u00E9dico/a", "Enfermero/a" }));
-		tipoEmpleadoComboBox.setSelectedIndex(0);
-		medicoPanel.add(tipoEmpleadoComboBox);
-		
-		buscarTextField = new JTextField();
-		buscarTextField.setToolTipText("Buscar empleado");
-		buscarTextField.setColumns(10);
-		medicoPanel.add(buscarTextField);
+	lblComienzo = new JLabel("Comienzo");
+	lblComienzo.setFont(new Font("Tahoma", Font.BOLD, 12));
+	lblComienzo.setBounds(176, 20, 69, 15);
+	jornadaPanel.add(lblComienzo);
 
-		empleadoComboBox = new JComboBox<>();
-		medicoPanel.add(empleadoComboBox);
+	entradaSpinner = new JSpinner();
+	entradaSpinner.setModel(new SpinnerDateModel(new Date(1633644000000L), null, null, Calendar.DAY_OF_YEAR));
+	JSpinner.DateEditor de = new JSpinner.DateEditor(entradaSpinner, "dd-MM-yyyy");
+	entradaSpinner.setEditor(de);
+	entradaSpinner.setBounds(176, 42, 100, 20);
+	jornadaPanel.add(entradaSpinner);
 
-		añadirButton = new JButton("A\u00F1adir");
-		contentPane.add(añadirButton, BorderLayout.SOUTH);
+	lblFin = new JLabel("Fin");
+	lblFin.setFont(new Font("Tahoma", Font.BOLD, 12));
+	lblFin.setBounds(395, 20, 36, 15);
+	jornadaPanel.add(lblFin);
 
-		jornadaPanel = new JPanel();
-		jornadaPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		contentPane.add(jornadaPanel);
-		jornadaPanel.setLayout(null);
+	salidaSpinner = new JSpinner();
+	salidaSpinner.setModel(new SpinnerDateModel(new Date(1633644000000L), null, null, Calendar.DAY_OF_YEAR));
+	de = new JSpinner.DateEditor(salidaSpinner, "dd-MM-yyyy");
+	salidaSpinner.setEditor(de);
+	salidaSpinner.setBounds(395, 42, 100, 20);
+	jornadaPanel.add(salidaSpinner);
 
-		lblComienzo = new JLabel("Comienzo");
-		lblComienzo.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblComienzo.setBounds(176, 11, 69, 15);
-		jornadaPanel.add(lblComienzo);
+	entradaLabel = new JLabel("Entrada");
+	entradaLabel.setBounds(176, 234, 48, 15);
+	entradaLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+	jornadaPanel.add(entradaLabel);
 
-		entradaSpinner = new JSpinner();
-		entradaSpinner.setModel(new SpinnerDateModel(new Date(1633644000000L), null, null, Calendar.DAY_OF_YEAR));
+	salidaLabel = new JLabel("Salida");
+	salidaLabel.setBounds(395, 234, 36, 15);
+	salidaLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+	jornadaPanel.add(salidaLabel);
+
+	separator = new JSeparator();
+	separator.setOrientation(SwingConstants.VERTICAL);
+	separator.setBounds(158, 0, 12, 308);
+	jornadaPanel.add(separator);
+
+	panel = new JPanel();
+	panel.setBounds(10, 11, 140, 286);
+	jornadaPanel.add(panel);
+	panel.setLayout(new GridLayout(0, 1, 0, 5));
+
+	LunesCheckBox = new JCheckBox("Lunes");
+	LunesCheckBox.setSelected(true);
+	panel.add(LunesCheckBox);
+
+	MartesCheckBox = new JCheckBox("Martes");
+	MartesCheckBox.setSelected(true);
+	panel.add(MartesCheckBox);
+
+	MiercolesCheckBox = new JCheckBox("Mi\u00E9rcoles");
+	MiercolesCheckBox.setSelected(true);
+	panel.add(MiercolesCheckBox);
+
+	JuevesCheckBox = new JCheckBox("Jueves");
+	JuevesCheckBox.setSelected(true);
+	panel.add(JuevesCheckBox);
+
+	ViernesCheckBox = new JCheckBox("Viernes");
+	ViernesCheckBox.setSelected(true);
+	panel.add(ViernesCheckBox);
+
+	SabadoCheckBox = new JCheckBox("S\u00E1bado");
+	panel.add(SabadoCheckBox);
+
+	DomingoCheckBox = new JCheckBox("Domingo");
+	panel.add(DomingoCheckBox);
+
+	comienzoCalendar = new JCalendar();
+	comienzoCalendar.addPropertyChangeListener("calendar", new PropertyChangeListener() {
+	    public void propertyChange(PropertyChangeEvent evt) {
+		Calendar c = (Calendar) evt.getNewValue();
+		entradaSpinner.setModel(new SpinnerDateModel(c.getTime(), null, null, Calendar.HOUR_OF_DAY));
 		JSpinner.DateEditor de = new JSpinner.DateEditor(entradaSpinner, "dd-MM-yyyy");
 		entradaSpinner.setEditor(de);
-		entradaSpinner.setBounds(176, 33, 100, 20);
-		jornadaPanel.add(entradaSpinner);
+	    }
+	});
+	comienzoCalendar.setBounds(176, 85, 194, 129);
+	comienzoCalendar.setDate((Date) entradaSpinner.getValue());
+	jornadaPanel.add(comienzoCalendar);
 
-		lblFin = new JLabel("Fin");
-		lblFin.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblFin.setBounds(395, 11, 36, 15);
-		jornadaPanel.add(lblFin);
-
-		salidaSpinner = new JSpinner();
-		salidaSpinner.setModel(new SpinnerDateModel(new Date(1633644000000L), null, null, Calendar.DAY_OF_YEAR));
-		de = new JSpinner.DateEditor(salidaSpinner, "dd-MM-yyyy");
+	finCalendar = new JCalendar();
+	finCalendar.addPropertyChangeListener("calendar", new PropertyChangeListener() {
+	    public void propertyChange(PropertyChangeEvent evt) {
+		Calendar c = (Calendar) evt.getNewValue();
+		salidaSpinner.setModel(new SpinnerDateModel(c.getTime(), null, null, Calendar.HOUR_OF_DAY));
+		JSpinner.DateEditor de = new JSpinner.DateEditor(salidaSpinner, "dd-MM-yyyy");
 		salidaSpinner.setEditor(de);
-		salidaSpinner.setBounds(395, 33, 100, 20);
-		jornadaPanel.add(salidaSpinner);
+	    }
+	});
+	finCalendar.setBounds(395, 85, 194, 127);
+	finCalendar.setDate((Date) salidaSpinner.getValue());
+	jornadaPanel.add(finCalendar);
 
-		entradaLabel = new JLabel("Entrada");
-		entradaLabel.setBounds(176, 202, 48, 15);
-		entradaLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		jornadaPanel.add(entradaLabel);
+	horaEntradaSpinner = new JSpinner();
+	horaEntradaSpinner.setModel(new SpinnerDateModel(comienzoCalendar.getDate(), null, null, Calendar.HOUR_OF_DAY));
+	JSpinner.DateEditor he = new JSpinner.DateEditor(horaEntradaSpinner, "HH:mm");
+	horaEntradaSpinner.setEditor(he);
+	horaEntradaSpinner.setBounds(176, 252, 50, 20);
+	jornadaPanel.add(horaEntradaSpinner);
 
-		
+	horaSalidaSpinner = new JSpinner();
+	horaSalidaSpinner.setModel(new SpinnerDateModel(finCalendar.getDate(), null, null, Calendar.HOUR_OF_DAY));
+	he = new JSpinner.DateEditor(horaSalidaSpinner, "HH:mm");
+	horaSalidaSpinner.setEditor(he);
+	horaSalidaSpinner.setBounds(395, 252, 50, 20);
+	jornadaPanel.add(horaSalidaSpinner);
 
-		salidaLabel = new JLabel("Salida");
-		salidaLabel.setBounds(395, 202, 36, 15);
-		salidaLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		jornadaPanel.add(salidaLabel);
+	TrabajadorLabel = new JLabel("Empleado/a :");
+	TrabajadorLabel.setBounds(598, 13, 81, 15);
+	jornadaPanel.add(TrabajadorLabel);
+	TrabajadorLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 
-		separator = new JSeparator();
-		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBounds(158, 0, 12, 276);
-		jornadaPanel.add(separator);
-		
-		panel = new JPanel();
-		panel.setBounds(10, 11, 140, 254);
-		jornadaPanel.add(panel);
-		panel.setLayout(new GridLayout(0, 1, 0, 5));
-		
-		LunesCheckBox = new JCheckBox("Lunes");
-		LunesCheckBox.setSelected(true);
-		panel.add(LunesCheckBox);
-		
-		MartesCheckBox = new JCheckBox("Martes");
-		MartesCheckBox.setSelected(true);
-		panel.add(MartesCheckBox);
-		
-		MiercolesCheckBox = new JCheckBox("Mi\u00E9rcoles");
-		MiercolesCheckBox.setSelected(true);
-		panel.add(MiercolesCheckBox);
-		
-		JuevesCheckBox = new JCheckBox("Jueves");
-		JuevesCheckBox.setSelected(true);
-		panel.add(JuevesCheckBox);
-		
-		ViernesCheckBox = new JCheckBox("Viernes");
-		ViernesCheckBox.setSelected(true);
-		panel.add(ViernesCheckBox);
-		
-		SabadoCheckBox = new JCheckBox("S\u00E1bado");
-		panel.add(SabadoCheckBox);
-		
-		DomingoCheckBox = new JCheckBox("Domingo");
-		panel.add(DomingoCheckBox);
+	tipoEmpleadoComboBox = new JComboBox<String>();
+	tipoEmpleadoComboBox.setBounds(689, 11, 175, 20);
+	jornadaPanel.add(tipoEmpleadoComboBox);
+	tipoEmpleadoComboBox
+		.setModel(new DefaultComboBoxModel<String>(new String[] { "M\u00E9dico/a", "Enfermero/a" }));
+	tipoEmpleadoComboBox.setSelectedIndex(0);
 
-		comienzoCalendar = new JCalendar();
-		comienzoCalendar.addPropertyChangeListener("calendar", new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				Calendar c = (Calendar) evt.getNewValue();
-				entradaSpinner.setModel(new SpinnerDateModel(c.getTime(), null, null, Calendar.HOUR_OF_DAY));
-				JSpinner.DateEditor de = new JSpinner.DateEditor(entradaSpinner, "dd-MM-yyyy");
-				entradaSpinner.setEditor(de);
-			}
-		});
-		comienzoCalendar.setBounds(176, 64, 194, 129);
-		comienzoCalendar.setDate((Date) entradaSpinner.getValue());
-		jornadaPanel.add(comienzoCalendar);
+	buscarTextField = new JTextField();
+	buscarTextField.setBounds(670, 42, 194, 20);
+	jornadaPanel.add(buscarTextField);
+	buscarTextField.setToolTipText("Buscar empleado");
+	buscarTextField.setColumns(10);
 
-		finCalendar = new JCalendar();
-		finCalendar.addPropertyChangeListener("calendar", new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				Calendar c = (Calendar) evt.getNewValue();
-				salidaSpinner.setModel(new SpinnerDateModel(c.getTime(), null, null, Calendar.HOUR_OF_DAY));
-				JSpinner.DateEditor de = new JSpinner.DateEditor(salidaSpinner, "dd-MM-yyyy");
-				salidaSpinner.setEditor(de);
-			}
-		});
-		finCalendar.setBounds(395, 64, 194, 127);
-		finCalendar.setDate((Date) salidaSpinner.getValue());
-		jornadaPanel.add(finCalendar);
-		
+	lblBuscar = new JLabel("Buscar");
+	lblBuscar.setBounds(608, 42, 52, 20);
+	jornadaPanel.add(lblBuscar);
 
+	scrollPaneEmpleados = new JScrollPane();
+	scrollPaneEmpleados.setBounds(618, 73, 246, 224);
+	jornadaPanel.add(scrollPaneEmpleados);
 
-		horaEntradaSpinner = new JSpinner();
-		horaEntradaSpinner.setModel(new SpinnerDateModel(comienzoCalendar.getDate(), null, null, Calendar.HOUR_OF_DAY));
-		JSpinner.DateEditor he = new JSpinner.DateEditor(horaEntradaSpinner, "HH:mm");
-		horaEntradaSpinner.setEditor(he);
-		horaEntradaSpinner.setBounds(176, 220, 50, 20);
-		jornadaPanel.add(horaEntradaSpinner);
-		
-		horaSalidaSpinner = new JSpinner();
-		horaSalidaSpinner.setModel(new SpinnerDateModel(finCalendar.getDate(), null, null, Calendar.HOUR_OF_DAY));
-		 he = new JSpinner.DateEditor(horaSalidaSpinner, "HH:mm");
-		horaSalidaSpinner.setEditor(he);
-		horaSalidaSpinner.setBounds(395, 220, 50, 20);
-		jornadaPanel.add(horaSalidaSpinner);
-	}
+	modeloTabla = new NoEditableTableModel(new String[] { "Nombre" }, 0);
+	tableEmpleados = new JTable(modeloTabla);
+	Object[] fila = new Object[1];
+	fila[0] = "Pepe";
+	modeloTabla.addRow(fila);
+	scrollPaneEmpleados.setViewportView(tableEmpleados);
+    }
 }
