@@ -82,12 +82,13 @@ public class JornadasControlador {
 		}
 	} else {
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 0)
-		for (MedicoDto m : modelo_medico.getListaMedicosByName(vista_jornadas.getBuscarTextField().getText())) {
+		for (MedicoDto m : modelo_medico
+			.getListaMedicosBySearch(vista_jornadas.getBuscarTextField().getText())) {
 		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getId(), m.getNombre() });
 		}
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 1)
 		for (EnfermeroDto e : modelo_enfermero
-			.getListaEnfermerosByName(vista_jornadas.getBuscarTextField().getText())) {
+			.getListaEnfermerosBySearch(vista_jornadas.getBuscarTextField().getText())) {
 		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getId(), e.getNombre() });
 		}
 	}
@@ -107,9 +108,7 @@ public class JornadasControlador {
 
 	try {
 	    j = new JornadaLaboralDto(
-		    vista_jornadas.getModeloTabla()
-			    .getValueAt(vista_jornadas.getTableEmpleados().getSelectedRow(),
-				    vista_jornadas.getTableEmpleados().getSelectedColumn())
+		    vista_jornadas.getModeloTabla().getValueAt(vista_jornadas.getTableEmpleados().getSelectedRow(), 1)
 			    .toString(),
 		    (dateFormat.parse(vista_jornadas.getComienzoCalendar().getDate().toString())),
 		    (dateFormat.parse(vista_jornadas.getFinCalendar().getDate().toString())),
