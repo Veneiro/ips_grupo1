@@ -69,26 +69,26 @@ public class JornadasControlador {
     }
 
     private void cargarListaEmpleados() {
-	vista_jornadas.setModeloTabla(new NoEditableTableModel(new String[] { "Nombre" }, 0));
+	vista_jornadas.setModeloTabla(new NoEditableTableModel(new String[] { "ID", "Nombre" }, 0));
 
 	if (vista_jornadas.getBuscarTextField().getText().trim().isEmpty()) {
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 0)
 		for (MedicoDto m : modelo_medico.getListaMedicos()) {
-		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getNombre() });
+		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getId(), m.getNombre() });
 		}
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 1)
 		for (EnfermeroDto e : modelo_enfermero.getListaEnfermeros()) {
-		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getNombre() });
+		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getId(), e.getNombre() });
 		}
 	} else {
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 0)
 		for (MedicoDto m : modelo_medico.getListaMedicosByName(vista_jornadas.getBuscarTextField().getText())) {
-		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getNombre() });
+		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getId(), m.getNombre() });
 		}
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 1)
 		for (EnfermeroDto e : modelo_enfermero
 			.getListaEnfermerosByName(vista_jornadas.getBuscarTextField().getText())) {
-		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getNombre() });
+		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getId(), e.getNombre() });
 		}
 	}
 
