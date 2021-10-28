@@ -221,14 +221,14 @@ public class AsignarJornadaVista extends JDialog {
 	buscarTextField.setColumns(10);
 
 	lblBuscar = new JLabel("Buscar");
-	lblBuscar.setBounds(608, 42, 36, 20);
+	lblBuscar.setBounds(608, 42, 52, 20);
 	jornadaPanel.add(lblBuscar);
 
 	scrollPaneEmpleados = new JScrollPane();
 	scrollPaneEmpleados.setBounds(618, 73, 246, 224);
 	jornadaPanel.add(scrollPaneEmpleados);
 
-	modeloTabla = new NoEditableTableModel(new String[] { "Nombre" }, 0);
+	modeloTabla = new NoEditableTableModel(new String[] { "Nombre" }, 1);
 	tableEmpleados = new JTable(modeloTabla);
 	scrollPaneEmpleados.setViewportView(tableEmpleados);
     }
