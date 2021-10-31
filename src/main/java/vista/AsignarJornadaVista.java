@@ -40,7 +40,7 @@ public class AsignarJornadaVista extends JDialog {
     private static final long serialVersionUID = 5414909378345343884L;
     private JPanel contentPane;
     private JLabel TrabajadorLabel;
-    private JButton añadirButton;
+    private JButton anadirButton;
     private JPanel jornadaPanel;
     private JLabel entradaLabel;
     private JLabel salidaLabel;
@@ -84,9 +84,9 @@ public class AsignarJornadaVista extends JDialog {
 	setLocationRelativeTo(null);
 	contentPane.setLayout(null);
 
-	añadirButton = new JButton("A\u00F1adir");
-	añadirButton.setBounds(5, 313, 874, 23);
-	contentPane.add(añadirButton);
+	anadirButton = new JButton("A\u00F1adir");
+	anadirButton.setBounds(5, 313, 874, 23);
+	contentPane.add(anadirButton);
 
 	jornadaPanel = new JPanel();
 	jornadaPanel.setBounds(5, 5, 874, 308);
@@ -232,6 +232,9 @@ public class AsignarJornadaVista extends JDialog {
 
 	modeloTabla = new NoEditableTableModel(new String[] { "ID", "Nombre" }, 0);
 	tableEmpleados = new JTable(modeloTabla);
+	Object[] fila = new Object[1];
+	fila[0] = "Pepe";
+	modeloTabla.addRow(fila);
 	scrollPaneEmpleados.setViewportView(tableEmpleados);
     }
 

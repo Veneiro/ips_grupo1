@@ -63,7 +63,7 @@ public class JornadasControlador {
 	vista_jornadas.getSalidaSpinner().addChangeListener(e -> SwingUtil.exceptionWrapper(
 		() -> vista_jornadas.getFinCalendar().setDate((Date) vista_jornadas.getSalidaSpinner().getValue())));
 
-	vista_jornadas.getAñadirButton().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addDiaLaboral()));
+	vista_jornadas.getAnadirButton().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addDiaLaboral()));
 
 	vista_jornadas.setVisible(true);
     }
@@ -96,9 +96,9 @@ public class JornadasControlador {
 	vista_jornadas.getTableEmpleados().setModel(vista_jornadas.getModeloTabla());
 
 	if (vista_jornadas.getModeloTabla().getRowCount() == 0)
-	    vista_jornadas.getAñadirButton().setEnabled(false);
+	    vista_jornadas.getAnadirButton().setEnabled(false);
 	else
-	    vista_jornadas.getAñadirButton().setEnabled(true);
+	    vista_jornadas.getAnadirButton().setEnabled(true);
     }
 
     private void addDiaLaboral() {
@@ -124,7 +124,7 @@ public class JornadasControlador {
 		JOptionPane.showMessageDialog(vista_jornadas, "La fecha de comienzo debe ser anterior a la de fin.");
 	    else {
 		modelo_jornada.addJornada(j);
-		JOptionPane.showMessageDialog(vista_jornadas, "Jornada añadida correctamente.");
+		JOptionPane.showMessageDialog(vista_jornadas, "Jornada aï¿½adida correctamente.");
 	    }
 	} catch (ParseException e) {
 	    e.printStackTrace();
