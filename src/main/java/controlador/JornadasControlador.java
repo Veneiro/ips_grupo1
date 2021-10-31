@@ -63,39 +63,42 @@ public class JornadasControlador {
 	vista_jornadas.getSalidaSpinner().addChangeListener(e -> SwingUtil.exceptionWrapper(
 		() -> vista_jornadas.getFinCalendar().setDate((Date) vista_jornadas.getSalidaSpinner().getValue())));
 
-	vista_jornadas.getAñadirButton().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addDiaLaboral()));
+	vista_jornadas.getAnadirButton().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addDiaLaboral()));
 
 	vista_jornadas.setVisible(true);
     }
 
     private void cargarListaEmpleados() {
-	vista_jornadas.getTableEmpleados().setModel(new NoEditableTableModel(new String[] { "Nombre" }, 0));
+	vista_jornadas.setModeloTabla(new NoEditableTableModel(new String[] { "ID", "Nombre" }, 0));
 
 	if (vista_jornadas.getBuscarTextField().getText().trim().isEmpty()) {
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 0)
 		for (MedicoDto m : modelo_medico.getListaMedicos()) {
-		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getNombre() });
+		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getId(), m.getNombre() });
 		}
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 1)
 		for (EnfermeroDto e : modelo_enfermero.getListaEnfermeros()) {
-		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getNombre() });
+		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getId(), e.getNombre() });
 		}
 	} else {
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 0)
-		for (MedicoDto m : modelo_medico.getListaMedicosByName(vista_jornadas.getBuscarTextField().getText())) {
-		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getNombre() });
+		for (MedicoDto m : modelo_medico
+			.getListaMedicosBySearch(vista_jornadas.getBuscarTextField().getText())) {
+		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getId(), m.getNombre() });
 		}
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 1)
 		for (EnfermeroDto e : modelo_enfermero
-			.getListaEnfermerosByName(vista_jornadas.getBuscarTextField().getText())) {
-		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getNombre() });
+			.getListaEnfermerosBySearch(vista_jornadas.getBuscarTextField().getText())) {
+		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getId(), e.getNombre() });
 		}
 	}
 
+	vista_jornadas.getTableEmpleados().setModel(vista_jornadas.getModeloTabla());
+
 	if (vista_jornadas.getModeloTabla().getRowCount() == 0)
-	    vista_jornadas.getAñadirButton().setEnabled(false);
+	    vista_jornadas.getAnadirButton().setEnabled(false);
 	else
-	    vista_jornadas.getAñadirButton().setEnabled(true);
+	    vista_jornadas.getAnadirButton().setEnabled(true);
     }
 
     private void addDiaLaboral() {
@@ -105,9 +108,7 @@ public class JornadasControlador {
 
 	try {
 	    j = new JornadaLaboralDto(
-		    vista_jornadas.getModeloTabla()
-			    .getValueAt(vista_jornadas.getTableEmpleados().getSelectedRow(),
-				    vista_jornadas.getTableEmpleados().getSelectedColumn())
+		    vista_jornadas.getModeloTabla().getValueAt(vista_jornadas.getTableEmpleados().getSelectedRow(), 1)
 			    .toString(),
 		    (dateFormat.parse(vista_jornadas.getComienzoCalendar().getDate().toString())),
 		    (dateFormat.parse(vista_jornadas.getFinCalendar().getDate().toString())),
@@ -123,7 +124,7 @@ public class JornadasControlador {
 		JOptionPane.showMessageDialog(vista_jornadas, "La fecha de comienzo debe ser anterior a la de fin.");
 	    else {
 		modelo_jornada.addJornada(j);
-		JOptionPane.showMessageDialog(vista_jornadas, "Jornada añadida correctamente.");
+		JOptionPane.showMessageDialog(vista_jornadas, "Jornada aï¿½adida correctamente.");
 	    }
 	} catch (ParseException e) {
 	    e.printStackTrace();
