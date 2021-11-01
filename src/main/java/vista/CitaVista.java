@@ -3,14 +3,17 @@ package vista;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -18,14 +21,17 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 import javax.swing.border.EmptyBorder;
 
 import dtos.MedicoDto;
 import dtos.PacienteDto;
 import logic.Admin;
 import logic.CrearCitas;
+import util.ApplicationException;
 
 /**
  * @author Santiago
@@ -59,8 +65,12 @@ public class CitaVista extends JDialog {
 	private JLabel lblUbic;
 	private JLabel lblInicio;
 	private JLabel lblFin;
-	private JTextField txtHoraInicio;
-	private JTextField txtHoraFin;
+	private JSpinner spHoraEntrada;
+	private JSpinner spHoraSalida;
+	private JSpinner spDia;
+	private JLabel lblDia;
+	private JCheckBox chBoxDefinirHorario;
+	private JTextField textField;
 
 	/**
 	 * Create the frame.
@@ -73,7 +83,7 @@ public class CitaVista extends JDialog {
 		setModal(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 606, 441);
+		setBounds(100, 100, 719, 441);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -97,10 +107,14 @@ public class CitaVista extends JDialog {
 		contentPane.add(getLblUbic());
 		contentPane.add(getLblInicio());
 		contentPane.add(getLblFin());
-		contentPane.add(getTxtHoraInicio());
-		contentPane.add(getTxtHoraFin());
+		contentPane.add(getSpHoraEntrada());
+		contentPane.add(getSpHoraSalida());
+		contentPane.add(getSpDia());
+		contentPane.add(getLblDia());
+		contentPane.add(getChBoxDefinirHorario());
+		contentPane.add(getTextField());
 	}
-	
+
 	public void visible(boolean visible) {
 		setVisible(visible);
 	}
@@ -127,7 +141,7 @@ public class CitaVista extends JDialog {
 	private JScrollPane getSPMedicos() {
 		if (sPMedicos == null) {
 			sPMedicos = new JScrollPane();
-			sPMedicos.setBounds(229, 50, 124, 180);
+			sPMedicos.setBounds(290, 51, 124, 180);
 			sPMedicos.setViewportView(getListMedicos());
 		}
 		return sPMedicos;
@@ -149,7 +163,7 @@ public class CitaVista extends JDialog {
 			lblMedicos = new JLabel("M\u00E9dicos");
 			lblMedicos.setLabelFor(getListMedicos());
 			lblMedicos.setDisplayedMnemonic('M');
-			lblMedicos.setBounds(229, 13, 56, 16);
+			lblMedicos.setBounds(325, 13, 56, 16);
 		}
 		return lblMedicos;
 	}
@@ -163,7 +177,7 @@ public class CitaVista extends JDialog {
 					seleccionarMedicosParaCita();
 				}
 			});
-			btnAñadir.setBounds(367, 48, 95, 25);
+			btnAñadir.setBounds(439, 48, 95, 25);
 		}
 		return btnAñadir;
 	}
@@ -186,7 +200,7 @@ public class CitaVista extends JDialog {
 					deseleccionarMedicosParaCita();
 				}
 			});
-			btnQuitar.setBounds(480, 50, 97, 25);
+			btnQuitar.setBounds(563, 48, 97, 25);
 		}
 		return btnQuitar;
 	}
@@ -245,28 +259,27 @@ public class CitaVista extends JDialog {
 	 * de los médicos, pero permitirá crearla igual después de un aviso.
 	 */
 	private void crearCita() {
-		LocalTime horarioInicio = null;
-		LocalTime horarioFin = null;
+		Date horaEntrada = null;
+		Date horaSalida = null;
+		Date fecha = null;
+		if (getSpHoraEntrada().isEnabled()) {
+			horaEntrada = (Date) getSpHoraEntrada().getValue();
+			horaSalida = (Date) getSpHoraSalida().getValue();
 
-		
-		//TODO  Cambiarlo a un spinner con formato hora minuto
-		if (!getTxtHoraInicio().getText().trim().isEmpty() && !getTxtHoraFin().getText().trim().isEmpty()) {
-			try {
-				horarioInicio = LocalTime.parse(getTxtHoraInicio().getText());
-				horarioFin = LocalTime.parse(getTxtHoraFin().getText());
-				long diff = ChronoUnit.MINUTES.between(horarioInicio, horarioFin);
-				if (diff < 0) {
-					JOptionPane.showMessageDialog(this, "La hora de fin no puede ir antes que la hora de inicio");
-					return;
-				}
-			} catch (DateTimeParseException e) {
-				JOptionPane.showMessageDialog(this, "Horas de inicio o fin incorrectas");
+			if (compararHoras(horaEntrada, horaSalida) > 0) {
+				JOptionPane.showMessageDialog(this, "La hora de fin no puede ir antes que la hora de inicio");
 				return;
 			}
-
-			if (creadorCitas.hayColisionMismoHorario(horarioInicio, horarioFin)) {
+			fecha = (Date) getSpDia().getValue();
+			if (creadorCitas.hayColisionMismoHorario(horaEntrada, horaSalida, fecha)) {
 				int r = JOptionPane.showConfirmDialog(this,
 						"Hay médicos con citas en el mismo horario. ¿Proseguir igualmente?");
+				if (r != JOptionPane.YES_OPTION)
+					return;
+			}
+			if (creadorCitas.fueraDeJornadaLaboral(horaEntrada, horaSalida, fecha)) {
+				int r = JOptionPane.showConfirmDialog(this,
+						"La cita no está dentro de la jornada laboral de los médicos. ¿Proseguir igualmente?");
 				if (r != JOptionPane.YES_OPTION)
 					return;
 			}
@@ -274,9 +287,34 @@ public class CitaVista extends JDialog {
 
 		String ubicacion = cadenaVaciaANull(getTxtUbicacion().getText());
 		String infoContacto = cadenaVaciaANull(getTxtContacto().getText());
-		
+
 		PacienteDto p = (PacienteDto) getCbPacientes().getSelectedItem();
-		creadorCitas.crearCita(p, infoContacto, ubicacion, horarioInicio, horarioFin);
+		creadorCitas.crearCita(p, infoContacto, ubicacion, horaEntrada, horaSalida, fecha);
+
+		JOptionPane.showMessageDialog(this, "Cita creada");
+	}
+
+	/**
+	 * Compara 2 fechas en base sólo a sus horas y minutos
+	 * 
+	 * @param fecha1
+	 * @param fecha2
+	 * @return 1 si la hora de la fecha 1 es mayor que la de la fecha 2, -1 si es al
+	 *         revés y 0 si son iguales
+	 */
+	private int compararHoras(Date fecha1, Date fecha2) {
+		try {
+			Format formatter = new SimpleDateFormat("HH:mm");
+
+			String hora1Str = formatter.format(fecha1);
+			Date hora1 = (Date) formatter.parseObject(hora1Str);
+			String hora2Str = formatter.format(fecha2);
+			Date hora2 = (Date) formatter.parseObject(hora2Str);
+
+			return hora1.compareTo(hora2);
+		} catch (ParseException e) {
+			throw new ApplicationException(e);
+		}
 	}
 
 	private String cadenaVaciaANull(String ubicacion) {
@@ -288,7 +326,7 @@ public class CitaVista extends JDialog {
 	private JTextField getTxtFiltro() {
 		if (txtFiltro == null) {
 			txtFiltro = new JTextField();
-			txtFiltro.setBounds(365, 134, 97, 22);
+			txtFiltro.setBounds(450, 134, 97, 22);
 			txtFiltro.setColumns(10);
 		}
 		return txtFiltro;
@@ -299,7 +337,7 @@ public class CitaVista extends JDialog {
 			lblFiltro = new JLabel("Filtrar m\u00E9dicos");
 			lblFiltro.setDisplayedMnemonic('i');
 			lblFiltro.setLabelFor(getTxtFiltro());
-			lblFiltro.setBounds(365, 100, 97, 16);
+			lblFiltro.setBounds(450, 117, 97, 16);
 		}
 		return lblFiltro;
 	}
@@ -313,7 +351,7 @@ public class CitaVista extends JDialog {
 					filtrarMedicos(getTxtFiltro().getText().trim().toLowerCase());
 				}
 			});
-			btnFiltrar.setBounds(480, 133, 97, 25);
+			btnFiltrar.setBounds(583, 133, 97, 25);
 		}
 		return btnFiltrar;
 	}
@@ -344,7 +382,7 @@ public class CitaVista extends JDialog {
 				}
 			});
 			btnDesfiltrar.setEnabled(false);
-			btnDesfiltrar.setBounds(480, 171, 97, 25);
+			btnDesfiltrar.setBounds(583, 174, 97, 25);
 		}
 		return btnDesfiltrar;
 	}
@@ -352,7 +390,7 @@ public class CitaVista extends JDialog {
 	private JTextField getTxtContacto() {
 		if (txtContacto == null) {
 			txtContacto = new JTextField();
-			txtContacto.setBounds(436, 236, 116, 22);
+			txtContacto.setBounds(544, 236, 116, 22);
 			txtContacto.setColumns(10);
 		}
 		return txtContacto;
@@ -363,7 +401,7 @@ public class CitaVista extends JDialog {
 			lblInfoContacto = new JLabel("Info. contacto:");
 			lblInfoContacto.setDisplayedMnemonic('I');
 			lblInfoContacto.setLabelFor(getTxtContacto());
-			lblInfoContacto.setBounds(436, 218, 95, 16);
+			lblInfoContacto.setBounds(544, 210, 95, 16);
 		}
 		return lblInfoContacto;
 	}
@@ -371,7 +409,7 @@ public class CitaVista extends JDialog {
 	private JTextField getTxtUbicacion() {
 		if (txtUbicacion == null) {
 			txtUbicacion = new JTextField();
-			txtUbicacion.setBounds(312, 236, 116, 22);
+			txtUbicacion.setBounds(418, 236, 116, 22);
 			txtUbicacion.setColumns(10);
 		}
 		return txtUbicacion;
@@ -382,7 +420,7 @@ public class CitaVista extends JDialog {
 			lblUbic = new JLabel("Ubicaci\u00F3n:");
 			lblUbic.setDisplayedMnemonic('U');
 			lblUbic.setLabelFor(getTxtUbicacion());
-			lblUbic.setBounds(229, 242, 71, 16);
+			lblUbic.setBounds(424, 210, 71, 16);
 		}
 		return lblUbic;
 	}
@@ -391,8 +429,7 @@ public class CitaVista extends JDialog {
 		if (lblInicio == null) {
 			lblInicio = new JLabel("Hora inicio (HH/mm):");
 			lblInicio.setDisplayedMnemonic('H');
-			lblInicio.setLabelFor(getTxtHoraInicio());
-			lblInicio.setBounds(23, 316, 124, 14);
+			lblInicio.setBounds(139, 316, 124, 14);
 		}
 		return lblInicio;
 	}
@@ -402,26 +439,77 @@ public class CitaVista extends JDialog {
 			lblFin = new JLabel("Hora fin (HH/mm):");
 			lblFin.setDisplayedMnemonic('O');
 			lblFin.setLabelFor(lblFin);
-			lblFin.setBounds(23, 355, 113, 14);
+			lblFin.setBounds(150, 355, 113, 14);
 		}
 		return lblFin;
 	}
 
-	private JTextField getTxtHoraInicio() {
-		if (txtHoraInicio == null) {
-			txtHoraInicio = new JTextField();
-			txtHoraInicio.setBounds(188, 316, 86, 20);
-			txtHoraInicio.setColumns(10);
+	private JSpinner getSpHoraEntrada() {
+		if (spHoraEntrada == null) {
+			spHoraEntrada = new JSpinner();
+			spHoraEntrada.setEnabled(false);
+			spHoraEntrada.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY));
+			spHoraEntrada.setEditor(new JSpinner.DateEditor(spHoraEntrada, "HH:mm"));
+			spHoraEntrada.setBounds(284, 316, 108, 22);
 		}
-		return txtHoraInicio;
+		return spHoraEntrada;
 	}
 
-	private JTextField getTxtHoraFin() {
-		if (txtHoraFin == null) {
-			txtHoraFin = new JTextField();
-			txtHoraFin.setBounds(188, 352, 86, 20);
-			txtHoraFin.setColumns(10);
+	private JSpinner getSpHoraSalida() {
+		if (spHoraSalida == null) {
+			spHoraSalida = new JSpinner();
+			spHoraSalida.setEnabled(false);
+			spHoraSalida.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY));
+			spHoraSalida.setEditor(new JSpinner.DateEditor(spHoraSalida, "HH:mm"));
+			spHoraSalida.setBounds(284, 351, 108, 22);
 		}
-		return txtHoraFin;
+		return spHoraSalida;
+	}
+
+	private JSpinner getSpDia() {
+		if (spDia == null) {
+			spDia = new JSpinner();
+			spDia.setEnabled(false);
+			spDia.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_YEAR));
+			spDia.setEditor(new JSpinner.DateEditor(spDia, "dd-MM-yyyy"));
+			spDia.setBounds(188, 381, 86, 17);
+		}
+		return spDia;
+	}
+
+	private JLabel getLblDia() {
+		if (lblDia == null) {
+			lblDia = new JLabel("D\u00EDa:");
+			lblDia.setBounds(73, 380, 44, 21);
+		}
+		return lblDia;
+	}
+
+	private JCheckBox getChBoxDefinirHorario() {
+		if (chBoxDefinirHorario == null) {
+			chBoxDefinirHorario = new JCheckBox("Definir horario:");
+			chBoxDefinirHorario.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					habilitarCamposHorario(getChBoxDefinirHorario().isSelected());
+				}
+			});
+			chBoxDefinirHorario.setBounds(73, 292, 97, 23);
+		}
+		return chBoxDefinirHorario;
+	}
+
+	private void habilitarCamposHorario(boolean selected) {
+		getSpDia().setEnabled(selected);
+		getSpHoraEntrada().setEnabled(selected);
+		getSpHoraSalida().setEnabled(selected);
+	}
+
+	private JTextField getTextField() {
+		if (textField == null) {
+			textField = new JTextField();
+			textField.setBounds(63, 11, 86, 20);
+			textField.setColumns(10);
+		}
+		return textField;
 	}
 }

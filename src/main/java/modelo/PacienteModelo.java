@@ -20,4 +20,9 @@ public class PacienteModelo {
 				+ "AND c.fecha = ?";
 		return db.executeQueryPojo(PacienteDto.class, sql, nombre, fecha);
 	}
+
+	public List<PacienteDto> getListaPacientes() {
+		String sql = "SELECT * FROM TPACIENTES";
+		return db.executeQueryPojo(PacienteDto.class, sql);
+	}
 }

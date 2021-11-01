@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.List;
+
 import dtos.JornadaLaboralDto;
 import util.Database;
 import util.Util;
@@ -16,5 +18,11 @@ public class JornadaModelo {
 				Util.dateToIsoHour(j.getHoraSalida()), j.isLunes(), j.isMartes(), j.isMiercoles(), j.isJueves(),
 				j.isViernes(), j.isSabado(), j.isDomingo());
 
+	}
+	
+	public List<JornadaLaboralDto> getPorNombreTrabajador(String nombre) {
+		String sql = "SELECT * from TJORNADALABORAL where nombre_trabajador = ?";
+		
+		return db.executeQueryPojo(JornadaLaboralDto.class, sql, nombre);
 	}
 }

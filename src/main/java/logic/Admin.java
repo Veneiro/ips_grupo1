@@ -5,7 +5,8 @@ import java.util.List;
 
 import dtos.MedicoDto;
 import dtos.PacienteDto;
-import modelo.LectorDeDatos;
+import modelo.MedicoModelo;
+import modelo.PacienteModelo;
 
 /**
  * Almacena los médicos y los pacientes.
@@ -19,9 +20,10 @@ public class Admin {
 	private List<PacienteDto> pacientes;
 
 	public Admin() {
-		LectorDeDatos lector = new LectorDeDatos();
-		medicos = lector.getListaMedicos();
-		pacientes = lector.getListaPacientes();
+		MedicoModelo medicoModelo = new MedicoModelo();
+		medicos = medicoModelo.getListaMedicos();
+		PacienteModelo pacienteModelo = new PacienteModelo();
+		pacientes = pacienteModelo.getListaPacientes();
 	}
 
 	public List<MedicoDto> getListaMedicos() {
@@ -42,8 +44,18 @@ public class Admin {
 	public List<MedicoDto> filtrarMedicos(String filtro) {
 		List<MedicoDto> listaFiltrada = new ArrayList<MedicoDto>();
 		for (MedicoDto m : medicos) {
-			if (m.toString().trim().toLowerCase().contains(filtro)) {
+			if (m.toString().trim().toLowerCase().contains(filtro.toLowerCase())) {
 				listaFiltrada.add(m);
+			}
+		}
+		return listaFiltrada;
+	}
+	
+	public List<PacienteDto> filtrarPacientes(String filtro) {
+		List<PacienteDto> listaFiltrada = new ArrayList<PacienteDto>();
+		for (PacienteDto p : pacientes) {
+			if (p.toString().trim().toLowerCase().contains(filtro.toLowerCase())) {
+				listaFiltrada.add(p);
 			}
 		}
 		return listaFiltrada;

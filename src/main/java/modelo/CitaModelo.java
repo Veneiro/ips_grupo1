@@ -38,4 +38,12 @@ public class CitaModelo {
 		String sql = "SELECT * FROM TCITAS c WHERE c.fecha = ?";
 		return db.executeQueryPojo(CitaDto.class, sql, fecha);
 	}
+	
+	public void addCita(CitaDto cita) {
+		String sql = "INSERT INTO TCITAS (id,horario_inicio,horario_fin,ubicacion,contacto,id_paciente,id_medico,acudio,fecha,informacion)"
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		db.executeUpdate(sql, cita.getId(),cita.getHorario_inicio(),cita.getHorario_fin(),cita.getUbicacion(),
+				cita.getContacto(),cita.getId_paciente(),cita.getId_medico(),cita.getAcudio(),cita.getFecha(),
+				cita.getInformacion());
+	}
 }
