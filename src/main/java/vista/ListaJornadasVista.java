@@ -1,13 +1,10 @@
 package vista;
 
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,7 +24,7 @@ public class ListaJornadasVista extends JFrame {
     private JScrollPane scrollPaneCitas;
     private JPanel panelIntroducirFecha;
     private JTable table;
-    private JButton btnGestionarCita;
+    private JButton btnModificar;
     @Setter
     private ModificarJornadaVista mJ;
 
@@ -66,19 +63,9 @@ public class ListaJornadasVista extends JFrame {
 		new String[] { "ID", "Empleado", "Comienzo", "Fin", "Entrada", "Salida" }));
 	scrollPaneCitas.setViewportView(table);
 
-	btnGestionarCita = new JButton("Modificar");
-	btnGestionarCita.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		String idJornada = JOptionPane.showInputDialog("Introduzca id de la jornada", "0");
-
-		if (idJornada != null) {
-		    setMJ(new ModificarJornadaVista(Integer.valueOf(idJornada)));
-		    getMJ().setVisible(true);
-		}
-	    }
-	});
-	btnGestionarCita.setBounds(0, 235, 454, 31);
-	getContentPane().add(btnGestionarCita);
+	btnModificar = new JButton("Modificar");
+	btnModificar.setBounds(0, 235, 454, 31);
+	getContentPane().add(btnModificar);
 
     }
 }
