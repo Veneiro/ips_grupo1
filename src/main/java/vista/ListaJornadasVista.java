@@ -1,10 +1,13 @@
 package vista;
 
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -13,6 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class ListaJornadasVista extends JFrame {
@@ -24,6 +28,8 @@ public class ListaJornadasVista extends JFrame {
     private JPanel panelIntroducirFecha;
     private JTable table;
     private JButton btnGestionarCita;
+    @Setter
+    private ModificarJornadaVista mJ;
 
     public ListaJornadasVista() {
 	setTitle("iHospital : Listar Jornadas");
@@ -61,6 +67,16 @@ public class ListaJornadasVista extends JFrame {
 	scrollPaneCitas.setViewportView(table);
 
 	btnGestionarCita = new JButton("Modificar");
+	btnGestionarCita.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		String idJornada = JOptionPane.showInputDialog("Introduzca id de la jornada", "0");
+
+		if (idJornada != null) {
+		    setMJ(new ModificarJornadaVista(Integer.valueOf(idJornada)));
+		    getMJ().setVisible(true);
+		}
+	    }
+	});
 	btnGestionarCita.setBounds(0, 235, 454, 31);
 	getContentPane().add(btnGestionarCita);
 
