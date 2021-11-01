@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.JOptionPane;
@@ -31,9 +32,24 @@ public class ListarJornadasControlador {
 	listaJornadasVista.getBtnModificar().addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
 		String idJornada = JOptionPane.showInputDialog("Introduzca id de la jornada", "0");
+		List<JornadaLaboralDto> lJ = modelo_jornada.findJornadaById(Integer.valueOf(idJornada));
 
-		if (idJornada != null || Integer.valueOf(idJornada) >= 0) {
+		if (idJornada != null || Integer.valueOf(idJornada) >= 0 || lJ.size() < 1) {
 		    modificarVista = new ModificarJornadaVista(Integer.valueOf(idJornada));
+
+		    JornadaLaboralDto j = lJ.get(0);
+
+		    modificarVista.getComienzoCalendar().setDate(j.getDiaComienzo());
+		    modificarVista.getFinCalendar().setDate(j.getDiaFin());
+		    modificarVista.getEntradaSpinner().setValue(j.getHoraEntrada());
+		    modificarVista.getSalidaSpinner().setValue(j.getHoraSalida());
+		    modificarVista.getLunesCheckBox().setSelected(j.isLunes());
+		    modificarVista.getMartesCheckBox().setSelected(j.isMartes());
+		    modificarVista.getMiercolesCheckBox().setSelected(j.isMiercoles());
+		    modificarVista.getJuevesCheckBox().setSelected(j.isJueves());
+		    modificarVista.getViernesCheckBox().setSelected(j.isViernes());
+		    modificarVista.getSabadoCheckBox().setSelected(j.isSabado());
+		    modificarVista.getDomingoCheckBox().setSelected(j.isDomingo());
 
 		    modificarVista.getConfirmarButton()
 			    .addActionListener(ex -> SwingUtil.exceptionWrapper(() -> modificarDiaLaboral()));
