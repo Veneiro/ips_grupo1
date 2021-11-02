@@ -26,6 +26,8 @@ public class ListarJornadasControlador {
     private JornadaModelo modelo_jornada;
     private JornadaLaboralDto jornada;
 
+    private String idJornada;
+
     public ListarJornadasControlador() {
 	this.listaJornadasVista = new ListaJornadasVista();
 	this.modelo_jornada = new JornadaModelo();
@@ -36,7 +38,7 @@ public class ListarJornadasControlador {
 	listaJornadasVista.getBtnModificar().addActionListener(new ActionListener() {
 
 	    public void actionPerformed(ActionEvent e) {
-		String idJornada = JOptionPane.showInputDialog("Introduzca id de la jornada", "0");
+		idJornada = JOptionPane.showInputDialog("Introduzca id de la jornada", "0");
 		List<JornadaLaboralRecord> lJ = modelo_jornada.findJornadaById(Integer.valueOf(idJornada));
 
 		if (idJornada != null || Integer.valueOf(idJornada) >= 0 || lJ.size() < 1) {
@@ -99,7 +101,7 @@ public class ListarJornadasControlador {
 		    || (j.getDia_comienzo().equals(j.getDia_fin()) && j.getHora_salida().before(j.getHora_entrada())))
 		JOptionPane.showMessageDialog(modificarVista, "La fecha de comienzo debe ser anterior a la de fin.");
 	    else {
-		modelo_jornada.updateJornada(j);
+		modelo_jornada.updateJornada(Integer.parseInt(idJornada), j);
 		JOptionPane.showMessageDialog(modificarVista, "Jornada actualizada correctamente.");
 	    }
 	} catch (ParseException e) {

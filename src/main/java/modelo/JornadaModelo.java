@@ -20,13 +20,13 @@ public class JornadaModelo {
 		j.isViernes(), j.isSabado(), j.isDomingo());
     }
 
-    public void updateJornada(JornadaLaboralDto j) {
+    public void updateJornada(int id, JornadaLaboralDto j) {
 	String sql = "UPDATE TJORNADALABORAL SET NOMBRE_TRABAJADOR = ?, DIA_COMIENZO = ?, HORA_ENTRADA = ?, DIA_FIN = ?, HORA_SALIDA = ?, LUNES = ?, MARTES = ?, MIERCOLES = ?, JUEVES = ?, VIERNES = ?, SABADO = ?, DOMINGO = ? where id = ?";
 
 	db.executeUpdate(sql, j.getNombre_trabajador(), Util.dateToIsoString(j.getDia_comienzo()),
 		Util.dateToIsoHour(j.getHora_entrada()), Util.dateToIsoString(j.getDia_fin()),
 		Util.dateToIsoHour(j.getHora_salida()), j.isLunes(), j.isMartes(), j.isMiercoles(), j.isJueves(),
-		j.isViernes(), j.isSabado(), j.isDomingo());
+		j.isViernes(), j.isSabado(), j.isDomingo(), id);
     }
 
     public List<JornadaLaboralRecord> findJornadaById(int id) {
