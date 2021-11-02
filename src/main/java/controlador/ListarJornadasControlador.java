@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
 
 import dtos.JornadaLaboralDto;
 import modelo.JornadaModelo;
+import records.JornadaLaboralRecord;
+import records.RecordAssembler;
 import util.SwingUtil;
 import vista.ListaJornadasVista;
 import vista.ModificarJornadaVista;
@@ -34,17 +36,19 @@ public class ListarJornadasControlador {
 
 	    public void actionPerformed(ActionEvent e) {
 		String idJornada = JOptionPane.showInputDialog("Introduzca id de la jornada", "0");
-		List<JornadaLaboralDto> lJ = modelo_jornada.findJornadaById(Integer.valueOf(idJornada));
+		List<JornadaLaboralRecord> lJ = modelo_jornada.findJornadaById(Integer.valueOf(idJornada));
 
 		if (idJornada != null || Integer.valueOf(idJornada) >= 0 || lJ.size() < 1) {
 		    modificarVista = new ModificarJornadaVista(Integer.valueOf(idJornada));
 
-		    jornada = lJ.get(0);
+		    jornada = RecordAssembler.toDto(lJ.get(0));
 
-		    modificarVista.getComienzoCalendar().setDate(jornada.getDiaComienzo());
-		    modificarVista.getFinCalendar().setDate(jornada.getDiaFin());
-		    modificarVista.getEntradaSpinner().setValue(jornada.getHoraEntrada());
-		    modificarVista.getSalidaSpinner().setValue(jornada.getHoraSalida());
+		    modificarVista.getComienzoCalendar().setDate(jornada.getDia_comienzo());
+		    modificarVista.getEntradaSpinner().setValue(jornada.getDia_comienzo());
+		    modificarVista.getFinCalendar().setDate(jornada.getDia_fin());
+		    modificarVista.getSalidaSpinner().setValue(jornada.getDia_fin());
+		    modificarVista.getHoraEntradaSpinner().setValue(jornada.getHora_entrada());
+		    modificarVista.getHoraSalidaSpinner().setValue(jornada.getHora_salida());
 		    modificarVista.getLunesCheckBox().setSelected(jornada.isLunes());
 		    modificarVista.getMartesCheckBox().setSelected(jornada.isMartes());
 		    modificarVista.getMiercolesCheckBox().setSelected(jornada.isMiercoles());
@@ -72,7 +76,7 @@ public class ListarJornadasControlador {
 	JornadaLaboralDto j;
 
 	try {
-	    j = new JornadaLaboralDto(jornada.getNombreEmpleado(),
+	    j = new JornadaLaboralDto(jornada.getNombre_trabajador(),
 		    (dateFormat.parse(modificarVista.getComienzoCalendar().getDate().toString())),
 		    (dateFormat.parse(modificarVista.getFinCalendar().getDate().toString())),
 		    (dateFormat.parse(modificarVista.getHoraEntradaSpinner().getValue().toString())),
@@ -82,8 +86,8 @@ public class ListarJornadasControlador {
 		    modificarVista.getViernesCheckBox().isSelected(), modificarVista.getSabadoCheckBox().isSelected(),
 		    modificarVista.getDomingoCheckBox().isSelected());
 
-	    if (j.getDiaFin().before(j.getDiaComienzo())
-		    || (j.getDiaComienzo().equals(j.getDiaFin()) && j.getHoraSalida().before(j.getHoraEntrada())))
+	    if (j.getDia_fin().before(j.getDia_comienzo())
+		    || (j.getDia_comienzo().equals(j.getDia_fin()) && j.getHora_salida().before(j.getHora_entrada())))
 		JOptionPane.showMessageDialog(modificarVista, "La fecha de comienzo debe ser anterior a la de fin.");
 	    else {
 		modelo_jornada.addJornada(j);

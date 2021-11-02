@@ -67,7 +67,7 @@ public class ModificarJornadaVista extends JDialog {
 	this.idJornada = idJornada;
 
 	setTitle("iHospital : Modificar Jornada " + idJornada);
-	setBounds(100, 100, 633, 380);
+	setBounds(100, 100, 627, 380);
 	setModal(true);
 	setResizable(false);
 	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -78,11 +78,11 @@ public class ModificarJornadaVista extends JDialog {
 	contentPane.setLayout(null);
 
 	confirmarButton = new JButton("Confirmar");
-	confirmarButton.setBounds(5, 313, 874, 23);
+	confirmarButton.setBounds(5, 313, 604, 23);
 	contentPane.add(confirmarButton);
 
 	jornadaPanel = new JPanel();
-	jornadaPanel.setBounds(5, 5, 874, 308);
+	jornadaPanel.setBounds(5, 5, 604, 308);
 	jornadaPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 	contentPane.add(jornadaPanel);
 	jornadaPanel.setLayout(null);
@@ -117,7 +117,7 @@ public class ModificarJornadaVista extends JDialog {
 	jornadaPanel.add(entradaLabel);
 
 	salidaLabel = new JLabel("Salida");
-	salidaLabel.setBounds(395, 234, 36, 15);
+	salidaLabel.setBounds(395, 234, 50, 15);
 	salidaLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 	jornadaPanel.add(salidaLabel);
 

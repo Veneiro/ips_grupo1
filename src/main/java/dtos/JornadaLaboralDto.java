@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class JornadaLaboralDto {
 
-	private String nombreEmpleado;
-	private Date diaComienzo, diaFin, horaEntrada, horaSalida;
+	private String nombre_trabajador;
+	private Date dia_comienzo, dia_fin, hora_entrada, hora_salida;
 	private boolean lunes, martes, miercoles, jueves, viernes, sabado, domingo;
 }

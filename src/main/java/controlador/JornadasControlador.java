@@ -119,12 +119,12 @@ public class JornadasControlador {
 		    vista_jornadas.getViernesCheckBox().isSelected(), vista_jornadas.getSabadoCheckBox().isSelected(),
 		    vista_jornadas.getDomingoCheckBox().isSelected());
 
-	    if (j.getDiaFin().before(j.getDiaComienzo())
-		    || (j.getDiaComienzo().equals(j.getDiaFin()) && j.getHoraSalida().before(j.getHoraEntrada())))
+	    if (j.getDia_fin().before(j.getDia_comienzo())
+		    || (j.getDia_comienzo().equals(j.getDia_fin()) && j.getHora_salida().before(j.getHora_entrada())))
 		JOptionPane.showMessageDialog(vista_jornadas, "La fecha de comienzo debe ser anterior a la de fin.");
 	    else {
 		modelo_jornada.addJornada(j);
-		JOptionPane.showMessageDialog(vista_jornadas, "Jornada aï¿½adida correctamente.");
+		JOptionPane.showMessageDialog(vista_jornadas, "Jornada añadida correctamente.");
 	    }
 	} catch (ParseException e) {
 	    e.printStackTrace();
