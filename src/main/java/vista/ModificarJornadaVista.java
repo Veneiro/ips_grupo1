@@ -40,7 +40,7 @@ public class ModificarJornadaVista extends JDialog {
     private static final long serialVersionUID = 5414909378345343884L;
     private JPanel contentPane;
     private JLabel TrabajadorLabel;
-    private JButton confirmarButton;
+    private JButton anadirButton;
     private JPanel jornadaPanel;
     private JLabel entradaLabel;
     private JLabel salidaLabel;
@@ -88,9 +88,9 @@ public class ModificarJornadaVista extends JDialog {
 	setLocationRelativeTo(null);
 	contentPane.setLayout(null);
 
-	confirmarButton = new JButton("Confirmar");
-	confirmarButton.setBounds(5, 313, 874, 23);
-	contentPane.add(confirmarButton);
+	anadirButton = new JButton("A\u00F1adir");
+	anadirButton.setBounds(5, 313, 874, 23);
+	contentPane.add(anadirButton);
 
 	jornadaPanel = new JPanel();
 	jornadaPanel.setBounds(5, 5, 874, 308);
