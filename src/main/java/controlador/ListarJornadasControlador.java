@@ -21,6 +21,7 @@ public class ListarJornadasControlador {
     private ListaJornadasVista listaJornadasVista;
     private ModificarJornadaVista modificarVista;
     private JornadaModelo modelo_jornada;
+    private JornadaLaboralDto jornada;
 
     public ListarJornadasControlador() {
 	this.listaJornadasVista = new ListaJornadasVista();
@@ -30,6 +31,7 @@ public class ListarJornadasControlador {
     public void inicializar() {
 
 	listaJornadasVista.getBtnModificar().addActionListener(new ActionListener() {
+
 	    public void actionPerformed(ActionEvent e) {
 		String idJornada = JOptionPane.showInputDialog("Introduzca id de la jornada", "0");
 		List<JornadaLaboralDto> lJ = modelo_jornada.findJornadaById(Integer.valueOf(idJornada));
@@ -37,19 +39,19 @@ public class ListarJornadasControlador {
 		if (idJornada != null || Integer.valueOf(idJornada) >= 0 || lJ.size() < 1) {
 		    modificarVista = new ModificarJornadaVista(Integer.valueOf(idJornada));
 
-		    JornadaLaboralDto j = lJ.get(0);
+		    jornada = lJ.get(0);
 
-		    modificarVista.getComienzoCalendar().setDate(j.getDiaComienzo());
-		    modificarVista.getFinCalendar().setDate(j.getDiaFin());
-		    modificarVista.getEntradaSpinner().setValue(j.getHoraEntrada());
-		    modificarVista.getSalidaSpinner().setValue(j.getHoraSalida());
-		    modificarVista.getLunesCheckBox().setSelected(j.isLunes());
-		    modificarVista.getMartesCheckBox().setSelected(j.isMartes());
-		    modificarVista.getMiercolesCheckBox().setSelected(j.isMiercoles());
-		    modificarVista.getJuevesCheckBox().setSelected(j.isJueves());
-		    modificarVista.getViernesCheckBox().setSelected(j.isViernes());
-		    modificarVista.getSabadoCheckBox().setSelected(j.isSabado());
-		    modificarVista.getDomingoCheckBox().setSelected(j.isDomingo());
+		    modificarVista.getComienzoCalendar().setDate(jornada.getDiaComienzo());
+		    modificarVista.getFinCalendar().setDate(jornada.getDiaFin());
+		    modificarVista.getEntradaSpinner().setValue(jornada.getHoraEntrada());
+		    modificarVista.getSalidaSpinner().setValue(jornada.getHoraSalida());
+		    modificarVista.getLunesCheckBox().setSelected(jornada.isLunes());
+		    modificarVista.getMartesCheckBox().setSelected(jornada.isMartes());
+		    modificarVista.getMiercolesCheckBox().setSelected(jornada.isMiercoles());
+		    modificarVista.getJuevesCheckBox().setSelected(jornada.isJueves());
+		    modificarVista.getViernesCheckBox().setSelected(jornada.isViernes());
+		    modificarVista.getSabadoCheckBox().setSelected(jornada.isSabado());
+		    modificarVista.getDomingoCheckBox().setSelected(jornada.isDomingo());
 
 		    modificarVista.getConfirmarButton()
 			    .addActionListener(ex -> SwingUtil.exceptionWrapper(() -> modificarDiaLaboral()));
@@ -70,9 +72,7 @@ public class ListarJornadasControlador {
 	JornadaLaboralDto j;
 
 	try {
-	    j = new JornadaLaboralDto(
-		    modificarVista.getModeloTabla().getValueAt(modificarVista.getTableEmpleados().getSelectedRow(), 1)
-			    .toString(),
+	    j = new JornadaLaboralDto(jornada.getNombreEmpleado(),
 		    (dateFormat.parse(modificarVista.getComienzoCalendar().getDate().toString())),
 		    (dateFormat.parse(modificarVista.getFinCalendar().getDate().toString())),
 		    (dateFormat.parse(modificarVista.getHoraEntradaSpinner().getValue().toString())),
