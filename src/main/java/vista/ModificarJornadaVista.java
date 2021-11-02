@@ -8,18 +8,13 @@ import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -39,7 +34,6 @@ public class ModificarJornadaVista extends JDialog {
      */
     private static final long serialVersionUID = 5414909378345343884L;
     private JPanel contentPane;
-    private JLabel TrabajadorLabel;
     private JButton confirmarButton;
     private JPanel jornadaPanel;
     private JLabel entradaLabel;
@@ -51,7 +45,6 @@ public class ModificarJornadaVista extends JDialog {
     private JSpinner salidaSpinner;
     private JSpinner horaSalidaSpinner;
     private JSeparator separator;
-    private JComboBox<String> tipoEmpleadoComboBox;
     private JCalendar comienzoCalendar;
     private JCalendar finCalendar;
     private JPanel panel;
@@ -62,10 +55,6 @@ public class ModificarJornadaVista extends JDialog {
     private JCheckBox ViernesCheckBox;
     private JCheckBox SabadoCheckBox;
     private JCheckBox DomingoCheckBox;
-    private JTextField buscarTextField;
-    private JLabel lblBuscar;
-    private JScrollPane scrollPaneEmpleados;
-    private JTable tableEmpleados;
     @Setter
     private NoEditableTableModel modeloTabla;
 
@@ -78,7 +67,7 @@ public class ModificarJornadaVista extends JDialog {
 	this.idJornada = idJornada;
 
 	setTitle("iHospital : Modificar Jornada " + idJornada);
-	setBounds(100, 100, 900, 380);
+	setBounds(100, 100, 633, 380);
 	setModal(true);
 	setResizable(false);
 	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -208,38 +197,10 @@ public class ModificarJornadaVista extends JDialog {
 	horaSalidaSpinner.setBounds(395, 252, 50, 20);
 	jornadaPanel.add(horaSalidaSpinner);
 
-	TrabajadorLabel = new JLabel("Empleado/a :");
-	TrabajadorLabel.setBounds(598, 13, 81, 15);
-	jornadaPanel.add(TrabajadorLabel);
-	TrabajadorLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-
-	tipoEmpleadoComboBox = new JComboBox<String>();
-	tipoEmpleadoComboBox.setBounds(689, 11, 175, 20);
-	jornadaPanel.add(tipoEmpleadoComboBox);
-	tipoEmpleadoComboBox
-		.setModel(new DefaultComboBoxModel<String>(new String[] { "M\u00E9dico/a", "Enfermero/a" }));
-	tipoEmpleadoComboBox.setSelectedIndex(0);
-
-	buscarTextField = new JTextField();
-	buscarTextField.setBounds(670, 42, 194, 20);
-	jornadaPanel.add(buscarTextField);
-	buscarTextField.setToolTipText("Buscar empleado");
-	buscarTextField.setColumns(10);
-
-	lblBuscar = new JLabel("Buscar");
-	lblBuscar.setBounds(608, 42, 52, 20);
-	jornadaPanel.add(lblBuscar);
-
-	scrollPaneEmpleados = new JScrollPane();
-	scrollPaneEmpleados.setBounds(618, 73, 246, 224);
-	jornadaPanel.add(scrollPaneEmpleados);
-
 	modeloTabla = new NoEditableTableModel(new String[] { "ID", "Nombre" }, 0);
-	tableEmpleados = new JTable(modeloTabla);
 	Object[] fila = new Object[1];
 	fila[0] = "Pepe";
 	modeloTabla.addRow(fila);
-	scrollPaneEmpleados.setViewportView(tableEmpleados);
     }
 
 }
