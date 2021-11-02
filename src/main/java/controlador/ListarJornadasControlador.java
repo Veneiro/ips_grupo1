@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,6 +61,14 @@ public class ListarJornadasControlador {
 		    modificarVista.getConfirmarButton()
 			    .addActionListener(ex -> SwingUtil.exceptionWrapper(() -> modificarDiaLaboral()));
 
+		    modificarVista.getEntradaSpinner().addChangeListener(
+			    ex -> SwingUtil.exceptionWrapper(() -> modificarVista.getComienzoCalendar()
+				    .setDate((Date) modificarVista.getEntradaSpinner().getValue())));
+
+		    modificarVista.getSalidaSpinner()
+			    .addChangeListener(ex -> SwingUtil.exceptionWrapper(() -> modificarVista.getFinCalendar()
+				    .setDate((Date) modificarVista.getSalidaSpinner().getValue())));
+
 		    modificarVista.setVisible(true);
 		} else {
 		    JOptionPane.showMessageDialog(listaJornadasVista, "Id de jornada inválido.");
@@ -90,7 +99,7 @@ public class ListarJornadasControlador {
 		    || (j.getDia_comienzo().equals(j.getDia_fin()) && j.getHora_salida().before(j.getHora_entrada())))
 		JOptionPane.showMessageDialog(modificarVista, "La fecha de comienzo debe ser anterior a la de fin.");
 	    else {
-		modelo_jornada.addJornada(j);
+		modelo_jornada.updateJornada(j);
 		JOptionPane.showMessageDialog(modificarVista, "Jornada actualizada correctamente.");
 	    }
 	} catch (ParseException e) {
