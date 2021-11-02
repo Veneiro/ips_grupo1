@@ -14,19 +14,21 @@ import javax.swing.table.DefaultTableModel;
 
 import lombok.Getter;
 import lombok.Setter;
+import util.NoEditableTableModel;
 
 @Getter
 public class ListaJornadasVista extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private JTextField textFieldFecha;
+    private JTextField textFieldBuscar;
     private JLabel lblSeleccionEmpleado;
-    private JScrollPane scrollPaneCitas;
+    private JScrollPane scrollPane;
     private JPanel panelIntroducirFecha;
     private JTable table;
     private JButton btnModificar;
+
     @Setter
-    private ModificarJornadaVista mJ;
+    private NoEditableTableModel modeloTabla;
 
     public ListaJornadasVista() {
 	setTitle("iHospital : Listar Jornadas");
@@ -49,23 +51,26 @@ public class ListaJornadasVista extends JFrame {
 	lblSeleccionEmpleado.setHorizontalAlignment(SwingConstants.LEFT);
 	panelIntroducirFecha.add(lblSeleccionEmpleado);
 
-	textFieldFecha = new JTextField();
-	textFieldFecha.setBounds(77, 6, 367, 20);
-	panelIntroducirFecha.add(textFieldFecha);
-	textFieldFecha.setColumns(10);
+	textFieldBuscar = new JTextField();
+	textFieldBuscar.setBounds(77, 6, 367, 20);
+	panelIntroducirFecha.add(textFieldBuscar);
+	textFieldBuscar.setColumns(10);
 
-	scrollPaneCitas = new JScrollPane();
-	scrollPaneCitas.setBounds(0, 33, 454, 204);
-	getContentPane().add(scrollPaneCitas);
+	scrollPane = new JScrollPane();
+	scrollPane.setBounds(0, 33, 454, 204);
+	getContentPane().add(scrollPane);
 
 	table = new JTable();
 	table.setModel(new DefaultTableModel(new Object[][] {},
 		new String[] { "ID", "Empleado", "Comienzo", "Fin", "Entrada", "Salida" }));
-	scrollPaneCitas.setViewportView(table);
+	scrollPane.setViewportView(table);
 
 	btnModificar = new JButton("Modificar");
 	btnModificar.setBounds(0, 235, 454, 31);
 	getContentPane().add(btnModificar);
 
+	modeloTabla = new NoEditableTableModel(new String[] { "ID", "Nombre" }, 0);
+	table = new JTable(modeloTabla);
+	scrollPane.setViewportView(table);
     }
 }

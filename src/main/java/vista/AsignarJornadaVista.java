@@ -232,9 +232,6 @@ public class AsignarJornadaVista extends JDialog {
 
 	modeloTabla = new NoEditableTableModel(new String[] { "ID", "Nombre" }, 0);
 	tableEmpleados = new JTable(modeloTabla);
-	Object[] fila = new Object[1];
-	fila[0] = "Pepe";
-	modeloTabla.addRow(fila);
 	scrollPaneEmpleados.setViewportView(tableEmpleados);
     }
 

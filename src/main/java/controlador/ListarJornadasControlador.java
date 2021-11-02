@@ -15,6 +15,7 @@ import dtos.JornadaLaboralDto;
 import modelo.JornadaModelo;
 import records.JornadaLaboralRecord;
 import records.RecordAssembler;
+import util.NoEditableTableModel;
 import util.SwingUtil;
 import vista.ListaJornadasVista;
 import vista.ModificarJornadaVista;
@@ -79,6 +80,27 @@ public class ListarJornadasControlador {
 	});
 
 	listaJornadasVista.setVisible(true);
+    }
+
+    private void cargarListaJornadas() {
+	listaJornadasVista.setModeloTabla(new NoEditableTableModel(new String[] { "Nombre" }, 0));
+
+	if (listaJornadasVista.getTextFieldBuscar().getText().trim().isEmpty()) {
+	    for (JornadaLaboralRecord j : modelo_jornada.findAll()) {
+		listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador() });
+	    }
+	} else {
+	    for (JornadaLaboralRecord j : modelo_jornada.findAll()) {
+		listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador() });
+	    }
+	}
+
+	listaJornadasVista.getTableJornadas().setModel(modificarVista.getModeloTabla());
+
+	if (listaJornadasVista.getModeloTabla().getRowCount() == 0)
+	    listaJornadasVista.getBtnModificar().setEnabled(false);
+	else
+	    listaJornadasVista.getBtnModificar().setEnabled(true);
     }
 
     private void modificarDiaLaboral() {
