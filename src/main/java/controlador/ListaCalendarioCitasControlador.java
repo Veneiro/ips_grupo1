@@ -13,6 +13,8 @@ import dtos.CitaDto;
 import dtos.PacienteDto;
 import modelo.CitaModelo;
 import modelo.PacienteModelo;
+import util.SwingUtil;
+import vista.AppointmentView;
 import vista.ListaCalendarioCitasVista;
 
 public class ListaCalendarioCitasControlador {
@@ -21,6 +23,8 @@ public class ListaCalendarioCitasControlador {
 	private CitaModelo cm;
 	private PacienteModelo pm;
 	private int idMedico;
+	List<CitaDto> citas;
+	PacienteControlador pc = new PacienteControlador(new PacienteModelo(), new AppointmentView());
 	
 	public ListaCalendarioCitasControlador(ListaCalendarioCitasVista lccv, CitaModelo cm, PacienteModelo pm
 											, int idMedico) {
@@ -37,7 +41,6 @@ public class ListaCalendarioCitasControlador {
 	}
 	
 	public void inicializar() {
-		
 		SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy");
 		Date date = new Date(System.currentTimeMillis());
 		cargarCalendarioCitas(formatter.format(date), idMedico);
@@ -46,16 +49,17 @@ public class ListaCalendarioCitasControlador {
 			public void actionPerformed(ActionEvent e) {
 				String fecha = lccv.getTextFieldFecha().getText();
 				cargarCalendarioCitas(fecha, idMedico);
-				
 			}
 		});
+		lccv.getBtnGestionarCita().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> pc.initialize(citas.get(lccv.getTable().getSelectedRow()))));
 	}
 	
 	private void cargarCalendarioCitas(String fecha, int idMedico) {
 		
-		List<CitaDto> citas = cm.getCitasFecha(fecha, idMedico);
+		citas = cm.getCitasFecha(fecha, idMedico);
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
-	    String header[] = new String[] { "Nombre", "Fecha", "Hora Inicio", "Hora fin",
+	    String header[] = new String[] { "IdCita", "Nombre", "Fecha", "Hora Inicio", "Hora fin",
 	    									"Informacion", "Acudio" };
 	    dm.setColumnIdentifiers(header);
 	    
@@ -63,6 +67,7 @@ public class ListaCalendarioCitasControlador {
 		for (CitaDto c : citas) {
 			PacienteDto p = pm.getPacienteById(c.getId_paciente()).get(0);
 			Vector<Object> data = new Vector<Object>();
+			data.add(c.getId());
 	        data.add(p.getNombre());
 	        data.add(c.getFecha());
 	        data.add(c.getHorario_inicio());

@@ -13,6 +13,7 @@ public class MedicoDto {
 
 	private int id;
 	private String nombre;
+	private String email;
 
 	@Override
 	public String toString() {

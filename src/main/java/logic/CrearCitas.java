@@ -1,6 +1,8 @@
 package logic;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,14 +58,16 @@ public class CrearCitas {
 	 * @param horaInicio opcional
 	 * @param horaFin opcional
 	 */
-	public void crearCita(PacienteDto paciente, String infoContacto, String ubicacion, LocalTime horaInicio,
+	public Cita crearCita(PacienteDto paciente, String infoContacto, String ubicacion, LocalTime horaInicio,
 			LocalTime horaFin) {
 		Cita cita = new Cita(paciente, medicosElegidos);
+		cita.setNombre_paciente(paciente.getNombre());
 		cita.setContacto(infoContacto);
 		cita.setUbicacion(ubicacion);
 		cita.setHorario_inicio(horaInicio);
 		cita.setHorario_fin(horaFin);
 		cita.grabar();
+		return cita;
 	}
 
 	/**
@@ -80,8 +84,8 @@ public class CrearCitas {
 		for (CitaDto citaDto : citasDto) {
 			// Descartar las citas sin horarios fijados
 			if (citaDto.getHorario_inicio() != null && citaDto.getHorario_fin() != null) {
-				LocalTime i = LocalTime.parse(citaDto.getHorario_inicio());
-				LocalTime f = LocalTime.parse(citaDto.getHorario_fin());
+				LocalTime i = LocalTime.parse(citaDto.getHorario_inicio(), DateTimeFormatter.ofPattern("H : mm"));
+				LocalTime f = LocalTime.parse(citaDto.getHorario_fin(),  DateTimeFormatter.ofPattern("H : mm"));
 				if (colision(i, f, horarioInicio, horarioFin)) {
 					return true;
 				}

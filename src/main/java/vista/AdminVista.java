@@ -52,7 +52,7 @@ public class AdminVista {
 		frmIhospitalMain = new JFrame();
 		frmIhospitalMain.setTitle("iHospital : Main Window");
 		frmIhospitalMain.setBounds(100, 100, 453, 306);
-		frmIhospitalMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmIhospitalMain.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmIhospitalMain.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		frmIhospitalMain.setLocationRelativeTo(null);
 		JLabel lblNewLabel = new JLabel("Administrador");

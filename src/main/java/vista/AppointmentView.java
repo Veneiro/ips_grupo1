@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -14,6 +16,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import dtos.CauseDto;
+
+import java.awt.Font;
 
 @SuppressWarnings({ "serial", "rawtypes" })
 public class AppointmentView extends JDialog {
@@ -33,9 +39,8 @@ public class AppointmentView extends JDialog {
 	private JSpinner spOutMin;
 	private JLabel lblOutHour;
 	private JButton continueButton;
-	private JButton btnUpdate;
 	private JScrollPane scrollPane;
-	private JButton btnUrgente;
+	private JLabel lblPaciente;
 
 	/**
 	 * Create the dialog.
@@ -61,8 +66,7 @@ public class AppointmentView extends JDialog {
 		pnEntryOut.add(getSpOutHour());
 		pnEntryOut.add(getSpOutMin());
 		pnEntryOut.add(getLblOutHour());
-		pnEntryOut.add(getBtnUrgente());
-		contentPanel.add(getBtnUpdate());
+		pnEntryOut.add(getLblPaciente());
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -90,7 +94,7 @@ public class AppointmentView extends JDialog {
 	public JButton getBtnAddCause() {
 		if (btnAddCause == null) {
 			btnAddCause = new JButton("A\u00F1adir Causa");
-			btnAddCause.setBounds(231, 204, 203, 23);
+			btnAddCause.setBounds(5, 204, 429, 23);
 		}
 		return btnAddCause;
 	}
@@ -102,17 +106,17 @@ public class AppointmentView extends JDialog {
 	}
 
 	private JLabel getLblDoublePointsEntry() {
-		lblDoublePointsEntry.setBounds(87, 33, 46, 14);
+		lblDoublePointsEntry.setBounds(88, 64, 13, 14);
 		return lblDoublePointsEntry;
 	}
 
 	private JLabel getLblDoublePointsOut() {
-		lblDoublePointsOut.setBounds(335, 33, 46, 14);
+		lblDoublePointsOut.setBounds(336, 64, 13, 14);
 		return lblDoublePointsOut;
 	}
 
 	private JLabel getLblEntryHour() {
-		lblEntryHour.setBounds(45, 11, 88, 14);
+		lblEntryHour.setBounds(39, 42, 95, 14);
 		return lblEntryHour;
 	}
 
@@ -120,7 +124,7 @@ public class AppointmentView extends JDialog {
 		if (spEntryHour == null) {
 			spEntryHour = new JSpinner();
 			spEntryHour.setValue(ldt.getHour());
-			spEntryHour.setBounds(38, 30, 39, 20);
+			spEntryHour.setBounds(39, 61, 39, 20);
 		}
 		return spEntryHour;
 	}
@@ -129,7 +133,7 @@ public class AppointmentView extends JDialog {
 		if (spEntryMin == null) {
 			spEntryMin = new JSpinner();
 			spEntryMin.setValue(ldt.getMinute());
-			spEntryMin.setBounds(97, 30, 39, 20);
+			spEntryMin.setBounds(98, 61, 39, 20);
 		}
 		return spEntryMin;
 	}
@@ -138,7 +142,7 @@ public class AppointmentView extends JDialog {
 		if (spOutHour == null) {
 			spOutHour = new JSpinner();
 			spOutHour.setValue(ldt.getHour() + 1);
-			spOutHour.setBounds(286, 30, 39, 20);
+			spOutHour.setBounds(287, 61, 39, 20);
 		}
 		return spOutHour;
 	}
@@ -147,7 +151,7 @@ public class AppointmentView extends JDialog {
 		if (spOutMin == null) {
 			spOutMin = new JSpinner();
 			spOutMin.setValue(ldt.getMinute());
-			spOutMin.setBounds(345, 30, 39, 20);
+			spOutMin.setBounds(346, 61, 39, 20);
 		}
 		return spOutMin;
 	}
@@ -156,17 +160,9 @@ public class AppointmentView extends JDialog {
 		if (lblOutHour == null) {
 			lblOutHour = new JLabel("Hora de Salida");
 			lblOutHour.setHorizontalAlignment(SwingConstants.CENTER);
-			lblOutHour.setBounds(286, 11, 95, 14);
+			lblOutHour.setBounds(287, 42, 95, 14);
 		}
 		return lblOutHour;
-	}
-
-	public JButton getBtnUpdate() {
-		if (btnUpdate == null) {
-			btnUpdate = new JButton("Actualizar Lista");
-			btnUpdate.setBounds(5, 204, 198, 23);
-		}
-		return btnUpdate;
 	}
 
 	private JScrollPane getScrollPane() {
@@ -176,14 +172,6 @@ public class AppointmentView extends JDialog {
 			scrollPane.setViewportView(getListCauses());
 		}
 		return scrollPane;
-	}
-	public JButton getBtnUrgente() {
-		if (btnUrgente == null) {
-			btnUrgente = new JButton("CITA URGENTE");
-			btnUrgente.setBackground(Color.RED);
-			btnUrgente.setBounds(38, 61, 346, 23);
-		}
-		return btnUrgente;
 	}
 	
 	
@@ -201,6 +189,13 @@ public class AppointmentView extends JDialog {
 	public AddCauseView getPacientes() {
 		return pacientes;
 	}
-	
-	
+	public JLabel getLblPaciente() {
+		if (lblPaciente == null) {
+			lblPaciente = new JLabel("");
+			lblPaciente.setFont(new Font("Tahoma", Font.BOLD, 18));
+			lblPaciente.setHorizontalAlignment(SwingConstants.CENTER);
+			lblPaciente.setBounds(39, 11, 346, 14);
+		}
+		return lblPaciente;
+	}
 }

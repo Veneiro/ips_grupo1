@@ -12,7 +12,7 @@ import util.Database;
  */
 public class EscritorDeDatos {
 
-	private static String TCITAS_ADD = "INSERT INTO TCITAS VALUES (?, ?, ?, ?, ?, ?)";
+	private static String TCITAS_ADD = "INSERT INTO TCITAS VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static String TASIGNADOA_ADD = "INSERT INTO TASIGNADOA VALUES (?,?)";
 
 	private Database db = new Database();
@@ -25,8 +25,7 @@ public class EscritorDeDatos {
 	 */
 	public void grabarCita(CitaDto cita, List<MedicoDto> medicos) {
 
-		db.executeUpdate(TCITAS_ADD, cita.getId(), cita.getHorario_inicio(), cita.getHorario_fin(), cita.getUbicacion(),
-				cita.getContacto(), cita.getId_paciente());
+		db.executeUpdate(TCITAS_ADD, cita.getId(), cita.getHorario_inicio(), cita.getHorario_fin(), cita.getUbicacion(), cita.getContacto(), cita.getId_paciente(), 1, 1, cita.getFecha(), null, cita.getNombre_paciente(), null, null);
 
 		for (MedicoDto medicoDto : medicos) {
 			db.executeUpdate(TASIGNADOA_ADD, cita.getId(), medicoDto.getId());

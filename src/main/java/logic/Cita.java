@@ -8,6 +8,8 @@ import java.util.Random;
 import dtos.CitaDto;
 import dtos.MedicoDto;
 import dtos.PacienteDto;
+import lombok.Getter;
+import lombok.Setter;
 import modelo.EscritorDeDatos;
 
 /**
@@ -16,6 +18,8 @@ import modelo.EscritorDeDatos;
  * @author Santiago
  *
  */
+@Getter
+@Setter
 public class Cita {
 
 	private PacienteDto paciente;
@@ -24,6 +28,8 @@ public class Cita {
 	private LocalTime horario_fin;
 	private String ubicacion;
 	private String contacto;
+	private String nombre_paciente;
+	private int id;
 
 	public Cita(PacienteDto paciente, List<MedicoDto> medicos) {
 		this.paciente = paciente;
