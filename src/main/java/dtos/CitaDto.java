@@ -26,4 +26,5 @@ public class CitaDto {
 	private int acudio;
 	private int id_paciente;
 	private int id_medico;
+	private String especialidad;
 }

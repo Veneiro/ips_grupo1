@@ -70,6 +70,9 @@ public class CitaVista extends JDialog {
 	private JSpinner spDia;
 	private JLabel lblDia;
 	private JCheckBox chBoxDefinirHorario;
+	private JComboBox<String> cbEspecialidades;
+	private JLabel lblEspecialidades;
+	private JCheckBox chckbxEspecialidad;
 
 	/**
 	 * Create the frame.
@@ -82,7 +85,7 @@ public class CitaVista extends JDialog {
 		setModal(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 719, 441);
+		setBounds(100, 100, 1049, 441);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -111,6 +114,9 @@ public class CitaVista extends JDialog {
 		contentPane.add(getSpDia());
 		contentPane.add(getLblDia());
 		contentPane.add(getChBoxDefinirHorario());
+		contentPane.add(getCbEspecialidades());
+		contentPane.add(getLblEspecialidades());
+		contentPane.add(getChckbxEspecialidad());
 	}
 
 	public void visible(boolean visible) {
@@ -184,9 +190,6 @@ public class CitaVista extends JDialog {
 		List<MedicoDto> medicosSeleccionados = getListMedicos().getSelectedValuesList();
 		creadorCitas.seleccionarMedicos(medicosSeleccionados);
 		actualizarTxtAreaMedicos();
-		if (creadorCitas.hayMedicosElegidos()) {
-			getBtnConfirmar().setEnabled(true);
-		}
 	}
 
 	private JButton getBtnQuitar() {
@@ -207,9 +210,6 @@ public class CitaVista extends JDialog {
 		List<MedicoDto> medicosSeleccionados = getListMedicos().getSelectedValuesList();
 		creadorCitas.deseleccionarMedicos(medicosSeleccionados);
 		actualizarTxtAreaMedicos();
-		if (!creadorCitas.hayMedicosElegidos()) {
-			getBtnConfirmar().setEnabled(false);
-		}
 	}
 
 	private void actualizarTxtAreaMedicos() {
@@ -220,7 +220,7 @@ public class CitaVista extends JDialog {
 		if (txtAreaMedicosElegidos == null) {
 			txtAreaMedicosElegidos = new JTextArea();
 			txtAreaMedicosElegidos.setEditable(false);
-			txtAreaMedicosElegidos.setBounds(12, 157, 189, 128);
+			txtAreaMedicosElegidos.setBounds(12, 157, 189, 221);
 		}
 		return txtAreaMedicosElegidos;
 	}
@@ -243,9 +243,8 @@ public class CitaVista extends JDialog {
 
 			});
 			btnConfirmar.setFont(new Font("Tahoma", Font.PLAIN, 16));
-			btnConfirmar.setEnabled(false);
 			btnConfirmar.setMnemonic('C');
-			btnConfirmar.setBounds(450, 316, 108, 36);
+			btnConfirmar.setBounds(863, 342, 108, 36);
 		}
 		return btnConfirmar;
 	}
@@ -287,7 +286,10 @@ public class CitaVista extends JDialog {
 		String infoContacto = cadenaVaciaANull(getTxtContacto().getText());
 
 		PacienteDto p = (PacienteDto) getCbPacientes().getSelectedItem();
-		creadorCitas.crearCita(p, infoContacto, ubicacion, horaEntrada, horaSalida, fecha);
+		String especialidad = null;
+		if (getChckbxEspecialidad().isSelected())
+			especialidad = (String) getCbEspecialidades().getSelectedItem();
+		creadorCitas.crearCita(p, infoContacto, ubicacion, horaEntrada, horaSalida, fecha, especialidad);
 
 		JOptionPane.showMessageDialog(this, "Cita creada");
 	}
@@ -427,7 +429,7 @@ public class CitaVista extends JDialog {
 		if (lblInicio == null) {
 			lblInicio = new JLabel("Hora inicio (HH/mm):");
 			lblInicio.setDisplayedMnemonic('H');
-			lblInicio.setBounds(139, 316, 124, 14);
+			lblInicio.setBounds(454, 316, 124, 14);
 		}
 		return lblInicio;
 	}
@@ -437,7 +439,7 @@ public class CitaVista extends JDialog {
 			lblFin = new JLabel("Hora fin (HH/mm):");
 			lblFin.setDisplayedMnemonic('O');
 			lblFin.setLabelFor(lblFin);
-			lblFin.setBounds(150, 355, 113, 14);
+			lblFin.setBounds(478, 355, 113, 14);
 		}
 		return lblFin;
 	}
@@ -448,7 +450,7 @@ public class CitaVista extends JDialog {
 			spHoraEntrada.setEnabled(false);
 			spHoraEntrada.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY));
 			spHoraEntrada.setEditor(new JSpinner.DateEditor(spHoraEntrada, "HH:mm"));
-			spHoraEntrada.setBounds(284, 316, 108, 22);
+			spHoraEntrada.setBounds(601, 312, 108, 22);
 		}
 		return spHoraEntrada;
 	}
@@ -459,7 +461,7 @@ public class CitaVista extends JDialog {
 			spHoraSalida.setEnabled(false);
 			spHoraSalida.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY));
 			spHoraSalida.setEditor(new JSpinner.DateEditor(spHoraSalida, "HH:mm"));
-			spHoraSalida.setBounds(284, 351, 108, 22);
+			spHoraSalida.setBounds(601, 351, 108, 22);
 		}
 		return spHoraSalida;
 	}
@@ -470,7 +472,7 @@ public class CitaVista extends JDialog {
 			spDia.setEnabled(false);
 			spDia.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_YEAR));
 			spDia.setEditor(new JSpinner.DateEditor(spDia, "dd-MM-yyyy"));
-			spDia.setBounds(188, 381, 86, 17);
+			spDia.setBounds(311, 353, 86, 17);
 		}
 		return spDia;
 	}
@@ -478,7 +480,7 @@ public class CitaVista extends JDialog {
 	private JLabel getLblDia() {
 		if (lblDia == null) {
 			lblDia = new JLabel("D\u00EDa:");
-			lblDia.setBounds(73, 380, 44, 21);
+			lblDia.setBounds(311, 321, 44, 21);
 		}
 		return lblDia;
 	}
@@ -491,7 +493,7 @@ public class CitaVista extends JDialog {
 					habilitarCamposHorario(getChBoxDefinirHorario().isSelected());
 				}
 			});
-			chBoxDefinirHorario.setBounds(73, 292, 146, 23);
+			chBoxDefinirHorario.setBounds(311, 285, 146, 23);
 		}
 		return chBoxDefinirHorario;
 	}
@@ -500,5 +502,34 @@ public class CitaVista extends JDialog {
 		getSpDia().setEnabled(selected);
 		getSpHoraEntrada().setEnabled(selected);
 		getSpHoraSalida().setEnabled(selected);
+	}
+	private JComboBox<String> getCbEspecialidades() {
+		if (cbEspecialidades == null) {
+			cbEspecialidades = new JComboBox<String>();
+			cbEspecialidades.setEnabled(false);
+			cbEspecialidades.setModel(new DefaultComboBoxModel<String>(new String[] {"Alergolog\u00EDa", "Anatom\u00EDa Patol\u00F3gica", "Anestesiolog\u00EDa y Reanimaci\u00F3n", "Angiolog\u00EDa y Cirug\u00EDa Vascular", "Aparato Digestivo", "Cardiolog\u00EDa", "Cirug\u00EDa Cardiovascular", "Cirug\u00EDa General y del Aparato Digestivo", "Cirug\u00EDa Oral y Maxilofacial", "Cirug\u00EDa Ortop\u00E9dica y Traumatolog\u00EDa", "Cirug\u00EDa Pedi\u00E1trica", "Cirug\u00EDa Pl\u00E1stica, Est\u00E9tica y Reparadora", "Cirug\u00EDa Tor\u00E1cica", "Dermatolog\u00EDa M\u00E9dico-Quir\u00FArgica y Venereolog\u00EDa", "Endocrinolog\u00EDa y Nutrici\u00F3n", "Farmacolog\u00EDa Cl\u00EDnica", "Geriatr\u00EDa", "Hematolog\u00EDa y Hemoterapia", "Inmunolog\u00EDa", "Medicina del Trabajo", "Medicina Familiar y Comunitaria", "Medicina F\u00EDsica y Rehabilitaci\u00F3n", "Medicina Intensiva", "Medicina Interna", "Medicina Nuclear", "Medicina Preventiva y Salud P\u00FAblica", "Nefrolog\u00EDa", "Neumolog\u00EDa", "Neurocirug\u00EDa", "Neurofisiolog\u00EDa Cl\u00EDnica", "Neurolog\u00EDa", "Obstetricia y Ginecolog\u00EDa", "Oftalmolog\u00EDa", "Oncolog\u00EDa M\u00E9dica", "Oncolog\u00EDa Radioter\u00E1pica", "Otorrinolaringolog\u00EDa", "Pediatr\u00EDa y sus \u00C1reas Espec\u00EDficas", "Psiquiatr\u00EDa", "Radiodiagn\u00F3stico", "Reumatolog\u00EDa", "Urolog\u00EDa"}));
+			cbEspecialidades.setBounds(720, 69, 167, 22);
+		}
+		return cbEspecialidades;
+	}
+	private JLabel getLblEspecialidades() {
+		if (lblEspecialidades == null) {
+			lblEspecialidades = new JLabel("Especialidades:");
+			lblEspecialidades.setDisplayedMnemonic('P');
+			lblEspecialidades.setBounds(720, 42, 105, 16);
+		}
+		return lblEspecialidades;
+	}
+	private JCheckBox getChckbxEspecialidad() {
+		if (chckbxEspecialidad == null) {
+			chckbxEspecialidad = new JCheckBox("Asignar especialidad");
+			chckbxEspecialidad.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getCbEspecialidades().setEnabled(chckbxEspecialidad.isSelected());
+				}
+			});
+			chckbxEspecialidad.setBounds(720, 13, 152, 23);
+		}
+		return chckbxEspecialidad;
 	}
 }
