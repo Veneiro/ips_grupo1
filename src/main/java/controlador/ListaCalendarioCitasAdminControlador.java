@@ -15,12 +15,14 @@ import modelo.HistorialModelo;
 import modelo.PacienteModelo;
 import vista.HistorialesVista;
 import vista.ListaCalendarioCitasAdminVista;
+import vista.ModificarCitaVista;
 
 public class ListaCalendarioCitasAdminControlador {
 
 	private ListaCalendarioCitasAdminVista lcav;
 	private CitaModelo cm;
 	private PacienteModelo pm;
+	private List<CitaDto> citas;
 
 	public ListaCalendarioCitasAdminControlador(ListaCalendarioCitasAdminVista lcav, CitaModelo cm, PacienteModelo pm) {
 		this.lcav = lcav;
@@ -40,22 +42,31 @@ public class ListaCalendarioCitasAdminControlador {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (Integer.valueOf(lcav.getTableCitas().getSelectedRow()) != -1) {
-					String nombre = (String) lcav.getTableCitas()
-							.getValueAt(lcav.getTableCitas().getSelectedRow(), 0);
-					String fecha = (String)lcav.getTableCitas()
-							.getValueAt(lcav.getTableCitas().getSelectedRow(), 1);
-					
-					int idPaciente = pm.getIdPacienteByNombreAndFechaCita(nombre, fecha).get(0).getId();
-					
+//				if (Integer.valueOf(lcav.getTableCitas().getSelectedRow()) != -1) {
+//					String nombre = (String) lcav.getTableCitas()
+//							.getValueAt(lcav.getTableCitas().getSelectedRow(), 0);
+//					String fecha = (String)lcav.getTableCitas()
+//							.getValueAt(lcav.getTableCitas().getSelectedRow(), 1);
+//					
+//					int idPaciente = pm.getIdPacienteByNombreAndFechaCita(nombre, fecha).get(0).getId();
+//					
+//					HistorialControlador controller = new HistorialControlador(new HistorialModelo(),
+//							new HistorialesVista(), idPaciente);
+//					controller.inicializar();
+//				}
+//				else {
+//					JOptionPane.showMessageDialog(null, "Por favor, seleccione primero un paciente.");
+//				}
+				// ESTA NUEVA IMPLEMENTACIÓN NO GENERA ERROR SI SE SELECCIONA UNA CITA SIN FECHA
+				int filaSeleccionada = lcav.getTableCitas().getSelectedRow();
+				if (filaSeleccionada != -1) {
+					int idPaciente = citas.get(filaSeleccionada).getId_paciente();
 					HistorialControlador controller = new HistorialControlador(new HistorialModelo(),
 							new HistorialesVista(), idPaciente);
 					controller.inicializar();
-				}
-				else {
+				} else {
 					JOptionPane.showMessageDialog(null, "Por favor, seleccione primero un paciente.");
 				}
-
 			}
 		});
 		lcav.getBtnBuscar().addActionListener(new ActionListener() {
@@ -67,11 +78,26 @@ public class ListaCalendarioCitasAdminControlador {
 				
 			}
 		});
+		lcav.getBtnModificar().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int filaSeleccionada = lcav.getTableCitas().getSelectedRow();
+				if (filaSeleccionada != -1) {
+					CitaDto citaSeleccionada = citas.get(filaSeleccionada);
+					ModificarCitaVista dialog = new ModificarCitaVista(citaSeleccionada);
+					dialog.setLocationRelativeTo(null);
+					dialog.visible(true);
+				}
+				
+			}
+			
+		});
 		cargarListaCitas();
 	}
 
 	private void cargarListaCitas() {
-		List<CitaDto> citas = cm.getAllCitas();
+		citas = cm.getAllCitas();
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
 	    String header[] = new String[] { "Nombre", "Fecha", "Hora Inicio", "Hora fin",
 	    		"Informacion", "Acudio" };
@@ -93,7 +119,7 @@ public class ListaCalendarioCitasAdminControlador {
 	}
 	
 	private void cargarListaCitasFecha(String fecha) {
-		List<CitaDto> citas = cm.getAllCitasFecha(fecha);
+		citas = cm.getAllCitasFecha(fecha);
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
 		String header[] = new String[] { "Nombre", "Fecha", "Hora Inicio", "Hora fin",
 	    		"Informacion", "Acudio" };

@@ -13,6 +13,7 @@ public class MedicoDto {
 
 	private int id;
 	private String nombre;
+	private String especialidad;
 
 	@Override
 	public String toString() {

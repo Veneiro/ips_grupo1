@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import lombok.Getter;
+import javax.swing.ListSelectionModel;
 
 @Getter
 public class ListaCalendarioCitasAdminVista extends JFrame {
@@ -24,6 +25,8 @@ public class ListaCalendarioCitasAdminVista extends JFrame {
 	private JLabel lblIntroduzcaUnaFecha;
 	private JTextField textFecha;
 	private JButton btnBuscar;
+	private JPanel panel_1;
+	private JButton btnModificar;
 	
 	public ListaCalendarioCitasAdminVista() {
 		setTitle("iHospital : Lista Citas Administrador");
@@ -49,13 +52,20 @@ public class ListaCalendarioCitasAdminVista extends JFrame {
 		btnBuscar = new JButton("Buscar");
 		panel.add(btnBuscar);
 		
+		panel_1 = new JPanel();
+		getContentPane().add(panel_1, BorderLayout.EAST);
+		
 		btnHistorial = new JButton("Historial");
-		getContentPane().add(btnHistorial, BorderLayout.EAST);
+		panel_1.add(btnHistorial);
+		
+		btnModificar = new JButton("Modificar");
+		panel_1.add(btnModificar);
 		
 		scrollPane = new JScrollPane();
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
 		tableCitas = new JTable();
+		tableCitas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(tableCitas);
 	}
 }
