@@ -1,12 +1,21 @@
 package logic;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import dtos.CitaDto;
+import dtos.JornadaLaboralDto;
 import dtos.MedicoDto;
+import modelo.CitaModelo;
+import modelo.JornadaModelo;
+import modelo.LectorDeDatos;
 import modelo.MedicoAsignadoACitaModelo;
 import util.ApplicationException;
+import util.Util;
 
 public class ModificarCitas {
 
@@ -48,7 +57,7 @@ public class ModificarCitas {
 	public boolean hayMedicosElegidos() {
 		return !medicosElegidos.isEmpty();
 	}
-	
+
 	public CitaDto getCita() {
 		return cita;
 	}
@@ -88,13 +97,95 @@ public class ModificarCitas {
 		}
 		return listaFiltrada;
 	}
-	
-	public void actualizarCita() {
+
+	public void actualizarCita(String infoContacto, String ubicacion, Date horaInicio, Date horaFin, Date fecha) {
 		MedicoAsignadoACitaModelo medicoCitaModelo = new MedicoAsignadoACitaModelo();
 
 		for (MedicoDto medicoDto : medicosElegidos) {
 			medicoCitaModelo.add(cita.getId(), medicoDto.getId());
 		}
+
+		if (horaInicio == null || horaFin == null) {
+			cita.setHorario_inicio(null);
+			cita.setHorario_fin(null);
+		} else {
+			cita.setHorario_inicio(Util.dateToIsoHour(horaInicio));
+			cita.setHorario_fin(Util.dateToIsoHour(horaFin));
+		}
+		cita.setUbicacion(ubicacion);
+		cita.setContacto(infoContacto);
+		if (fecha != null)
+			cita.setFecha(new SimpleDateFormat("dd-MM-yyyy").format(fecha));
+		else
+			cita.setFecha(null);
+		
+		new CitaModelo().updateCita(cita);
+	}
+
+	/**
+	 * Dado un inico y fin de un horario, comprueba si algún médico de los elegidos
+	 * tiene alguna cita con un horario igual.
+	 * 
+	 * @param horaEntrada
+	 * @param horaSalida
+	 * @return true si hay colisión con alguna cita de los médicos, false en caso
+	 *         contrario.
+	 */
+	public boolean hayColisionMismoHorario(Date horaEntrada, Date horaSalida, Date fecha) {
+		List<CitaDto> citasDto = new LectorDeDatos().getListaCitasDeMedicos(medicosElegidos);
+		Format formatterHora = new SimpleDateFormat("HH:mm");
+		Format formatterDia = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			fecha = (Date) formatterDia.parseObject(formatterDia.format(fecha));
+		} catch (ParseException e1) {
+			throw new ApplicationException(e1);
+		}
+		for (CitaDto citaDto : citasDto) {
+			try {
+				if (citaDto.getFecha() != null) {
+					Date fechaAjena = (Date) formatterDia.parseObject(citaDto.getFecha());
+					if (fecha.compareTo(fechaAjena) == 0) {
+						Date horaEntradaAjena = (Date) formatterHora.parseObject(citaDto.getHorario_inicio());
+						Date horaSalidaAjena = (Date) formatterHora.parseObject(citaDto.getHorario_fin());
+						if (colisionHorarios(horaEntrada, horaSalida, horaEntradaAjena, horaSalidaAjena)) {
+							return true;
+						}
+					}
+				}
+			} catch (ParseException e) {
+				// Se ignora la cita
+			}
+		}
+		return false;
+	}
+
+	public boolean fueraDeJornadaLaboral(Date horaEntrada, Date horaSalida, Date fecha) {
+		Format formatterDia = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			fecha = (Date) formatterDia.parseObject(formatterDia.format(fecha));
+		} catch (ParseException e1) {
+			throw new ApplicationException(e1);
+		}
+		JornadaModelo modelo = new JornadaModelo();
+		for (MedicoDto medicoDto : medicosElegidos) {
+			List<JornadaLaboralDto> jornadas = modelo.getPorNombreTrabajador(medicoDto.getNombre());
+			for (JornadaLaboralDto jornada : jornadas) {
+				if (jornada.getDiaComienzo() != null && jornada.getDiaFin() != null) {
+					if (fecha.before(jornada.getDiaComienzo()) || fecha.after(jornada.getDiaFin())) {
+						return true;
+					}
+					try {
+						if (colisionHorarios(horaEntrada, horaSalida, jornada.getHoraEntrada(),
+								jornada.getHoraSalida())) {
+							return true;
+						}
+					} catch (ParseException e) {
+						// Se ignora la jornada
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	private void setCita(CitaDto cita) {
@@ -109,5 +200,34 @@ public class ModificarCitas {
 
 	private void setMedicosAñadibles(List<MedicoDto> medicosAñadibles) {
 		this.medicosAñadibles = medicosAñadibles;
+	}
+
+	/**
+	 * Comprueba si hay intersección entre 2 horarios.
+	 * 
+	 * @param i1 hora de inicio del horario 1
+	 * @param f1 hora de fin del horario 1
+	 * @param i2 hora de inicio del horario 2
+	 * @param f2 hora de fin del horario 2
+	 * @return true si tienen tiempo en común, false en caso contrario
+	 * @throws ParseException
+	 */
+	private boolean colisionHorarios(Date i1, Date f1, Date i2, Date f2) throws ParseException {
+		Format formatter = new SimpleDateFormat("HH:mm");
+		i1 = (Date) formatter.parseObject(formatter.format(i1));
+		f1 = (Date) formatter.parseObject(formatter.format(f1));
+		i2 = (Date) formatter.parseObject(formatter.format(i2));
+		f2 = (Date) formatter.parseObject(formatter.format(f2));
+		if (i1.compareTo(i2) == 0 || f1.compareTo(f2) == 0)
+			return true;
+		if (i1.after(i2) && i1.before(f2))
+			return true;
+		if (f1.after(i2) && f1.before(f2))
+			return true;
+		if (i2.after(i1) && i2.before(f1))
+			return true;
+		if (f2.after(i1) && f2.before(f1))
+			return true;
+		return false;
 	}
 }

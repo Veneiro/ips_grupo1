@@ -69,6 +69,10 @@ public class ModificarCitaVista extends JDialog {
 	private JLabel lblDia;
 	private JCheckBox chBoxDefinirHorario;
 	private JButton btnFiltrarPorEspecialidad;
+	private JLabel lblEspecialidadCita;
+	private JScrollPane scrollPane;
+	private JTextArea textArea;
+	private JCheckBox chckbxUrgente;
 
 	/**
 	 * Create the frame.
@@ -80,7 +84,7 @@ public class ModificarCitaVista extends JDialog {
 		setModal(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 719, 441);
+		setBounds(100, 100, 824, 454);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -110,6 +114,9 @@ public class ModificarCitaVista extends JDialog {
 		contentPane.add(getLblDia());
 		contentPane.add(getChBoxDefinirHorario());
 		contentPane.add(getBtnFiltrarPorEspecialidad());
+		contentPane.add(getLblEspecialidadCita());
+		contentPane.add(getScrollPane());
+		contentPane.add(getChckbxUrgente());
 	}
 
 	public void visible(boolean visible) {
@@ -174,7 +181,7 @@ public class ModificarCitaVista extends JDialog {
 					seleccionarMedicosParaCita();
 				}
 			});
-			btnAñadir.setBounds(439, 48, 95, 25);
+			btnAñadir.setBounds(450, 73, 95, 25);
 		}
 		return btnAñadir;
 	}
@@ -197,7 +204,7 @@ public class ModificarCitaVista extends JDialog {
 					deseleccionarMedicosParaCita();
 				}
 			});
-			btnQuitar.setBounds(563, 48, 97, 25);
+			btnQuitar.setBounds(563, 73, 97, 25);
 		}
 		return btnQuitar;
 	}
@@ -242,15 +249,14 @@ public class ModificarCitaVista extends JDialog {
 
 			});
 			btnConfirmar.setFont(new Font("Tahoma", Font.PLAIN, 16));
-			btnConfirmar.setEnabled(false);
 			btnConfirmar.setMnemonic('C');
-			btnConfirmar.setBounds(450, 316, 108, 36);
+			btnConfirmar.setBounds(663, 355, 108, 36);
 		}
 		return btnConfirmar;
 	}
 
 	private void modificarCita() {
-		/*
+		
 		Date horaEntrada = null;
 		Date horaSalida = null;
 		Date fecha = null;
@@ -263,13 +269,13 @@ public class ModificarCitaVista extends JDialog {
 				return;
 			}
 			fecha = (Date) getSpDia().getValue();
-			if (creadorCitas.hayColisionMismoHorario(horaEntrada, horaSalida, fecha)) {
+			if (modificadorCitas.hayColisionMismoHorario(horaEntrada, horaSalida, fecha)) {
 				int r = JOptionPane.showConfirmDialog(this,
 						"Hay médicos con citas en el mismo horario. ¿Proseguir igualmente?");
 				if (r != JOptionPane.YES_OPTION)
 					return;
 			}
-			if (creadorCitas.fueraDeJornadaLaboral(horaEntrada, horaSalida, fecha)) {
+			if (modificadorCitas.fueraDeJornadaLaboral(horaEntrada, horaSalida, fecha)) {
 				int r = JOptionPane.showConfirmDialog(this,
 						"La cita no está dentro de la jornada laboral de los médicos. ¿Proseguir igualmente?");
 				if (r != JOptionPane.YES_OPTION)
@@ -280,13 +286,12 @@ public class ModificarCitaVista extends JDialog {
 
 		String ubicacion = cadenaVaciaANull(getTxtUbicacion().getText());
 		String infoContacto = cadenaVaciaANull(getTxtContacto().getText());
-		*/
-		modificadorCitas.actualizarCita();
+		
+		modificadorCitas.actualizarCita(infoContacto, ubicacion, horaEntrada, horaSalida, fecha);
 
 		JOptionPane.showMessageDialog(this, "Cita modificada");
 	}
 
-	@SuppressWarnings("unused")
 	private String cadenaVaciaANull(String ubicacion) {
 		if (ubicacion.trim().isEmpty())
 			return null;
@@ -301,7 +306,6 @@ public class ModificarCitaVista extends JDialog {
 	 * @return 1 si la hora de la fecha 1 es mayor que la de la fecha 2, -1 si es al
 	 *         revés y 0 si son iguales
 	 */
-	@SuppressWarnings("unused")
 	private int compararHoras(Date fecha1, Date fecha2) {
 		try {
 			Format formatter = new SimpleDateFormat("HH:mm");
@@ -345,7 +349,7 @@ public class ModificarCitaVista extends JDialog {
 					filtrarMedicos(getTxtFiltro().getText().trim().toLowerCase());
 				}
 			});
-			btnFiltrar.setBounds(583, 133, 97, 25);
+			btnFiltrar.setBounds(563, 133, 97, 25);
 		}
 		return btnFiltrar;
 	}
@@ -376,7 +380,7 @@ public class ModificarCitaVista extends JDialog {
 				}
 			});
 			btnDesfiltrar.setEnabled(false);
-			btnDesfiltrar.setBounds(583, 174, 97, 25);
+			btnDesfiltrar.setBounds(685, 133, 97, 25);
 		}
 		return btnDesfiltrar;
 	}
@@ -384,8 +388,9 @@ public class ModificarCitaVista extends JDialog {
 	private JTextField getTxtContacto() {
 		if (txtContacto == null) {
 			txtContacto = new JTextField();
-			txtContacto.setBounds(544, 236, 116, 22);
+			txtContacto.setBounds(564, 292, 116, 22);
 			txtContacto.setColumns(10);
+			txtContacto.setText(modificadorCitas.getCita().getContacto());
 		}
 		return txtContacto;
 	}
@@ -395,7 +400,7 @@ public class ModificarCitaVista extends JDialog {
 			lblInfoContacto = new JLabel("Info. contacto:");
 			lblInfoContacto.setDisplayedMnemonic('I');
 			lblInfoContacto.setLabelFor(getTxtContacto());
-			lblInfoContacto.setBounds(544, 210, 95, 16);
+			lblInfoContacto.setBounds(565, 265, 95, 16);
 		}
 		return lblInfoContacto;
 	}
@@ -403,8 +408,9 @@ public class ModificarCitaVista extends JDialog {
 	private JTextField getTxtUbicacion() {
 		if (txtUbicacion == null) {
 			txtUbicacion = new JTextField();
-			txtUbicacion.setBounds(418, 236, 116, 22);
-			txtUbicacion.setColumns(10);
+			txtUbicacion.setBounds(431, 292, 116, 22);
+			txtUbicacion.setColumns(10);;
+			txtUbicacion.setText(modificadorCitas.getCita().getUbicacion());
 		}
 		return txtUbicacion;
 	}
@@ -414,7 +420,7 @@ public class ModificarCitaVista extends JDialog {
 			lblUbic = new JLabel("Ubicaci\u00F3n:");
 			lblUbic.setDisplayedMnemonic('U');
 			lblUbic.setLabelFor(getTxtUbicacion());
-			lblUbic.setBounds(424, 210, 71, 16);
+			lblUbic.setBounds(439, 265, 71, 16);
 		}
 		return lblUbic;
 	}
@@ -423,7 +429,7 @@ public class ModificarCitaVista extends JDialog {
 		if (lblInicio == null) {
 			lblInicio = new JLabel("Hora inicio (HH/mm):");
 			lblInicio.setDisplayedMnemonic('H');
-			lblInicio.setBounds(139, 316, 124, 14);
+			lblInicio.setBounds(150, 320, 124, 14);
 		}
 		return lblInicio;
 	}
@@ -442,7 +448,8 @@ public class ModificarCitaVista extends JDialog {
 		if (spHoraEntrada == null) {
 			spHoraEntrada = new JSpinner();
 			spHoraEntrada.setEnabled(false);
-			spHoraEntrada.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY));
+			Date hora = pasarAHora(modificadorCitas.getCita().getHorario_inicio());
+			spHoraEntrada.setModel(new SpinnerDateModel(hora, null, null, Calendar.HOUR_OF_DAY));
 			spHoraEntrada.setEditor(new JSpinner.DateEditor(spHoraEntrada, "HH:mm"));
 			spHoraEntrada.setBounds(284, 316, 108, 22);
 		}
@@ -453,7 +460,8 @@ public class ModificarCitaVista extends JDialog {
 		if (spHoraSalida == null) {
 			spHoraSalida = new JSpinner();
 			spHoraSalida.setEnabled(false);
-			spHoraSalida.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY));
+			Date hora = pasarAHora(modificadorCitas.getCita().getHorario_fin());
+			spHoraSalida.setModel(new SpinnerDateModel(hora, null, null, Calendar.HOUR_OF_DAY));
 			spHoraSalida.setEditor(new JSpinner.DateEditor(spHoraSalida, "HH:mm"));
 			spHoraSalida.setBounds(284, 351, 108, 22);
 		}
@@ -464,17 +472,38 @@ public class ModificarCitaVista extends JDialog {
 		if (spDia == null) {
 			spDia = new JSpinner();
 			spDia.setEnabled(false);
-			spDia.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_YEAR));
+			Date fecha = pasarAFecha(modificadorCitas.getCita().getFecha());
+			spDia.setModel(new SpinnerDateModel(fecha, null, null, Calendar.DAY_OF_YEAR));
 			spDia.setEditor(new JSpinner.DateEditor(spDia, "dd-MM-yyyy"));
-			spDia.setBounds(188, 381, 86, 17);
+			spDia.setBounds(284, 381, 86, 17);
 		}
 		return spDia;
+	}
+
+	private Date pasarAFecha(String fecha) {
+		if (fecha == null)
+			return new Date();
+		try {
+			return new SimpleDateFormat("dd-MM-yyyy").parse(fecha);
+		} catch (ParseException e) {
+			return new Date();
+		}
+	}
+	
+	private Date pasarAHora(String hora) {
+		if (hora == null)
+			return new Date();
+		try {
+			return (Date) new SimpleDateFormat("HH:mm").parseObject(hora);
+		} catch (ParseException e) {
+			return new Date();
+		}
 	}
 
 	private JLabel getLblDia() {
 		if (lblDia == null) {
 			lblDia = new JLabel("D\u00EDa:");
-			lblDia.setBounds(73, 380, 44, 21);
+			lblDia.setBounds(208, 380, 44, 21);
 		}
 		return lblDia;
 	}
@@ -482,13 +511,12 @@ public class ModificarCitaVista extends JDialog {
 	private JCheckBox getChBoxDefinirHorario() {
 		if (chBoxDefinirHorario == null) {
 			chBoxDefinirHorario = new JCheckBox("Definir horario:");
-			chBoxDefinirHorario.setEnabled(false);
 			chBoxDefinirHorario.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					habilitarCamposHorario(getChBoxDefinirHorario().isSelected());
 				}
 			});
-			chBoxDefinirHorario.setBounds(73, 292, 146, 23);
+			chBoxDefinirHorario.setBounds(150, 292, 146, 23);
 		}
 		return chBoxDefinirHorario;
 	}
@@ -514,5 +542,39 @@ public class ModificarCitaVista extends JDialog {
 			btnFiltrarPorEspecialidad.setBounds(191, 49, 89, 22);
 		}
 		return btnFiltrarPorEspecialidad;
+	}
+	private JLabel getLblEspecialidadCita() {
+		if (lblEspecialidadCita == null) {
+			lblEspecialidadCita = new JLabel("Especialidad de la cita:");
+			lblEspecialidadCita.setBounds(431, 14, 132, 14);
+		}
+		return lblEspecialidadCita;
+	}
+	private JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setBounds(563, 13, 219, 42);
+			scrollPane.setViewportView(getTextArea());
+		}
+		return scrollPane;
+	}
+	private JTextArea getTextArea() {
+		if (textArea == null) {
+			textArea = new JTextArea();
+			textArea.setEditable(false);
+			String texto = modificadorCitas.getCita().getEspecialidad();
+			if (texto == null)
+				textArea.setText("NINGUNA");
+			else
+				textArea.setText(texto);
+		}
+		return textArea;
+	}
+	private JCheckBox getChckbxUrgente() {
+		if (chckbxUrgente == null) {
+			chckbxUrgente = new JCheckBox("Urgente");
+			chckbxUrgente.setBounds(431, 336, 97, 23);
+		}
+		return chckbxUrgente;
 	}
 }

@@ -72,29 +72,29 @@ public class CrearCitas {
 	public void crearCita(PacienteDto paciente, String infoContacto, String ubicacion, Date horaInicio, Date horaFin,
 			Date fecha, String especialidad) {
 		int id = valorAbsoluto(new Random().nextInt());
-		CitaDto c = new CitaDto();
-		c.setId(id);
+		CitaDto cita = new CitaDto();
+		cita.setId(id);
 		if (horaInicio == null || horaFin == null) {
-			c.setHorario_inicio(null);
-			c.setHorario_fin(null);
+			cita.setHorario_inicio(null);
+			cita.setHorario_fin(null);
 		} else {
-			c.setHorario_inicio(Util.dateToIsoHour(horaInicio));
-			c.setHorario_fin(Util.dateToIsoHour(horaFin));
+			cita.setHorario_inicio(Util.dateToIsoHour(horaInicio));
+			cita.setHorario_fin(Util.dateToIsoHour(horaFin));
 		}
-		c.setUbicacion(ubicacion);
-		c.setContacto(infoContacto);
+		cita.setUbicacion(ubicacion);
+		cita.setContacto(infoContacto);
 		if (fecha != null)
-			c.setFecha(new SimpleDateFormat("dd-MM-yyyy").format(fecha));
+			cita.setFecha(new SimpleDateFormat("dd-MM-yyyy").format(fecha));
 		else
-			c.setFecha(null);
-		c.setId_paciente(paciente.getId());
+			cita.setFecha(null);
+		cita.setId_paciente(paciente.getId());
 		if (hayMedicosElegidos())
-			c.setId_medico(medicosElegidos.get(0).getId());
+			cita.setId_medico(medicosElegidos.get(0).getId());
 		else
-			c.setId_medico(0);
-		c.setEspecialidad(especialidad);
+			cita.setId_medico(0);
+		cita.setEspecialidad(especialidad);
 
-		grabarCita(c, medicosElegidos);
+		grabarCita(cita, medicosElegidos);
 	}
 
 	/**
