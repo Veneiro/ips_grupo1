@@ -15,5 +15,8 @@ public class HistorialDto {
 	private String vacunas;
 	private String antecedentes;
 	private String informacionAdicional;
+	private String diagnostico;
+	private String diagnosticosAntiguos;
+	private String prescripcion;
 
 }
