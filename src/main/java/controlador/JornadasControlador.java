@@ -11,6 +11,8 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import dtos.EnfermeroDto;
 import dtos.JornadaLaboralDto;
@@ -69,6 +71,14 @@ public class JornadasControlador {
 
 	vista_jornadas.getAnadirButton().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addDiaLaboral()));
 
+	vista_jornadas.getTableEmpleados().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+	    @Override
+	    public void valueChanged(ListSelectionEvent e) {
+		checkConfirmButton();
+	    }
+	});
+
 	vista_jornadas.setVisible(true);
     }
 
@@ -113,7 +123,12 @@ public class JornadasControlador {
 
 	vista_jornadas.getTableEmpleados().setModel(vista_jornadas.getModeloTabla());
 
-	if (vista_jornadas.getModeloTabla().getRowCount() == 0)
+	checkConfirmButton();
+    }
+
+    private void checkConfirmButton() {
+	if (vista_jornadas.getModeloTabla().getRowCount() == 0
+		|| vista_jornadas.getTableEmpleados().getSelectionModel().isSelectionEmpty())
 	    vista_jornadas.getAnadirButton().setEnabled(false);
 	else
 	    vista_jornadas.getAnadirButton().setEnabled(true);

@@ -15,6 +15,8 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import dtos.JornadaLaboralDto;
 import modelo.JornadaModelo;
@@ -82,6 +84,14 @@ public class ListarJornadasControlador {
 	listaJornadasVista.getChckbxSalida().addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
 		cargarListaJornadas();
+	    }
+	});
+
+	listaJornadasVista.getTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+	    @Override
+	    public void valueChanged(ListSelectionEvent e) {
+		checkConfirmButton();
 	    }
 	});
 
@@ -196,7 +206,12 @@ public class ListarJornadasControlador {
 
 	listaJornadasVista.getTable().setModel(listaJornadasVista.getModeloTabla());
 
-	if (listaJornadasVista.getModeloTabla().getRowCount() == 0)
+	checkConfirmButton();
+    }
+
+    private void checkConfirmButton() {
+	if (listaJornadasVista.getModeloTabla().getRowCount() == 0
+		|| listaJornadasVista.getTable().getSelectionModel().isSelectionEmpty())
 	    listaJornadasVista.getBtnModificar().setEnabled(false);
 	else
 	    listaJornadasVista.getBtnModificar().setEnabled(true);
