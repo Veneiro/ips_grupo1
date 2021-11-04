@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.Date;
 import java.util.List;
 
 import dtos.JornadaLaboralDto;
@@ -45,5 +46,29 @@ public class JornadaModelo {
 	String sql = "SELECT * FROM TJORNADALABORAL WHERE NOMBRE_TRABAJADOR LIKE ?";
 
 	return db.executeQueryPojo(JornadaLaboralRecord.class, sql, "%" + nombreTrabajador + "%");
+    }
+
+    public List<JornadaLaboralRecord> findJornadaByComienzo(Date diaComienzo) {
+	String sql = "SELECT * FROM TJORNADALABORAL WHERE DIA_COMIENZO = ?";
+
+	return db.executeQueryPojo(JornadaLaboralRecord.class, sql, Util.dateToIsoString(diaComienzo));
+    }
+
+    public List<JornadaLaboralRecord> findJornadaByFin(Date diaFin) {
+	String sql = "SELECT * FROM TJORNADALABORAL WHERE DIA_COMIENZO = ?";
+
+	return db.executeQueryPojo(JornadaLaboralRecord.class, sql, Util.dateToIsoString(diaFin));
+    }
+
+    public List<JornadaLaboralRecord> findJornadaByEntrada(Date horaEntrada) {
+	String sql = "SELECT * FROM TJORNADALABORAL WHERE HORA_ENTRADA = ?";
+
+	return db.executeQueryPojo(JornadaLaboralRecord.class, sql, Util.dateToIsoHour(horaEntrada));
+    }
+
+    public List<JornadaLaboralRecord> findJornadaBySalida(Date horaSalida) {
+	String sql = "SELECT * FROM TJORNADALABORAL WHERE HORA_SALIDA = ?";
+
+	return db.executeQueryPojo(JornadaLaboralRecord.class, sql, Util.dateToIsoHour(horaSalida));
     }
 }
