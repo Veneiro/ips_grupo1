@@ -7,8 +7,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -30,7 +32,8 @@ public class ListarJornadasControlador {
     private JornadaModelo modelo_jornada;
     private JornadaLaboralDto jornada;
 
-    private String idJornada;
+    private Map<Integer, Integer> mapTable = new HashMap<>();
+    private int idJornada = -1;
 
     public ListarJornadasControlador() {
 	this.listaJornadasVista = new ListaJornadasVista();
@@ -85,43 +88,41 @@ public class ListarJornadasControlador {
 	listaJornadasVista.getBtnModificar().addActionListener(new ActionListener() {
 
 	    public void actionPerformed(ActionEvent e) {
-		idJornada = JOptionPane.showInputDialog("Introduzca id de la jornada", "0");
+		idJornada = mapTable.get(listaJornadasVista.getTable().getSelectedRow());
+
 		List<JornadaLaboralRecord> lJ = modelo_jornada.findJornadaById(Integer.valueOf(idJornada));
 
-		if (idJornada != null || Integer.valueOf(idJornada) >= 0 || lJ.size() < 1) {
-		    modificarVista = new ModificarJornadaVista(Integer.valueOf(idJornada));
+		modificarVista = new ModificarJornadaVista(idJornada);
 
-		    jornada = RecordAssembler.toDto(lJ.get(0));
+		jornada = RecordAssembler.toDto(lJ.get(0));
 
-		    modificarVista.getComienzoCalendar().setDate(jornada.getDia_comienzo());
-		    modificarVista.getEntradaSpinner().setValue(jornada.getDia_comienzo());
-		    modificarVista.getFinCalendar().setDate(jornada.getDia_fin());
-		    modificarVista.getSalidaSpinner().setValue(jornada.getDia_fin());
-		    modificarVista.getHoraEntradaSpinner().setValue(jornada.getHora_entrada());
-		    modificarVista.getHoraSalidaSpinner().setValue(jornada.getHora_salida());
-		    modificarVista.getLunesCheckBox().setSelected(jornada.isLunes());
-		    modificarVista.getMartesCheckBox().setSelected(jornada.isMartes());
-		    modificarVista.getMiercolesCheckBox().setSelected(jornada.isMiercoles());
-		    modificarVista.getJuevesCheckBox().setSelected(jornada.isJueves());
-		    modificarVista.getViernesCheckBox().setSelected(jornada.isViernes());
-		    modificarVista.getSabadoCheckBox().setSelected(jornada.isSabado());
-		    modificarVista.getDomingoCheckBox().setSelected(jornada.isDomingo());
+		modificarVista.getComienzoCalendar().setDate(jornada.getDia_comienzo());
+		modificarVista.getEntradaSpinner().setValue(jornada.getDia_comienzo());
+		modificarVista.getFinCalendar().setDate(jornada.getDia_fin());
+		modificarVista.getSalidaSpinner().setValue(jornada.getDia_fin());
+		modificarVista.getHoraEntradaSpinner().setValue(jornada.getHora_entrada());
+		modificarVista.getHoraSalidaSpinner().setValue(jornada.getHora_salida());
+		modificarVista.getLunesCheckBox().setSelected(jornada.isLunes());
+		modificarVista.getMartesCheckBox().setSelected(jornada.isMartes());
+		modificarVista.getMiercolesCheckBox().setSelected(jornada.isMiercoles());
+		modificarVista.getJuevesCheckBox().setSelected(jornada.isJueves());
+		modificarVista.getViernesCheckBox().setSelected(jornada.isViernes());
+		modificarVista.getSabadoCheckBox().setSelected(jornada.isSabado());
+		modificarVista.getDomingoCheckBox().setSelected(jornada.isDomingo());
 
-		    modificarVista.getConfirmarButton()
-			    .addActionListener(ex -> SwingUtil.exceptionWrapper(() -> modificarDiaLaboral()));
+		modificarVista.getConfirmarButton()
+			.addActionListener(ex -> SwingUtil.exceptionWrapper(() -> modificarDiaLaboral()));
 
-		    modificarVista.getEntradaSpinner().addChangeListener(
-			    ex -> SwingUtil.exceptionWrapper(() -> modificarVista.getComienzoCalendar()
-				    .setDate((Date) modificarVista.getEntradaSpinner().getValue())));
+		modificarVista.getEntradaSpinner()
+			.addChangeListener(ex -> SwingUtil.exceptionWrapper(() -> modificarVista.getComienzoCalendar()
+				.setDate((Date) modificarVista.getEntradaSpinner().getValue())));
 
-		    modificarVista.getSalidaSpinner()
-			    .addChangeListener(ex -> SwingUtil.exceptionWrapper(() -> modificarVista.getFinCalendar()
-				    .setDate((Date) modificarVista.getSalidaSpinner().getValue())));
+		modificarVista.getSalidaSpinner()
+			.addChangeListener(ex -> SwingUtil.exceptionWrapper(() -> modificarVista.getFinCalendar()
+				.setDate((Date) modificarVista.getSalidaSpinner().getValue())));
 
-		    modificarVista.setVisible(true);
-		} else {
-		    JOptionPane.showMessageDialog(listaJornadasVista, "Id de jornada inválido.");
-		}
+		modificarVista.setVisible(true);
+
 	    }
 	});
 
@@ -183,9 +184,14 @@ public class ListarJornadasControlador {
 	    aux = new ArrayList<>();
 	}
 
+	int fila = 0;
 	for (JornadaLaboralRecord j : lJ) {
+	    mapTable.put(fila, j.getId());
+
 	    listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador(), j.getDia_comienzo(),
 		    j.getDia_fin(), j.getHora_entrada(), j.getHora_salida() });
+
+	    fila++;
 	}
 
 	listaJornadasVista.getTable().setModel(listaJornadasVista.getModeloTabla());
@@ -216,7 +222,7 @@ public class ListarJornadasControlador {
 		    || (j.getDia_comienzo().equals(j.getDia_fin()) && j.getHora_salida().before(j.getHora_entrada())))
 		JOptionPane.showMessageDialog(modificarVista, "La fecha de comienzo debe ser anterior a la de fin.");
 	    else {
-		modelo_jornada.updateJornada(Integer.parseInt(idJornada), j);
+		modelo_jornada.updateJornada(idJornada, j);
 		JOptionPane.showMessageDialog(modificarVista, "Jornada actualizada correctamente.");
 	    }
 	} catch (ParseException e) {
