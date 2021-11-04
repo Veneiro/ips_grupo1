@@ -64,6 +64,24 @@ public class ListarJornadasControlador {
 	    }
 	});
 
+	listaJornadasVista.getChckbxFin().addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		cargarListaJornadas();
+	    }
+	});
+
+	listaJornadasVista.getChckbxEntrada().addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		cargarListaJornadas();
+	    }
+	});
+
+	listaJornadasVista.getChckbxSalida().addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		cargarListaJornadas();
+	    }
+	});
+
 	listaJornadasVista.getBtnModificar().addActionListener(new ActionListener() {
 
 	    public void actionPerformed(ActionEvent e) {
@@ -132,6 +150,37 @@ public class ListarJornadasControlador {
 		    aux.add(j);
 	    }
 	    lJ = aux;
+	    aux = new ArrayList<>();
+	}
+
+	if (listaJornadasVista.getChckbxFin().isSelected()) {
+	    for (JornadaLaboralRecord j : modelo_jornada
+		    .findJornadaByFin((Date) listaJornadasVista.getSalidaSpinner().getValue())) {
+		if (lJ.contains(j))
+		    aux.add(j);
+	    }
+	    lJ = aux;
+	    aux = new ArrayList<>();
+	}
+
+	if (listaJornadasVista.getChckbxEntrada().isSelected()) {
+	    for (JornadaLaboralRecord j : modelo_jornada
+		    .findJornadaByEntrada((Date) listaJornadasVista.getHoraEntradaSpinner().getValue())) {
+		if (lJ.contains(j))
+		    aux.add(j);
+	    }
+	    lJ = aux;
+	    aux = new ArrayList<>();
+	}
+
+	if (listaJornadasVista.getChckbxSalida().isSelected()) {
+	    for (JornadaLaboralRecord j : modelo_jornada
+		    .findJornadaBySalida((Date) listaJornadasVista.getHoraSalidaSpinner().getValue())) {
+		if (lJ.contains(j))
+		    aux.add(j);
+	    }
+	    lJ = aux;
+	    aux = new ArrayList<>();
 	}
 
 	for (JornadaLaboralRecord j : lJ) {

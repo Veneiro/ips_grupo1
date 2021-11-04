@@ -55,7 +55,7 @@ public class JornadaModelo {
     }
 
     public List<JornadaLaboralRecord> findJornadaByFin(Date diaFin) {
-	String sql = "SELECT * FROM TJORNADALABORAL WHERE DIA_COMIENZO = ?";
+	String sql = "SELECT * FROM TJORNADALABORAL WHERE DIA_FIN = ?";
 
 	return db.executeQueryPojo(JornadaLaboralRecord.class, sql, Util.dateToIsoString(diaFin));
     }
