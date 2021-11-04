@@ -67,7 +67,7 @@ public class ListaJornadasVista extends JFrame {
 	entradaSpinner = new JSpinner();
 	entradaSpinner.setEnabled(false);
 	entradaSpinner.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.DAY_OF_YEAR));
-	JSpinner.DateEditor de = new JSpinner.DateEditor(entradaSpinner, "dd-MM-yyyy");
+	JSpinner.DateEditor de = new JSpinner.DateEditor(entradaSpinner, "yyyy-MM-dd");
 	entradaSpinner.setEditor(de);
 	entradaSpinner.setBounds(113, 70, 100, 20);
 	panelIntroducirFecha.add(entradaSpinner);
@@ -93,7 +93,7 @@ public class ListaJornadasVista extends JFrame {
 	salidaSpinner = new JSpinner();
 	salidaSpinner.setEnabled(false);
 	salidaSpinner.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.DAY_OF_YEAR));
-	de = new JSpinner.DateEditor(salidaSpinner, "dd-MM-yyyy");
+	de = new JSpinner.DateEditor(salidaSpinner, "yyyy-MM-dd");
 	salidaSpinner.setEditor(de);
 	salidaSpinner.setBounds(113, 96, 100, 20);
 	panelIntroducirFecha.add(salidaSpinner);

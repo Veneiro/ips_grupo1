@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -57,6 +58,12 @@ public class ListarJornadasControlador {
 	    }
 	});
 
+	listaJornadasVista.getChckbxComienzo().addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		cargarListaJornadas();
+	    }
+	});
+
 	listaJornadasVista.getBtnModificar().addActionListener(new ActionListener() {
 
 	    public void actionPerformed(ActionEvent e) {
@@ -104,20 +111,32 @@ public class ListarJornadasControlador {
     }
 
     private void cargarListaJornadas() {
+	List<JornadaLaboralRecord> lJ = new ArrayList<>();
+
+	List<JornadaLaboralRecord> aux = new ArrayList<>();
+
 	listaJornadasVista.setModeloTabla(
 		new NoEditableTableModel(new String[] { "Trabajador", "Comienzo", "Fin", "Entrada", "Salida" }, 0));
 
 	if (listaJornadasVista.getTextFieldTrabajador().getText().trim().isEmpty()) {
-	    for (JornadaLaboralRecord j : modelo_jornada.findAll()) {
-		listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador(), j.getDia_comienzo(),
-			j.getDia_fin(), j.getHora_entrada(), j.getHora_salida() });
-	    }
+	    lJ = modelo_jornada.findAll();
+
 	} else {
+	    lJ = modelo_jornada.findByName(listaJornadasVista.getTextFieldTrabajador().getText());
+	}
+
+	if (listaJornadasVista.getChckbxComienzo().isSelected()) {
 	    for (JornadaLaboralRecord j : modelo_jornada
-		    .findByName(listaJornadasVista.getTextFieldTrabajador().getText())) {
-		listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador(), j.getDia_comienzo(),
-			j.getDia_fin(), j.getHora_entrada(), j.getHora_salida() });
+		    .findJornadaByComienzo((Date) listaJornadasVista.getEntradaSpinner().getValue())) {
+		if (lJ.contains(j))
+		    aux.add(j);
 	    }
+	    lJ = aux;
+	}
+
+	for (JornadaLaboralRecord j : lJ) {
+	    listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador(), j.getDia_comienzo(),
+		    j.getDia_fin(), j.getHora_entrada(), j.getHora_salida() });
 	}
 
 	listaJornadasVista.getTable().setModel(listaJornadasVista.getModeloTabla());
