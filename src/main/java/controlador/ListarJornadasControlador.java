@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import dtos.JornadaLaboralDto;
 import modelo.JornadaModelo;
@@ -36,6 +38,24 @@ public class ListarJornadasControlador {
 
     public void inicializar() {
 	cargarListaJornadas();
+
+	listaJornadasVista.getTextFieldTrabajador().getDocument().addDocumentListener(new DocumentListener() {
+
+	    @Override
+	    public void removeUpdate(DocumentEvent e) {
+		cargarListaJornadas();
+	    }
+
+	    @Override
+	    public void insertUpdate(DocumentEvent e) {
+		cargarListaJornadas();
+	    }
+
+	    @Override
+	    public void changedUpdate(DocumentEvent e) {
+		cargarListaJornadas();
+	    }
+	});
 
 	listaJornadasVista.getBtnModificar().addActionListener(new ActionListener() {
 
@@ -87,13 +107,14 @@ public class ListarJornadasControlador {
 	listaJornadasVista.setModeloTabla(
 		new NoEditableTableModel(new String[] { "Trabajador", "Comienzo", "Fin", "Entrada", "Salida" }, 0));
 
-	if (listaJornadasVista.getTextFieldBuscar().getText().trim().isEmpty()) {
+	if (listaJornadasVista.getTextFieldTrabajador().getText().trim().isEmpty()) {
 	    for (JornadaLaboralRecord j : modelo_jornada.findAll()) {
 		listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador(), j.getDia_comienzo(),
 			j.getDia_fin(), j.getHora_entrada(), j.getHora_salida() });
 	    }
 	} else {
-	    for (JornadaLaboralRecord j : modelo_jornada.findAll()) {
+	    for (JornadaLaboralRecord j : modelo_jornada
+		    .findByName(listaJornadasVista.getTextFieldTrabajador().getText())) {
 		listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador(), j.getDia_comienzo(),
 			j.getDia_fin(), j.getHora_entrada(), j.getHora_salida() });
 	    }

@@ -20,7 +20,7 @@ import util.NoEditableTableModel;
 public class ListaJornadasVista extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private JTextField textFieldBuscar;
+    private JTextField textFieldTrabajador;
     private JLabel lblSeleccionEmpleado;
     private JScrollPane scrollPane;
     private JPanel panelIntroducirFecha;
@@ -40,21 +40,21 @@ public class ListaJornadasVista extends JFrame {
 	panelIntroducirFecha = new JPanel();
 	panelIntroducirFecha.setBounds(10, 11, 310, 207);
 	getContentPane().add(panelIntroducirFecha);
-	setBounds(new Rectangle(300, 300, 470, 305));
+	setBounds(new Rectangle(300, 300, 800, 300));
 	setLocationRelativeTo(null);
 	setResizable(false);
 	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	panelIntroducirFecha.setLayout(null);
 
 	lblSeleccionEmpleado = new JLabel("Trabajador: ");
-	lblSeleccionEmpleado.setBounds(10, 9, 66, 14);
+	lblSeleccionEmpleado.setBounds(10, 9, 75, 14);
 	lblSeleccionEmpleado.setHorizontalAlignment(SwingConstants.LEFT);
 	panelIntroducirFecha.add(lblSeleccionEmpleado);
 
-	textFieldBuscar = new JTextField();
-	textFieldBuscar.setBounds(77, 6, 223, 20);
-	panelIntroducirFecha.add(textFieldBuscar);
-	textFieldBuscar.setColumns(10);
+	textFieldTrabajador = new JTextField();
+	textFieldTrabajador.setBounds(89, 6, 211, 20);
+	panelIntroducirFecha.add(textFieldTrabajador);
+	textFieldTrabajador.setColumns(10);
 
 	scrollPane = new JScrollPane();
 	scrollPane.setBounds(332, 11, 452, 207);
