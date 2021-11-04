@@ -36,7 +36,7 @@ public class JornadaModelo {
     }
 
     public List<JornadaLaboralRecord> findAll() {
-	String sql = "SELECT * FROM TJORNADALABORAL WHERE ID = ?";
+	String sql = "SELECT * FROM TJORNADALABORAL";
 
 	return db.executeQueryPojo(JornadaLaboralRecord.class, sql);
     }

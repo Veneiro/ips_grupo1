@@ -35,6 +35,7 @@ public class ListarJornadasControlador {
     }
 
     public void inicializar() {
+	cargarListaJornadas();
 
 	listaJornadasVista.getBtnModificar().addActionListener(new ActionListener() {
 
@@ -83,19 +84,22 @@ public class ListarJornadasControlador {
     }
 
     private void cargarListaJornadas() {
-	listaJornadasVista.setModeloTabla(new NoEditableTableModel(new String[] { "Nombre" }, 0));
+	listaJornadasVista.setModeloTabla(
+		new NoEditableTableModel(new String[] { "Trabajador", "Comienzo", "Fin", "Entrada", "Salida" }, 0));
 
 	if (listaJornadasVista.getTextFieldBuscar().getText().trim().isEmpty()) {
 	    for (JornadaLaboralRecord j : modelo_jornada.findAll()) {
-		listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador() });
+		listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador(), j.getDia_comienzo(),
+			j.getDia_fin(), j.getHora_entrada(), j.getHora_salida() });
 	    }
 	} else {
 	    for (JornadaLaboralRecord j : modelo_jornada.findAll()) {
-		listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador() });
+		listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador(), j.getDia_comienzo(),
+			j.getDia_fin(), j.getHora_entrada(), j.getHora_salida() });
 	    }
 	}
 
-	listaJornadasVista.getTableJornadas().setModel(modificarVista.getModeloTabla());
+	listaJornadasVista.getTable().setModel(listaJornadasVista.getModeloTabla());
 
 	if (listaJornadasVista.getModeloTabla().getRowCount() == 0)
 	    listaJornadasVista.getBtnModificar().setEnabled(false);

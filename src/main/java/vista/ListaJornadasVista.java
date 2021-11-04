@@ -69,7 +69,8 @@ public class ListaJornadasVista extends JFrame {
 	btnModificar.setBounds(0, 235, 454, 31);
 	getContentPane().add(btnModificar);
 
-	modeloTabla = new NoEditableTableModel(new String[] { "ID", "Nombre" }, 0);
+	modeloTabla = new NoEditableTableModel(new String[] { "Trabajador", "Comienzo", "Fin", "Entrada", "Salida" },
+		0);
 	table = new JTable(modeloTabla);
 	scrollPane.setViewportView(table);
     }
