@@ -38,7 +38,7 @@ public class ListaJornadasVista extends JFrame {
     public void inicializar() {
 	getContentPane().setLayout(null);
 	panelIntroducirFecha = new JPanel();
-	panelIntroducirFecha.setBounds(0, 0, 454, 33);
+	panelIntroducirFecha.setBounds(10, 11, 310, 207);
 	getContentPane().add(panelIntroducirFecha);
 	setBounds(new Rectangle(300, 300, 470, 305));
 	setLocationRelativeTo(null);
@@ -46,18 +46,18 @@ public class ListaJornadasVista extends JFrame {
 	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	panelIntroducirFecha.setLayout(null);
 
-	lblSeleccionEmpleado = new JLabel("B\u00FAsqueda: ");
+	lblSeleccionEmpleado = new JLabel("Trabajador: ");
 	lblSeleccionEmpleado.setBounds(10, 9, 66, 14);
 	lblSeleccionEmpleado.setHorizontalAlignment(SwingConstants.LEFT);
 	panelIntroducirFecha.add(lblSeleccionEmpleado);
 
 	textFieldBuscar = new JTextField();
-	textFieldBuscar.setBounds(77, 6, 367, 20);
+	textFieldBuscar.setBounds(77, 6, 223, 20);
 	panelIntroducirFecha.add(textFieldBuscar);
 	textFieldBuscar.setColumns(10);
 
 	scrollPane = new JScrollPane();
-	scrollPane.setBounds(0, 33, 454, 204);
+	scrollPane.setBounds(332, 11, 452, 207);
 	getContentPane().add(scrollPane);
 
 	table = new JTable();
@@ -66,7 +66,7 @@ public class ListaJornadasVista extends JFrame {
 	scrollPane.setViewportView(table);
 
 	btnModificar = new JButton("Modificar");
-	btnModificar.setBounds(0, 235, 454, 31);
+	btnModificar.setBounds(681, 227, 93, 23);
 	getContentPane().add(btnModificar);
 
 	modeloTabla = new NoEditableTableModel(new String[] { "Trabajador", "Comienzo", "Fin", "Entrada", "Salida" },
