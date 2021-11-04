@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -100,7 +101,7 @@ public class AsignarJornadaVista extends JDialog {
 	jornadaPanel.add(lblComienzo);
 
 	entradaSpinner = new JSpinner();
-	entradaSpinner.setModel(new SpinnerDateModel(new Date(1633644000000L), null, null, Calendar.DAY_OF_YEAR));
+	entradaSpinner.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.DAY_OF_YEAR));
 	JSpinner.DateEditor de = new JSpinner.DateEditor(entradaSpinner, "dd-MM-yyyy");
 	entradaSpinner.setEditor(de);
 	entradaSpinner.setBounds(176, 42, 100, 20);
@@ -112,7 +113,7 @@ public class AsignarJornadaVista extends JDialog {
 	jornadaPanel.add(lblFin);
 
 	salidaSpinner = new JSpinner();
-	salidaSpinner.setModel(new SpinnerDateModel(new Date(1633644000000L), null, null, Calendar.DAY_OF_YEAR));
+	salidaSpinner.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.DAY_OF_YEAR));
 	de = new JSpinner.DateEditor(salidaSpinner, "dd-MM-yyyy");
 	salidaSpinner.setEditor(de);
 	salidaSpinner.setBounds(395, 42, 100, 20);
@@ -191,14 +192,14 @@ public class AsignarJornadaVista extends JDialog {
 	jornadaPanel.add(finCalendar);
 
 	horaEntradaSpinner = new JSpinner();
-	horaEntradaSpinner.setModel(new SpinnerDateModel(comienzoCalendar.getDate(), null, null, Calendar.HOUR_OF_DAY));
+	horaEntradaSpinner.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.HOUR_OF_DAY));
 	JSpinner.DateEditor he = new JSpinner.DateEditor(horaEntradaSpinner, "HH:mm");
 	horaEntradaSpinner.setEditor(he);
 	horaEntradaSpinner.setBounds(176, 252, 50, 20);
 	jornadaPanel.add(horaEntradaSpinner);
 
 	horaSalidaSpinner = new JSpinner();
-	horaSalidaSpinner.setModel(new SpinnerDateModel(finCalendar.getDate(), null, null, Calendar.HOUR_OF_DAY));
+	horaSalidaSpinner.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.HOUR_OF_DAY));
 	he = new JSpinner.DateEditor(horaSalidaSpinner, "HH:mm");
 	horaSalidaSpinner.setEditor(he);
 	horaSalidaSpinner.setBounds(395, 252, 50, 20);

@@ -23,8 +23,6 @@ import javax.swing.border.LineBorder;
 import com.toedter.calendar.JCalendar;
 
 import lombok.Getter;
-import lombok.Setter;
-import util.NoEditableTableModel;
 
 @Getter
 public class ModificarJornadaVista extends JDialog {
@@ -55,8 +53,6 @@ public class ModificarJornadaVista extends JDialog {
     private JCheckBox ViernesCheckBox;
     private JCheckBox SabadoCheckBox;
     private JCheckBox DomingoCheckBox;
-    @Setter
-    private NoEditableTableModel modeloTabla;
 
     private int idJornada;
 
@@ -66,7 +62,7 @@ public class ModificarJornadaVista extends JDialog {
     public ModificarJornadaVista(int idJornada) {
 	this.idJornada = idJornada;
 
-	setTitle("iHospital : Modificar Jornada " + idJornada);
+	setTitle("iHospital : Modificar Jornada");
 	setBounds(100, 100, 627, 380);
 	setModal(true);
 	setResizable(false);
@@ -196,11 +192,6 @@ public class ModificarJornadaVista extends JDialog {
 	horaSalidaSpinner.setEditor(he);
 	horaSalidaSpinner.setBounds(395, 252, 50, 20);
 	jornadaPanel.add(horaSalidaSpinner);
-
-	modeloTabla = new NoEditableTableModel(new String[] { "ID", "Nombre" }, 0);
-	Object[] fila = new Object[1];
-	fila[0] = "Pepe";
-	modeloTabla.addRow(fila);
     }
 
 }
