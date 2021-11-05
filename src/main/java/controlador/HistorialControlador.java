@@ -46,7 +46,15 @@ public class HistorialControlador {
 		hv.getBtnModificar().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showInputDialog("Introduzca el nuevo diagnostico del paciente");
+				String nuevoDiagnostico = JOptionPane.showInputDialog("Introduzca el nuevo diagnostico del paciente");
+				if (!nuevoDiagnostico.isEmpty()) {
+					String diagnosticoActual = hm.getDiagnosticoPaciente(idPaciente).get(0).getDiagnostico();
+					String diagnosticosAntiguos = hm.getDiagnosticosAntiguosPaciente(idPaciente)
+							.get(0).getDiagnosticosAntiguos() + ", " + diagnosticoActual;
+					
+					hm.updateDiagnosticos(nuevoDiagnostico, diagnosticosAntiguos, idPaciente);
+					cargarHistorial(idPaciente);
+				}
 			}
 		});
 		cargarHistorial(idPaciente);
@@ -55,18 +63,6 @@ public class HistorialControlador {
 	private void cargarHistorial(int idPaciente) {
 		List<HistorialDto> historial = hm.getHistorialPaciente(idPaciente);
 		List<PacienteDto> paciente = pm.getPacienteById(idPaciente);
-//		if (historial.size() != 0) {
-//			hv.getTxtpnHistorial().setText("idPaciente: " + historial.get(0).getIdPaciente() + "\n"
-//											+ "Vacunas: " + historial.get(0).getVacunas() + "\n"
-//											+ "Antecedentes: " + historial.get(0).getAntecedentes() + "\n"
-//											+ "Informaicion adicional: " + historial.get(0).getInformacionAdicional());
-//		}else {
-//			hv.getTxtpnHistorial().setText("idPaciente: " + "\n" + 
-//											"Vacunas: " + "\n" + 
-//											"Antecedentes: " + "\n" + 
-//											"Informaicion adicional: ");
-//		}
-		
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
 	    String header[] = new String[] { "Nombre", "Vacunas","Antecedentes", "Diagnostico", "Diagnosticos anteriores",
 	    									"Prescripciones", "Informacion Adicional" };

@@ -7,12 +7,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import dtos.CitaDto;
 import dtos.PacienteDto;
 import modelo.CitaModelo;
+import modelo.HistorialModelo;
 import modelo.PacienteModelo;
+import vista.HistorialesVista;
 import vista.ListaCalendarioCitasVista;
 
 public class ListaCalendarioCitasControlador {
@@ -21,6 +24,7 @@ public class ListaCalendarioCitasControlador {
 	private CitaModelo cm;
 	private PacienteModelo pm;
 	private int idMedico;
+	private List<CitaDto> citas;
 	
 	public ListaCalendarioCitasControlador(ListaCalendarioCitasVista lccv, CitaModelo cm, PacienteModelo pm
 											, int idMedico) {
@@ -49,11 +53,26 @@ public class ListaCalendarioCitasControlador {
 				
 			}
 		});
+		lccv.getBtnHistorial().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int filaSeleccionada = lccv.getTable().getSelectedRow();
+				if (filaSeleccionada != -1) {
+					int idPaciente = citas.get(filaSeleccionada).getId_paciente();
+					HistorialControlador controller = new HistorialControlador(new HistorialModelo(),
+							new HistorialesVista(), idPaciente);
+					controller.inicializar();
+				} else {
+					JOptionPane.showMessageDialog(null, "Por favor, seleccione primero un paciente.");
+				}
+				
+			}
+		});
 	}
 	
 	private void cargarCalendarioCitas(String fecha, int idMedico) {
 		
-		List<CitaDto> citas = cm.getCitasFecha(fecha, idMedico);
+		citas = cm.getCitasFecha(fecha, idMedico);
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
 	    String header[] = new String[] { "Nombre", "Fecha", "Hora Inicio", "Hora fin",
 	    									"Informacion", "Acudio" };

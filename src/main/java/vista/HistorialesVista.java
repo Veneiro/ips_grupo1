@@ -31,7 +31,7 @@ public class HistorialesVista extends JFrame {
 	
 	public void inicializar() {
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		setBounds(new Rectangle(300, 300, 800, 200));
+		setBounds(new Rectangle(300, 300, 1000, 500));
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
