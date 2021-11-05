@@ -77,6 +77,14 @@ public class AdminVista {
 				controller.inicializar();
 			}
 		});
+		
+		JButton btnComprobarCitas = new JButton("Comprobar Citas Creadas");
+		btnComprobarCitas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		frmIhospitalMain.getContentPane().add(btnComprobarCitas);
 
 		frmIhospitalMain.getContentPane().add(btnAsignarJornada);
 
