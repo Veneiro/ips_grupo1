@@ -90,9 +90,10 @@ public class JornadasControlador {
 	if (vista_jornadas.getBuscarTextField().getText().trim().isEmpty()) {
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 0) {
 		mapTable = new HashMap<>();
+		vista_jornadas.setModeloTabla(new NoEditableTableModel(new String[] { "Nombre", "Especialidad" }, 0));
 		for (MedicoDto m : modelo_medico.getListaMedicos()) {
 		    mapTable.put(fila, m.getNombre());
-		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getNombre() });
+		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getNombre(), m.getEspecialidad() });
 		}
 	    }
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 1) {
@@ -104,11 +105,12 @@ public class JornadasControlador {
 	    }
 	} else {
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 0) {
+		vista_jornadas.setModeloTabla(new NoEditableTableModel(new String[] { "Nombre", "Especialidad" }, 0));
 		mapTable = new HashMap<>();
 		for (MedicoDto m : modelo_medico
 			.getListaMedicosBySearch(vista_jornadas.getBuscarTextField().getText())) {
 		    mapTable.put(fila, m.getNombre());
-		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getNombre() });
+		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getNombre(), m.getEspecialidad() });
 		}
 	    }
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 1) {
