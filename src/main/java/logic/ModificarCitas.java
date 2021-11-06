@@ -14,6 +14,8 @@ import modelo.CitaModelo;
 import modelo.JornadaModelo;
 import modelo.LectorDeDatos;
 import modelo.MedicoAsignadoACitaModelo;
+import records.JornadaLaboralRecord;
+import records.RecordAssembler;
 import util.ApplicationException;
 import util.Util;
 
@@ -168,15 +170,16 @@ public class ModificarCitas {
 	}
 	JornadaModelo modelo = new JornadaModelo();
 	for (MedicoDto medicoDto : medicosElegidos) {
-	    List<JornadaLaboralDto> jornadas = modelo.getPorNombreTrabajador(medicoDto.getNombre());
-	    for (JornadaLaboralDto jornada : jornadas) {
-		if (jornada.getDia_comienzo() != null && jornada.getDia_fin() != null) {
-		    if (fecha.before(jornada.getDia_comienzo()) || fecha.after(jornada.getDia_fin())) {
+		List<JornadaLaboralRecord> jornadas = modelo.findByName(medicoDto.getNombre());
+	    for (JornadaLaboralRecord jornada : jornadas) {
+	    	JornadaLaboralDto j = RecordAssembler.toDto(jornada);
+		if (j.getDia_comienzo() != null && j.getDia_fin() != null) {
+		    if (fecha.before(j.getDia_comienzo()) || fecha.after(j.getDia_fin())) {
 			return true;
 		    }
 		    try {
-			if (colisionHorarios(horaEntrada, horaSalida, jornada.getHora_entrada(),
-				jornada.getHora_salida())) {
+			if (colisionHorarios(horaEntrada, horaSalida, j.getHora_entrada(),
+				j.getHora_salida())) {
 			    return true;
 			}
 		    } catch (ParseException e) {
