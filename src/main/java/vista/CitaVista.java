@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -25,8 +26,11 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import controlador.AdministradorControlador;
+import dtos.CitaDto;
 import dtos.MedicoDto;
 import dtos.PacienteDto;
 import logic.Admin;
@@ -73,6 +77,9 @@ public class CitaVista extends JDialog {
 	private JComboBox<String> cbEspecialidades;
 	private JLabel lblEspecialidades;
 	private JCheckBox chckbxEspecialidad;
+	private JCheckBox chckbxUrgente;
+	private AdministradorControlador ac = new AdministradorControlador();
+	LocalDateTime ldt = LocalDateTime.now();
 
 	/**
 	 * Create the frame.
@@ -117,6 +124,7 @@ public class CitaVista extends JDialog {
 		contentPane.add(getCbEspecialidades());
 		contentPane.add(getLblEspecialidades());
 		contentPane.add(getChckbxEspecialidad());
+		contentPane.add(getChckbxUrgente());
 	}
 
 	public void visible(boolean visible) {
@@ -256,12 +264,13 @@ public class CitaVista extends JDialog {
 	 * de los médicos, pero permitirá crearla igual después de un aviso.
 	 */
 	private void crearCita() {
-		Date horaEntrada = null;
-		Date horaSalida = null;
+		String HE = String.valueOf(ldt.getHour()) + " : " + String.valueOf(ldt.getMinute());
+		Date horaEntrada = new Date(ldt.getYear(), ldt.getHour(), ldt.getMinute());
+		Date horaSalida = new Date(ldt.getYear(), ldt.getHour() + 1, ldt.getMinute());
 		Date fecha = null;
 		if (getSpHoraEntrada().isEnabled()) {
-			horaEntrada = (Date) getSpHoraEntrada().getValue();
-			horaSalida = (Date) getSpHoraSalida().getValue();
+			horaEntrada =(Date)getSpHoraEntrada().getValue();
+			horaSalida = (Date)getSpHoraSalida().getValue();
 
 			if (compararHoras(horaEntrada, horaSalida) > 0) {
 				JOptionPane.showMessageDialog(this, "La hora de fin no puede ir antes que la hora de inicio");
@@ -289,8 +298,12 @@ public class CitaVista extends JDialog {
 		String especialidad = null;
 		if (getChckbxEspecialidad().isSelected())
 			especialidad = (String) getCbEspecialidades().getSelectedItem();
-		creadorCitas.crearCita(p, infoContacto, ubicacion, horaEntrada, horaSalida, fecha, especialidad);
+		CitaDto cita = creadorCitas.crearCita(p, infoContacto, ubicacion, horaEntrada, horaSalida, fecha, especialidad);
 
+		if(getChckbxUrgente().isEnabled()) {
+			ac.avisoUrgente(cita, HE, p);
+		}
+		
 		JOptionPane.showMessageDialog(this, "Cita creada");
 	}
 
@@ -531,5 +544,14 @@ public class CitaVista extends JDialog {
 			chckbxEspecialidad.setBounds(720, 13, 152, 23);
 		}
 		return chckbxEspecialidad;
+	}
+	
+	private JCheckBox getChckbxUrgente() {
+		if (chckbxUrgente == null) {
+			chckbxUrgente = new JCheckBox("CITA URGENTE");
+			chckbxUrgente.setHorizontalAlignment(SwingConstants.CENTER);
+			chckbxUrgente.setBounds(720, 351, 116, 23);
+		}
+		return chckbxUrgente;
 	}
 }
