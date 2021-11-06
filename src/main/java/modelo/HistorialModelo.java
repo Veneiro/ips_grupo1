@@ -28,4 +28,9 @@ public class HistorialModelo {
 		String sql = "Update THistoriales set diagnostico = ?, diagnosticosAntiguos = ? WHERE idPaciente = ?";
 		db.executeUpdate(sql, nuevoDiagnostico, previosDiagnosticos, idPaciente);
 	}
+	
+	public List<Object[]> getMasComunDiagnostico(){
+		String sql = "Select MAX(contador) FROM (Select count(diagnostico) from THistoriales)";
+		return db.executeQueryArray(sql);
+	}
 }
