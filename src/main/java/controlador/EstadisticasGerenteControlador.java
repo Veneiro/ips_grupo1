@@ -76,7 +76,7 @@ public class EstadisticasGerenteControlador {
 			List<String> enfermedades = new ArrayList<>();
 			for (CitaDto cita : citasFiltered) {
 				List<HistorialDto> historial = hm.getHistorialPaciente(cita.getId_paciente());
-				enfermedades.add(historial.get(0).getDiagnostico());
+//				enfermedades.add(historial.get(0).getDiagnostico());
 			}
 			HashMap<String, Integer> cuentaEnfermedades = new HashMap<>();
 			int counter = 0;
@@ -121,8 +121,8 @@ public class EstadisticasGerenteControlador {
 				
 				Vector<Object> data = new Vector<Object>();
 		        data.add(p.getNombre());
-		        data.add(h.getDiagnostico());
-		        data.add(cuentaEnfermedades.get(h.getDiagnostico()));
+//		        data.add(h.getDiagnostico());
+//		        data.add(cuentaEnfermedades.get(h.getDiagnostico()));
 		        
 				dm.addRow(data);
 			}

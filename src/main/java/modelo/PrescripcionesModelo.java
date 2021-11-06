@@ -36,4 +36,9 @@ public class PrescripcionesModelo {
 
 		db.executeUpdate(sql, m.getNombre());
 	}
+	
+	public List<PrescripcionDto> getPrescripcionesById(int id){
+		String sql = "SELECT * FROM TPrescripciones p where p.id = " + id;
+		return db.executeQueryPojo(PrescripcionDto.class, sql);
+	}
 }
