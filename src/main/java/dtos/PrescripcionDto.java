@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PrescripcionDto {
 
-    private int id;
+    private int id, paciente_id;
     private boolean medicamento;
     private String nombre, indicaciones, cantidad, intervalo, duracion;
     private Date fecha;

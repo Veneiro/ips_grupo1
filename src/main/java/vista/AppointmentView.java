@@ -18,178 +18,187 @@ import javax.swing.border.EmptyBorder;
 @SuppressWarnings({ "serial", "rawtypes" })
 public class AppointmentView extends JDialog {
 
-	private JPanel contentPanel = new JPanel();
-	private JList listCauses;
-	private AddCauseView pacientes;
-	private JButton btnAddCause;
-	private JPanel pnEntryOut = new JPanel();
-	private JLabel lblDoublePointsEntry = new JLabel(":");
-	private JLabel lblDoublePointsOut = new JLabel(":");
-	LocalDateTime ldt = LocalDateTime.now();
-	private JLabel lblEntryHour = new JLabel("Hora de Entrada");
-	private JSpinner spEntryHour;
-	private JSpinner spEntryMin;
-	private JSpinner spOutHour;
-	private JSpinner spOutMin;
-	private JLabel lblOutHour;
-	private JButton continueButton;
-	private JScrollPane scrollPane;
-	private JLabel lblPaciente;
+    private JPanel contentPanel = new JPanel();
+    private JList listCauses;
+    private AddCauseView pacientes;
+    private JButton btnAddCause;
+    private JPanel pnEntryOut = new JPanel();
+    private JLabel lblDoublePointsEntry = new JLabel(":");
+    private JLabel lblDoublePointsOut = new JLabel(":");
+    LocalDateTime ldt = LocalDateTime.now();
+    private JLabel lblEntryHour = new JLabel("Hora de Entrada");
+    private JSpinner spEntryHour;
+    private JSpinner spEntryMin;
+    private JSpinner spOutHour;
+    private JSpinner spOutMin;
+    private JLabel lblOutHour;
+    private JButton continueButton;
+    private JScrollPane scrollPane;
+    private JLabel lblPaciente;
+    private JButton btnAddPrescripcion;
 
-	/**
-	 * Create the dialog.
-	 */
-	public AppointmentView() {
-		setTitle("iHospital : Cita");
-		setModal(true);
-		setResizable(false);
-		setBounds(100, 100, 450, 308);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
-		contentPanel.add(getScrollPane());
-		contentPanel.add(getBtnAddCause());
-		contentPanel.add(getContentPanel());
-		pnEntryOut.add(getLblDoublePointsEntry());
-		pnEntryOut.add(getLblDoublePointsOut());
-		lblEntryHour.setHorizontalAlignment(SwingConstants.CENTER);
-		pnEntryOut.add(getLblEntryHour());
-		pnEntryOut.add(getSpEntryHour());
-		pnEntryOut.add(getSpEntryMin());
-		pnEntryOut.add(getSpOutHour());
-		pnEntryOut.add(getSpOutMin());
-		pnEntryOut.add(getLblOutHour());
-		pnEntryOut.add(getLblPaciente());
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			buttonPane.add(getBtnContinueButton());
-			getRootPane().setDefaultButton(continueButton);
-		}
-	}
+    /**
+     * Create the dialog.
+     */
+    public AppointmentView() {
+	setTitle("iHospital : Cita");
+	setModal(true);
+	setResizable(false);
+	setBounds(100, 100, 450, 350);
+	getContentPane().setLayout(new BorderLayout());
+	contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+	getContentPane().add(contentPanel, BorderLayout.CENTER);
+	contentPanel.setLayout(null);
+	contentPanel.add(getScrollPane());
+	contentPanel.add(getBtnAddCause());
+	contentPanel.add(getContentPanel());
+	pnEntryOut.add(getLblDoublePointsEntry());
+	pnEntryOut.add(getLblDoublePointsOut());
+	lblEntryHour.setHorizontalAlignment(SwingConstants.CENTER);
+	pnEntryOut.add(getLblEntryHour());
+	pnEntryOut.add(getSpEntryHour());
+	pnEntryOut.add(getSpEntryMin());
+	pnEntryOut.add(getSpOutHour());
+	pnEntryOut.add(getSpOutMin());
+	pnEntryOut.add(getLblOutHour());
+	pnEntryOut.add(getLblPaciente());
 
-	public JButton getBtnContinueButton() {
-		if (continueButton == null) {
-			continueButton = new JButton("Continuar");
-			continueButton.setActionCommand("OK");
-		}
-		return continueButton;
+	btnAddPrescripcion = new JButton("A\u00F1adir prescripci\u00F3n");
+	btnAddPrescripcion.setBounds(5, 238, 429, 25);
+	contentPanel.add(btnAddPrescripcion);
+	{
+	    JPanel buttonPane = new JPanel();
+	    buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+	    getContentPane().add(buttonPane, BorderLayout.SOUTH);
+	    buttonPane.add(getBtnContinueButton());
+	    getRootPane().setDefaultButton(continueButton);
 	}
+    }
 
-	public JList getListCauses() {
-		if (listCauses == null) {
-			listCauses = new JList();
-		}
-		return listCauses;
+    public JButton getBtnContinueButton() {
+	if (continueButton == null) {
+	    continueButton = new JButton("Continuar");
+	    continueButton.setActionCommand("OK");
 	}
+	return continueButton;
+    }
 
-	public JButton getBtnAddCause() {
-		if (btnAddCause == null) {
-			btnAddCause = new JButton("A\u00F1adir Causa");
-			btnAddCause.setBounds(5, 204, 429, 23);
-		}
-		return btnAddCause;
+    public JList getListCauses() {
+	if (listCauses == null) {
+	    listCauses = new JList();
 	}
+	return listCauses;
+    }
 
-	private JPanel getContentPanel() {
-		pnEntryOut.setBounds(5, 11, 429, 92);
-		pnEntryOut.setLayout(null);
-		return pnEntryOut;
+    public JButton getBtnAddCause() {
+	if (btnAddCause == null) {
+	    btnAddCause = new JButton("A\u00F1adir Causa");
+	    btnAddCause.setBounds(5, 204, 429, 23);
 	}
+	return btnAddCause;
+    }
 
-	private JLabel getLblDoublePointsEntry() {
-		lblDoublePointsEntry.setBounds(88, 64, 13, 14);
-		return lblDoublePointsEntry;
-	}
+    private JPanel getContentPanel() {
+	pnEntryOut.setBounds(5, 11, 429, 92);
+	pnEntryOut.setLayout(null);
+	return pnEntryOut;
+    }
 
-	private JLabel getLblDoublePointsOut() {
-		lblDoublePointsOut.setBounds(336, 64, 13, 14);
-		return lblDoublePointsOut;
-	}
+    private JLabel getLblDoublePointsEntry() {
+	lblDoublePointsEntry.setBounds(88, 64, 13, 14);
+	return lblDoublePointsEntry;
+    }
 
-	private JLabel getLblEntryHour() {
-		lblEntryHour.setBounds(39, 42, 95, 14);
-		return lblEntryHour;
-	}
+    private JLabel getLblDoublePointsOut() {
+	lblDoublePointsOut.setBounds(336, 64, 13, 14);
+	return lblDoublePointsOut;
+    }
 
-	public JSpinner getSpEntryHour() {
-		if (spEntryHour == null) {
-			spEntryHour = new JSpinner();
-			spEntryHour.setValue(ldt.getHour());
-			spEntryHour.setBounds(39, 61, 39, 20);
-		}
-		return spEntryHour;
-	}
+    private JLabel getLblEntryHour() {
+	lblEntryHour.setBounds(39, 42, 95, 14);
+	return lblEntryHour;
+    }
 
-	public JSpinner getSpEntryMin() {
-		if (spEntryMin == null) {
-			spEntryMin = new JSpinner();
-			spEntryMin.setValue(ldt.getMinute());
-			spEntryMin.setBounds(98, 61, 39, 20);
-		}
-		return spEntryMin;
+    public JSpinner getSpEntryHour() {
+	if (spEntryHour == null) {
+	    spEntryHour = new JSpinner();
+	    spEntryHour.setValue(ldt.getHour());
+	    spEntryHour.setBounds(39, 61, 39, 20);
 	}
+	return spEntryHour;
+    }
 
-	public JSpinner getSpOutHour() {
-		if (spOutHour == null) {
-			spOutHour = new JSpinner();
-			spOutHour.setValue(ldt.getHour() + 1);
-			spOutHour.setBounds(287, 61, 39, 20);
-		}
-		return spOutHour;
+    public JSpinner getSpEntryMin() {
+	if (spEntryMin == null) {
+	    spEntryMin = new JSpinner();
+	    spEntryMin.setValue(ldt.getMinute());
+	    spEntryMin.setBounds(98, 61, 39, 20);
 	}
+	return spEntryMin;
+    }
 
-	public JSpinner getSpOutMin() {
-		if (spOutMin == null) {
-			spOutMin = new JSpinner();
-			spOutMin.setValue(ldt.getMinute());
-			spOutMin.setBounds(346, 61, 39, 20);
-		}
-		return spOutMin;
+    public JSpinner getSpOutHour() {
+	if (spOutHour == null) {
+	    spOutHour = new JSpinner();
+	    spOutHour.setValue(ldt.getHour() + 1);
+	    spOutHour.setBounds(287, 61, 39, 20);
 	}
+	return spOutHour;
+    }
 
-	private JLabel getLblOutHour() {
-		if (lblOutHour == null) {
-			lblOutHour = new JLabel("Hora de Salida");
-			lblOutHour.setHorizontalAlignment(SwingConstants.CENTER);
-			lblOutHour.setBounds(287, 42, 95, 14);
-		}
-		return lblOutHour;
+    public JSpinner getSpOutMin() {
+	if (spOutMin == null) {
+	    spOutMin = new JSpinner();
+	    spOutMin.setValue(ldt.getMinute());
+	    spOutMin.setBounds(346, 61, 39, 20);
 	}
+	return spOutMin;
+    }
 
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setBounds(5, 106, 429, 87);
-			scrollPane.setViewportView(getListCauses());
-		}
-		return scrollPane;
+    private JLabel getLblOutHour() {
+	if (lblOutHour == null) {
+	    lblOutHour = new JLabel("Hora de Salida");
+	    lblOutHour.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblOutHour.setBounds(287, 42, 95, 14);
 	}
-	
-	
+	return lblOutHour;
+    }
 
-	/**
-	 * @param pacientes the pacientes to set
-	 */
-	public void setPacientes(AddCauseView pacientes) {
-		this.pacientes = pacientes;
+    private JScrollPane getScrollPane() {
+	if (scrollPane == null) {
+	    scrollPane = new JScrollPane();
+	    scrollPane.setBounds(5, 106, 429, 87);
+	    scrollPane.setViewportView(getListCauses());
 	}
+	return scrollPane;
+    }
 
-	/**
-	 * @return the pacientes
-	 */
-	public AddCauseView getPacientes() {
-		return pacientes;
+    /**
+     * @param pacientes the pacientes to set
+     */
+    public void setPacientes(AddCauseView pacientes) {
+	this.pacientes = pacientes;
+    }
+
+    /**
+     * @return the pacientes
+     */
+    public AddCauseView getPacientes() {
+	return pacientes;
+    }
+
+    public JLabel getLblPaciente() {
+	if (lblPaciente == null) {
+	    lblPaciente = new JLabel();
+	    lblPaciente.setFont(new Font("Tahoma", Font.BOLD, 18));
+	    lblPaciente.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblPaciente.setBounds(39, 11, 346, 14);
 	}
-	public JLabel getLblPaciente() {
-		if (lblPaciente == null) {
-			lblPaciente = new JLabel();
-			lblPaciente.setFont(new Font("Tahoma", Font.BOLD, 18));
-			lblPaciente.setHorizontalAlignment(SwingConstants.CENTER);
-			lblPaciente.setBounds(39, 11, 346, 14);
-		}
-		return lblPaciente;
-	}
+	return lblPaciente;
+    }
+
+    public JButton getBtnAddPrescripcion() {
+	return btnAddPrescripcion;
+    }
+
 }
