@@ -48,7 +48,7 @@ public class MainView {
     private void initialize() {
 	frame = new JFrame();
 	frame.setResizable(false);
-	frame.setBounds(100, 100, 170, 166);
+	frame.setBounds(100, 100, 533, 366);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.getContentPane().setLayout(null);
 
@@ -66,7 +66,7 @@ public class MainView {
 
 	    }
 	});
-	btnMedico.setBounds(10, 52, 134, 23);
+	btnMedico.setBounds(10, 195, 495, 85);
 	frame.getContentPane().add(btnMedico);
 
 	JButton btnAdmin = new JButton("Administrativo");
@@ -76,7 +76,7 @@ public class MainView {
 		iV.main(null);
 	    }
 	});
-	btnAdmin.setBounds(10, 11, 134, 23);
+	btnAdmin.setBounds(10, 54, 495, 85);
 	frame.getContentPane().add(btnAdmin);
 	
 	JButton btnGerente = new JButton("Gerente");
