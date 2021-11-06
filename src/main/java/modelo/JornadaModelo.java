@@ -71,9 +71,4 @@ public class JornadaModelo {
 	return db.executeQueryPojo(JornadaLaboralRecord.class, sql, Util.dateToIsoHour(horaSalida));
     }
 
-    public List<JornadaLaboralDto> getPorNombreTrabajador(String nombre) {
-	String sql = "SELECT * from TJORNADALABORAL where nombre_trabajador = ?";
-	return db.executeQueryPojo(JornadaLaboralDto.class, sql, nombre);
-    }
-
 }

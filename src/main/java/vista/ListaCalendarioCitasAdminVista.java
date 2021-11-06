@@ -34,7 +34,7 @@ public class ListaCalendarioCitasAdminVista extends JFrame {
 	}
 	
 	public void inicializar() {
-		setBounds(new Rectangle(300, 300, 470, 305));
+		setBounds(new Rectangle(300, 300, 800, 400));
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);

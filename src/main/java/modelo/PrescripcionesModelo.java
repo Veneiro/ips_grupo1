@@ -23,10 +23,10 @@ public class PrescripcionesModelo {
     }
 
     public void addPrescripcion(PrescripcionDto p) {
-	String sql = "INSERT INTO TPRESCRIPCIONES(NOMBRE, INDICACIONES, MEDICAMENTO, CANTIDAD, INTERVALO, DURACION, FECHA, HORA) values (?,?,?,?,?,?,?,?)";
+	String sql = "INSERT INTO TPRESCRIPCIONES(NOMBRE, PACIENTE_ID, INDICACIONES, MEDICAMENTO, CANTIDAD, INTERVALO, DURACION, FECHA, HORA) values (?,?,?,?,?,?,?,?,?)";
 
-	db.executeUpdate(sql, p.getNombre(), p.getIndicaciones(), p.isMedicamento(), p.getCantidad(), p.getIntervalo(),
-		p.getDuracion(), Util.dateToIsoString(Date.from(Instant.now())),
+	db.executeUpdate(sql, p.getNombre(), p.getPaciente_id(), p.getIndicaciones(), p.isMedicamento(),
+		p.getCantidad(), p.getIntervalo(), p.getDuracion(), Util.dateToIsoString(Date.from(Instant.now())),
 		Util.dateToIsoHour(Date.from(Instant.now())));
     }
 }

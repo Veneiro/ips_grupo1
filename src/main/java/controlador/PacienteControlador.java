@@ -9,8 +9,8 @@ import dtos.CitaDto;
 import lombok.Getter;
 import lombok.Setter;
 import modelo.CauseModel;
+import modelo.MedicoModelo;
 import modelo.PacienteModelo;
-import util.SendEmail;
 import util.SwingUtil;
 import vista.AddCauseView;
 import vista.AppointmentView;
@@ -20,96 +20,87 @@ import vista.NonExistenceView;
 @Setter
 public class PacienteControlador {
 
-	private AppointmentView vista_cita;
-	private PacienteModelo modelo_paciente;
-	private CauseModel cm;
+    private AppointmentView vista_cita;
+    private PacienteModelo modelo_paciente;
+    private CauseModel cm;
+    private MedicoModelo mm;
+    private CitaDto cita;
 
-	public PacienteControlador(PacienteModelo pacienteModelo,
-			AppointmentView pacienteVista) {
-		this.vista_cita = pacienteVista;
-		this.modelo_paciente = pacienteModelo;
-		this.cm = new CauseModel();
+    public PacienteControlador(PacienteModelo pacienteModelo, AppointmentView pacienteVista) {
+	this.vista_cita = pacienteVista;
+	this.modelo_paciente = pacienteModelo;
+	this.cm = new CauseModel();
+	this.mm = new MedicoModelo();
+    }
+
+    public void initialize(CitaDto cita, String nombrePaciente) {
+	this.cita = cita;
+	updateList();
+	vista_cita.getBtnContinueButton().addActionListener(e -> SwingUtil.exceptionWrapper(() -> insertCitaToDB()));
+	vista_cita.getBtnAddCause().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addCause()));
+	vista_cita.getBtnAddPrescripcion().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addPrescripcion()));
+	vista_cita.getLblPaciente().setText(nombrePaciente);
+	String entry = cita.getHorario_inicio();
+	String out = cita.getHorario_fin();
+
+	String[] sEntry = entry.split(":");
+	String[] sOut = out.split(":");
+
+	vista_cita.getSpEntryHour().setValue(Integer.parseInt(sEntry[0].trim()));
+	vista_cita.getSpEntryMin().setValue(Integer.parseInt(sEntry[1].trim()));
+	vista_cita.getSpOutHour().setValue(Integer.parseInt(sOut[0].trim()));
+	vista_cita.getSpOutMin().setValue(Integer.parseInt(sOut[1].trim()));
+	showVistaCita();
+    }
+
+    private void addCause() {
+	AppointmentControler controller = new AppointmentControler(new CauseModel(), new AddCauseView(),
+		new NonExistenceView());
+	controller.initialize(cita.getId());
+	updateList();
+    }
+
+    private void addPrescripcion() {
+	PrescripcionesControlador controller = new PrescripcionesControlador(cita.getId_paciente());
+	controller.inicializar();
+	updateList();
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private void updateList() {
+	List<CauseDto> causes = cm.getCauseList();
+	DefaultListModel dlm = new DefaultListModel();
+	for (CauseDto cause : causes) {
+	    if (cause.getID() == cita.getId()) {
+		dlm.addElement(cause.toString());
+	    }
 	}
+	vista_cita.getListCauses().setModel(dlm);
+    }
 
-	public void initialize() {
-		vista_cita.getBtnUpdate().addActionListener(
-				e -> SwingUtil.exceptionWrapper(() -> updateList()));
-		vista_cita.getBtnContinueButton().addActionListener(
-				e -> SwingUtil.exceptionWrapper(() -> insertCitaToDB()));
-		vista_cita.getBtnUrgente().addActionListener(
-				e -> SwingUtil.exceptionWrapper(() -> sendMail()));
-		vista_cita.getBtnAddCause().addActionListener(
-				e -> SwingUtil.exceptionWrapper(() -> addCause()));
-		showVistaCita();
-	}
+    public void showVistaCita() {
+	vista_cita.setLocationRelativeTo(null);
+	vista_cita.setVisible(true);
+    }
 
-	private void addCause() {
-		AppointmentControler controller = new AppointmentControler(
-				new CauseModel(), new AddCauseView(), new NonExistenceView());
-		controller.initialize();
-		updateList();
-	}
+    public void insertCitaToDB() {
 
-	private void sendMail() {
-		int id = 0;
-		String hora = "";
-		List<CitaDto> citas = cm.getCitasList();
-		String msg = "================================\n";
-		msg += "==========CITA URGENTE==========\n";
-		msg += "================================\n";
-		for (CitaDto cita : citas) {
-			if (cita.getId() == id) {
-				msg += "Usted, con id " + cita.getId_medico()
-						+ " tiene una cita urgente con el paciente "
-						+ cita.getId_paciente() + ".\n";
-				hora = cita.getHorario_inicio();
-			}
-		}
-		msg += "Esta cita está FECHADA para las " + hora + " horas";
-		SendEmail.main("Ha recibido una CITA URGENTE", msg);
-	}
+	CitaDto cidto = new CitaDto();
+	String houre = vista_cita.getSpEntryHour().getValue().toString();
+	String mine = vista_cita.getSpEntryMin().getValue().toString();
+	String houro = vista_cita.getSpOutHour().getValue().toString();
+	String mineo = vista_cita.getSpOutMin().getValue().toString();
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void updateList() {
-		List<CauseDto> causes = cm.getCauseList();
-		DefaultListModel dlm = new DefaultListModel();
-		for (CauseDto cause : causes) {
-			dlm.addElement(cause.toString());
-		}
-		vista_cita.getListCauses().setModel(dlm);
-	}
-
-	public void showVistaCita() {
-		vista_cita.setLocationRelativeTo(null);
-		vista_cita.setVisible(true);
-	}
-
-	public void insertCitaToDB() {
-		List<CitaDto> citas = cm.getCitasList();
-		int id = 0;
-		for (CitaDto cita : citas) {
-			if (cita.getId() > id) {
-				id = cita.getId();
-			}
-		}
-
-		if (id == 0 && citas.size() == 0) {
-			id = 0;
-		} else {
-			id++;
-		}
-
-		CitaDto cidto = new CitaDto();
-		String houre = vista_cita.getSpEntryHour().getValue().toString();
-		String mine = vista_cita.getSpEntryMin().getValue().toString();
-		String houro = vista_cita.getSpOutHour().getValue().toString();
-		String mineo = vista_cita.getSpOutMin().getValue().toString();
-
-		cidto.setHorario_inicio(houre + " : " + mine);
-		cidto.setHorario_fin(houro + " : " + mineo);
-		cidto.setId(id);
-		cidto.setId_medico(1);
-		cidto.setId_paciente(1);
-		cm.insertCita(cidto);
-	}
+	cidto.setHora_entrada(houre + " : " + mine);
+	cidto.setHora_salida(houro + " : " + mineo);
+	cidto.setHorario_inicio(cita.getHorario_inicio());
+	cidto.setHorario_fin(cita.getHorario_fin());
+	cidto.setId(cita.getId());
+	cidto.setId_medico(cita.getId_medico());
+	cidto.setId_paciente(cita.getId_paciente());
+	cidto.setNombre_paciente(cita.getNombre_paciente());
+	cidto.setFecha(cita.getFecha());
+	cm.insertCita(cidto);
+	vista_cita.setVisible(false);
+    }
 }

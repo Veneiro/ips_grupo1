@@ -12,10 +12,10 @@ import javax.mail.internet.MimeMessage;
 
 public class SendEmail {
 
-	public static void main(String subj, String msg) {
+	public static void main(String subj, String msg, String email) {
 
 		// Recipient's email ID needs to be mentioned.
-		String to = "veneiroyt@gmail.com";
+		String to = email;
 
 		// Sender's email ID needs to be mentioned
 		String from = "ihospital4738@gmail.com";

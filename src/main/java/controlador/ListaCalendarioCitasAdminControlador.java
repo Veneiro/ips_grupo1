@@ -13,7 +13,7 @@ import dtos.PacienteDto;
 import modelo.CitaModelo;
 import modelo.HistorialModelo;
 import modelo.PacienteModelo;
-import vista.HistorialesVista;
+import vista.HistorialesAdminVista;
 import vista.ListaCalendarioCitasAdminVista;
 import vista.ModificarCitaVista;
 
@@ -61,8 +61,8 @@ public class ListaCalendarioCitasAdminControlador {
 				int filaSeleccionada = lcav.getTableCitas().getSelectedRow();
 				if (filaSeleccionada != -1) {
 					int idPaciente = citas.get(filaSeleccionada).getId_paciente();
-					HistorialControlador controller = new HistorialControlador(new HistorialModelo(),
-							new HistorialesVista(), idPaciente);
+					HistorialAdminControlador controller = new HistorialAdminControlador(new HistorialModelo(),
+							new HistorialesAdminVista(), idPaciente);
 					controller.inicializar();
 				} else {
 					JOptionPane.showMessageDialog(null, "Por favor, seleccione primero un paciente.");

@@ -26,6 +26,7 @@ public class ListaCalendarioCitasVista extends JFrame {
 	private JPanel panelIntroducirFecha;
 	private JTable table;
 	private JButton btnGestionarCita;
+	private JButton btnHistorial;
 	
 	
 	public ListaCalendarioCitasVista() {
@@ -36,7 +37,7 @@ public class ListaCalendarioCitasVista extends JFrame {
 	public void inicializar() {
 		panelIntroducirFecha = new JPanel();
 		getContentPane().add(panelIntroducirFecha, BorderLayout.NORTH);
-		setBounds(new Rectangle(300, 300, 470, 305));
+		setBounds(new Rectangle(300, 300, 800, 400));
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -55,6 +56,9 @@ public class ListaCalendarioCitasVista extends JFrame {
 		
 		btnGestionarCita = new JButton("Gestionar Cita");
 		panelIntroducirFecha.add(btnGestionarCita);
+		
+		btnHistorial = new JButton("Historial");
+		panelIntroducirFecha.add(btnHistorial);
 		
 		scrollPaneCitas = new JScrollPane();
 		getContentPane().add(scrollPaneCitas, BorderLayout.CENTER);
