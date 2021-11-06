@@ -13,6 +13,7 @@ public class AppointmentControler {
 	private AddCauseView vista_causa;
 	private CauseModel modelo_causa;
 	private NonExistenceView ne;
+	private int id;
 
 	public AppointmentControler(CauseModel causaModel, AddCauseView causeView,
 			NonExistenceView nonExistenceView) {
@@ -21,7 +22,8 @@ public class AppointmentControler {
 		this.ne = nonExistenceView;
 	}
 
-	public void initialize() {
+	public void initialize(int id) {
+		this.id = id;
 		vista_causa.getBtnSave().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> insertToDB()));
 		vista_causa.getBtnNonExistence().addActionListener(
@@ -61,6 +63,7 @@ public class AppointmentControler {
 		String year = vista_causa.getCbYear().getSelectedItem().toString();
 		String DATE = day + " / " + month + " / " + year;
 		cdto.setDATE(DATE);
+		cdto.setID(id);
 		modelo_causa.insertCause(cdto);
 		vista_causa.setVisible(false);
 	}
