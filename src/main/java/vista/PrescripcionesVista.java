@@ -117,7 +117,7 @@ public class PrescripcionesVista extends JDialog {
 	contentPane.add(btnNewButton_1);
 
 	chckbxMedicamento = new JCheckBox("Medicamento");
-	chckbxMedicamento.setBounds(419, 48, 97, 23);
+	chckbxMedicamento.setBounds(419, 48, 117, 23);
 	contentPane.add(chckbxMedicamento);
 
 	btnAsignar = new JButton("Asignar");
