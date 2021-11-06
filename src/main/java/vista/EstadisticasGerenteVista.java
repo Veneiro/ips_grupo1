@@ -71,17 +71,17 @@ public class EstadisticasGerenteVista extends JFrame {
 		
 		lblMasComun = new JLabel("Enfermedad mas comun:");
 		lblMasComun.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblMasComun.setBounds(61, 106, 267, 13);
+		lblMasComun.setBounds(61, 98, 267, 21);
 		getContentPane().add(lblMasComun);
 		
 		lblIncidencia = new JLabel("% de incidencia en el hospital");
 		lblIncidencia.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblIncidencia.setBounds(61, 129, 267, 13);
+		lblIncidencia.setBounds(61, 133, 267, 21);
 		getContentPane().add(lblIncidencia);
 		
 		lblNumeroPacientes = new JLabel("Numero de pacientes con la enfermedad:");
 		lblNumeroPacientes.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNumeroPacientes.setBounds(61, 152, 267, 13);
+		lblNumeroPacientes.setBounds(61, 164, 267, 22);
 		getContentPane().add(lblNumeroPacientes);
 		
 		lblResultadoMasComun = new Label("");
@@ -89,11 +89,11 @@ public class EstadisticasGerenteVista extends JFrame {
 		getContentPane().add(lblResultadoMasComun);
 		
 		lblResultadoPorcentaje = new Label("");
-		lblResultadoPorcentaje.setBounds(356, 121, 96, 21);
+		lblResultadoPorcentaje.setBounds(356, 129, 222, 21);
 		getContentPane().add(lblResultadoPorcentaje);
 		
 		lblResultadoNumero = new Label("");
-		lblResultadoNumero.setBounds(356, 144, 59, 21);
+		lblResultadoNumero.setBounds(356, 156, 59, 21);
 		getContentPane().add(lblResultadoNumero);
 		
 		scrollPane = new JScrollPane();

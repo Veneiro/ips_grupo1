@@ -56,14 +56,17 @@ public class EstadisticasGerenteControlador {
 		if (!egv.getTextDesde().getText().isEmpty() && !egv.getTextHasta().getText().isEmpty()) {
 			List<CitaDto> citas = cm.getAllCitas();
 			List<CitaDto> citasFiltered = new ArrayList<>();
+			List<Integer> ids = new ArrayList<>();
 			for (CitaDto cita : citas) {
 				try {
 					if (cita.getFecha() != null) {
 						Date dateCita = new SimpleDateFormat("dd-mm-yyyy").parse(cita.getFecha());
 						Date dateDesde = new SimpleDateFormat("dd-mm-yyyy").parse(egv.getTextDesde().getText());
 						Date dateHasta = new SimpleDateFormat("dd-mm-yyyy").parse(egv.getTextHasta().getText());
-						if (dateCita.compareTo(dateDesde) >= 0 && dateCita.compareTo(dateHasta) <= 0) {
+						if (dateCita.compareTo(dateDesde) >= 0 && dateCita.compareTo(dateHasta) <= 0
+								&& !ids.contains(cita.getId_paciente())) {
 							citasFiltered.add(cita);
+							ids.add(cita.getId_paciente());
 						}
 					}
 				} catch (ParseException e1) {
@@ -99,7 +102,7 @@ public class EstadisticasGerenteControlador {
 			}
 			
 			egv.getLblResultadoMasComun().setText(maxEntry.getKey());
-			double porcentaje = ((double)(maxEntry.getValue())/(double)(citas.size()))*100;
+			double porcentaje = ((double)(maxEntry.getValue())/(double)(citasFiltered.size()))*100;
 			egv.getLblResultadoPorcentaje().setText(String.valueOf(porcentaje)+ "%");
 			egv.getLblResultadoNumero().setText(maxEntry.getValue().toString());
 			
