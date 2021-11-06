@@ -48,7 +48,7 @@ public class MainView {
     private void initialize() {
 	frame = new JFrame();
 	frame.setResizable(false);
-	frame.setBounds(100, 100, 533, 366);
+	frame.setBounds(100, 100, 533, 500);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.getContentPane().setLayout(null);
 
@@ -88,7 +88,7 @@ public class MainView {
 			egc.inicilizar();
 		}
 	});
-	btnGerente.setBounds(10, 93, 134, 21);
+	btnGerente.setBounds(10, 327, 495, 85);
 	frame.getContentPane().add(btnGerente);
     }
 }
