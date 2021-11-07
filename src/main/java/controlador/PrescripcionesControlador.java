@@ -29,7 +29,8 @@ public class PrescripcionesControlador {
     public PrescripcionesControlador(int idPaciente) {
 	pV = new PrescripcionesVista();
 	pM = new PrescripcionesModelo();
-	this.idPaciente = idPaciente;
+	if (idPaciente > 0)
+	    this.idPaciente = idPaciente;
     }
 
     public void inicializar() {
@@ -39,6 +40,8 @@ public class PrescripcionesControlador {
 	checkAddButton();
 
 	pV.getBtnNewButton_1().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addPrescripcion()));
+
+	pV.getBtnAsignar().addActionListener(e -> SwingUtil.exceptionWrapper(() -> asignarPrescripcion()));
 
 	pV.getTextFieldNombre().getDocument().addDocumentListener(new DocumentListener() {
 
@@ -110,8 +113,6 @@ public class PrescripcionesControlador {
 
 	    p.setNombre(pV.getTextFieldNombre().getText());
 
-	    p.setPaciente_id(idPaciente);
-
 	    p.setIndicaciones(pV.getIndicacionesTextPane().getText());
 
 	    p.setMedicamento(pV.getChckbxMedicamento().isSelected());
@@ -122,16 +123,29 @@ public class PrescripcionesControlador {
 
 	    p.setDuracion(pV.getTextField_Duracion().getText());
 
+	    pM.addPrescripcion(p);
+	    JOptionPane.showMessageDialog(pV, "Prescripción añadida correctamente, no olvide asignarla.");
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	cargarPrescripciones();
+    }
+
+    private void asignarPrescripcion() {
+	PrescripcionRecord p = mapTable.get(pV.getTable().getSelectedRow());
+
+	try {
+	    p.setPaciente_id(idPaciente);
+
 	    p.setFecha(Util.dateToIsoString(Date.from(Instant.now())));
 
 	    p.setHora(Util.dateToIsoHour(Date.from(Instant.now())));
 
 	    pM.addPrescripcion(p);
-	    JOptionPane.showMessageDialog(pV, "Prescripción añadida correctamente");
+	    JOptionPane.showMessageDialog(pV, "Prescripción asignada correctamente");
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
-	cargarPrescripciones();
     }
 
     private void cargarPrescripciones() {
@@ -147,6 +161,7 @@ public class PrescripcionesControlador {
 	    mapTable.put(fila, p);
 	    pV.getModeloTablaPrescripciones().addRow(new Object[] { p.getNombre(), p.getIndicaciones(), p.getCantidad(),
 		    p.getIntervalo(), p.getDuracion() });
+	    fila++;
 	}
 
 	pV.getTable().setModel(pV.getModeloTablaPrescripciones());
