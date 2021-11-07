@@ -133,7 +133,6 @@ public class PrescripcionesControlador {
 
     private void asignarPrescripcion() {
 	PrescripcionRecord p = mapTable.get(pV.getTable().getSelectedRow());
-	;
 
 	try {
 	    p.setPaciente_id(idPaciente);
