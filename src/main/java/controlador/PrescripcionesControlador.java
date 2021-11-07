@@ -1,7 +1,7 @@
 package controlador;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-import dtos.PrescripcionDto;
 import modelo.PrescripcionesModelo;
+import records.PrescripcionRecord;
 import util.NoEditableTableModel;
 import util.SwingUtil;
+import util.Util;
 import vista.PrescripcionesVista;
 
 public class PrescripcionesControlador {
@@ -23,7 +24,7 @@ public class PrescripcionesControlador {
     private PrescripcionesVista pV;
     private PrescripcionesModelo pM;
     private int idPaciente;
-    private Map<Integer, PrescripcionDto> mapTable;
+    private Map<Integer, PrescripcionRecord> mapTable;
 
     public PrescripcionesControlador(int idPaciente) {
 	pV = new PrescripcionesVista();
@@ -32,25 +33,59 @@ public class PrescripcionesControlador {
     }
 
     public void inicializar() {
-	pV.setLocationRelativeTo(null);
-	pV.setVisible(true);
+
 	cargarPrescripciones();
+	habilitarMedicamento();
+	checkAddButton();
 
 	pV.getBtnNewButton_1().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addPrescripcion()));
 
-	pV.getTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+	pV.getTextFieldNombre().getDocument().addDocumentListener(new DocumentListener() {
 
 	    @Override
-	    public void valueChanged(ListSelectionEvent e) {
+	    public void removeUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+
+	    @Override
+	    public void insertUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+
+	    @Override
+	    public void changedUpdate(DocumentEvent e) {
 		checkAddButton();
 	    }
 	});
 
-	pV.getChckbxMedicamento().addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
+	pV.getIndicacionesTextPane().getDocument().addDocumentListener(new DocumentListener() {
+
+	    @Override
+	    public void removeUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+
+	    @Override
+	    public void insertUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+
+	    @Override
+	    public void changedUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+	});
+
+	pV.getChckbxMedicamento().addItemListener(new ItemListener() {
+
+	    @Override
+	    public void itemStateChanged(ItemEvent e) {
 		habilitarMedicamento();
 	    }
 	});
+
+	pV.setLocationRelativeTo(null);
+	pV.setVisible(true);
     }
 
     private void habilitarMedicamento() {
@@ -68,16 +103,18 @@ public class PrescripcionesControlador {
     }
 
     private void addPrescripcion() {
-	PrescripcionDto p;
+	PrescripcionRecord p;
 
 	try {
-	    p = new PrescripcionDto();
+	    p = new PrescripcionRecord();
+
+	    p.setNombre(pV.getTextFieldNombre().getText());
 
 	    p.setPaciente_id(idPaciente);
 
 	    p.setIndicaciones(pV.getIndicacionesTextPane().getText());
 
-	    p.setMedicamento(false);
+	    p.setMedicamento(pV.getChckbxMedicamento().isSelected());
 
 	    p.setCantidad(pV.getTextField_Cantidad().getText());
 
@@ -85,14 +122,16 @@ public class PrescripcionesControlador {
 
 	    p.setDuracion(pV.getTextField_Duracion().getText());
 
-	    p.setFecha(Date.from(Instant.now()));
+	    p.setFecha(Util.dateToIsoString(Date.from(Instant.now())));
+
+	    p.setHora(Util.dateToIsoHour(Date.from(Instant.now())));
 
 	    pM.addPrescripcion(p);
 	    JOptionPane.showMessageDialog(pV, "Prescripción añadida correctamente");
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
-
+	cargarPrescripciones();
     }
 
     private void cargarPrescripciones() {
@@ -101,14 +140,16 @@ public class PrescripcionesControlador {
 	pV.setModeloTablaPrescripciones(new NoEditableTableModel(
 		new String[] { "Nombre", "Indicaciones", "Cantidad", "Intervalo", "Duración" }, 0));
 
-	List<PrescripcionDto> lM = pM.getListaPrescripciones();
+	List<PrescripcionRecord> lM = pM.getListaPrescripcionesNoRepetidas();
 	mapTable = new HashMap<>();
 
-	for (PrescripcionDto p : lM) {
+	for (PrescripcionRecord p : lM) {
 	    mapTable.put(fila, p);
 	    pV.getModeloTablaPrescripciones().addRow(new Object[] { p.getNombre(), p.getIndicaciones(), p.getCantidad(),
 		    p.getIntervalo(), p.getDuracion() });
 	}
+
+	pV.getTable().setModel(pV.getModeloTablaPrescripciones());
     }
 
 }

@@ -96,19 +96,16 @@ public class PrescripcionesVista extends JDialog {
 	contentPane.add(lblDuracin);
 
 	textField_Cantidad = new JTextField();
-	textField_Cantidad.setEnabled(false);
 	textField_Cantidad.setColumns(10);
 	textField_Cantidad.setBounds(554, 80, 260, 20);
 	contentPane.add(textField_Cantidad);
 
 	textField_Intervalo = new JTextField();
-	textField_Intervalo.setEnabled(false);
 	textField_Intervalo.setColumns(10);
 	textField_Intervalo.setBounds(554, 105, 260, 20);
 	contentPane.add(textField_Intervalo);
 
 	textField_Duracion = new JTextField();
-	textField_Duracion.setEnabled(false);
 	textField_Duracion.setColumns(10);
 	textField_Duracion.setBounds(554, 130, 260, 20);
 	contentPane.add(textField_Duracion);
