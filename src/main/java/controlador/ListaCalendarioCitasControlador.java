@@ -3,7 +3,6 @@ package controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -27,7 +26,6 @@ public class ListaCalendarioCitasControlador {
     private ListaCalendarioCitasVista lccv;
     private CitaModelo cm;
     private PacienteModelo pm;
-    private RegistroModelo log = new RegistroModelo();
     private int idMedico;
     List<CitaDto> citas;
     PacienteControlador pc = new PacienteControlador(new PacienteModelo(), new AppointmentView());
@@ -44,8 +42,7 @@ public class ListaCalendarioCitasControlador {
     }
 
     public void inicializarVistaListaCalendarioCitas() {
-	log.addRegistro(
-		new RegistroDto("Médico " + idMedico, "Consulta calendario de citas", Date.from(Instant.now())));
+	RegistroModelo.addRegistro(new RegistroDto("Médico " + idMedico, "Consulta calendario de citas"));
 	lccv.setVisible(true);
     }
 

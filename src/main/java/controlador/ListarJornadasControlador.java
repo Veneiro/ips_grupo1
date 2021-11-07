@@ -19,7 +19,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import dtos.JornadaLaboralDto;
+import dtos.RegistroDto;
 import modelo.JornadaModelo;
+import modelo.RegistroModelo;
 import records.JornadaLaboralRecord;
 import records.RecordAssembler;
 import util.NoEditableTableModel;
@@ -43,6 +45,7 @@ public class ListarJornadasControlador {
     }
 
     public void inicializar() {
+
 	cargarListaJornadas();
 
 	listaJornadasVista.getTextFieldTrabajador().getDocument().addDocumentListener(new DocumentListener() {
@@ -135,6 +138,8 @@ public class ListarJornadasControlador {
 
 	    }
 	});
+
+	RegistroModelo.addRegistro(new RegistroDto("Administrativo", "Consulta lista de jornadas"));
 
 	listaJornadasVista.setVisible(true);
     }
@@ -237,6 +242,8 @@ public class ListarJornadasControlador {
 		    || (j.getDia_comienzo().equals(j.getDia_fin()) && j.getHora_salida().before(j.getHora_entrada())))
 		JOptionPane.showMessageDialog(modificarVista, "La fecha de comienzo debe ser anterior a la de fin.");
 	    else {
+		RegistroModelo.addRegistro(new RegistroDto("Administrativo", "Actualiza jornada" + idJornada));
+
 		modelo_jornada.updateJornada(idJornada, j);
 		JOptionPane.showMessageDialog(modificarVista, "Jornada actualizada correctamente.");
 	    }

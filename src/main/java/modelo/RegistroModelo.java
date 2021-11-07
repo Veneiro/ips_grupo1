@@ -8,9 +8,9 @@ import util.Database;
 
 public class RegistroModelo {
 
-    private Database db = new Database();
+    private static Database db = new Database();
 
-    public void addRegistro(RegistroDto r) {
+    public static void addRegistro(RegistroDto r) {
 	String sql = "INSERT INTO TREGISTRO (QUIEN, QUE, FECHA, HORA) values (?,?,?,?)";
 
 	db.executeUpdate(sql, r.getQuien(), r.getQue(), util.Util.dateToIsoString(r.getFecha()),
