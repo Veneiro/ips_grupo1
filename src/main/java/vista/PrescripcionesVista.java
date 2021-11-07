@@ -61,7 +61,8 @@ public class PrescripcionesVista extends JDialog {
 	setContentPane(contentPane);
 	contentPane.setLayout(null);
 
-	modeloTablaPrescripciones = new NoEditableTableModel(new String[] { "Nombre" }, 0);
+	modeloTablaPrescripciones = new NoEditableTableModel(
+		new String[] { "Nombre", "Indicaciones", "Cantidad", "Intervalo", "Duración" }, 0);
 	table = new JTable(modeloTablaPrescripciones);
 	table.setFillsViewportHeight(true);
 	table.setBorder(new LineBorder(new Color(0, 0, 0)));
