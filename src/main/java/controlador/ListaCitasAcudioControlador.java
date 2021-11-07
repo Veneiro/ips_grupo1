@@ -45,8 +45,8 @@ public class ListaCitasAcudioControlador {
 					int acudio = Integer.valueOf(lcv.getTableCitas()
 							.getValueAt(lcv.getTableCitas().getSelectedRow(), 6).toString());
 					if (acudio == 0) {
-						cm.updateAcudio(Integer.valueOf(lcv.getTableCitas()
-								.getValueAt(lcv.getTableCitas().getSelectedRow(), 0).toString()));
+						//cm.updateAcudio(Integer.valueOf(lcv.getTableCitas()
+							//	.getValueAt(lcv.getTableCitas().getSelectedRow(), 0).toString()));
 						JOptionPane.showMessageDialog(null, "La actualización " + "se ha realizado correctamente");
 						cargarListaCitas(1);
 					} else {

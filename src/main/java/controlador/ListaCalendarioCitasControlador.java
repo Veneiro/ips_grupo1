@@ -48,15 +48,7 @@ public class ListaCalendarioCitasControlador {
 		SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy");
 		Date date = new Date(System.currentTimeMillis());
 		cargarCalendarioCitas(formatter.format(date), idMedico);
-		lccv.getBtnHistorial().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				HistorialControlador  hc = new HistorialControlador(new HistorialModelo(), new HistorialesVista(), idMedico);
-				hc.inicializar();
-			}
-			
-		});
+		
 		lccv.getBtnBuscar().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
