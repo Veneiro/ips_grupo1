@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
+import dtos.MedicamentoDto;
+import dtos.PrescripcionDto;
 import records.PrescripcionRecord;
 import util.Database;
 import util.Util;
@@ -29,9 +31,19 @@ public class PrescripcionesModelo {
 
     public void addPrescripcion(PrescripcionRecord p) {
 	String sql = "INSERT INTO TPRESCRIPCIONES(NOMBRE, PACIENTE_ID, INDICACIONES, MEDICAMENTO, CANTIDAD, INTERVALO, DURACION, FECHA, HORA) values (?,?,?,?,?,?,?,?,?)";
-
 	db.executeUpdate(sql, p.getNombre(), p.getPaciente_id(), p.getIndicaciones(), p.isMedicamento(),
-		p.getCantidad(), p.getIntervalo(), p.getDuracion(), Util.dateToIsoString(Date.from(Instant.now())),
-		Util.dateToIsoHour(Date.from(Instant.now())));
-    }
+			p.getCantidad(), p.getIntervalo(), p.getDuracion(), Util.dateToIsoString(Date.from(Instant.now())),
+			Util.dateToIsoHour(Date.from(Instant.now())));
+	}
+	public void addMedicamento(MedicamentoDto m) {
+		String sql = "INSERT INTO TMEDICAMENTOS (NOMBRE) values (?)";
+
+		db.executeUpdate(sql, m.getNombre());
+	}
+	
+	public List<PrescripcionDto> getPrescripcionesById(int id){
+		String sql = "SELECT * FROM TPrescripciones p where p.id = " + id;
+		return db.executeQueryPojo(PrescripcionDto.class, sql);
+	}
+	
 }
