@@ -53,7 +53,7 @@ public class AdminVista {
 	frmIhospitalMain = new JFrame();
 	frmIhospitalMain.setTitle("iHospital : Main Window");
 	frmIhospitalMain.setBounds(100, 100, 453, 306);
-	frmIhospitalMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frmIhospitalMain.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	frmIhospitalMain.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 	frmIhospitalMain.setLocationRelativeTo(null);
 	JLabel lblNewLabel = new JLabel("Administrativo");
@@ -87,6 +87,16 @@ public class AdminVista {
 	    }
 	});
 	frmIhospitalMain.getContentPane().add(btnListarJornadas);
+
+	frmIhospitalMain.getContentPane().add(btnAsignarJornada);
+	
+	JButton btnComprobarCitas = new JButton("Comprobar Citas Creadas");
+	btnComprobarCitas.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	});
+	frmIhospitalMain.getContentPane().add(btnComprobarCitas);
 
 	frmIhospitalMain.getContentPane().add(btnAsignarJornada);
 

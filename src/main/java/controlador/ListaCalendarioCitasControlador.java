@@ -13,6 +13,8 @@ import dtos.CitaDto;
 import dtos.PacienteDto;
 import modelo.CitaModelo;
 import modelo.PacienteModelo;
+import util.SwingUtil;
+import vista.AppointmentView;
 import vista.ListaCalendarioCitasVista;
 
 public class ListaCalendarioCitasControlador {
@@ -21,6 +23,9 @@ public class ListaCalendarioCitasControlador {
 	private CitaModelo cm;
 	private PacienteModelo pm;
 	private int idMedico;
+	List<CitaDto> citas;
+	PacienteControlador pc = new PacienteControlador(new PacienteModelo(), new AppointmentView());
+	PacienteDto p = new PacienteDto();
 	
 	public ListaCalendarioCitasControlador(ListaCalendarioCitasVista lccv, CitaModelo cm, PacienteModelo pm
 											, int idMedico) {
@@ -49,13 +54,15 @@ public class ListaCalendarioCitasControlador {
 				
 			}
 		});
+		lccv.getBtnGestionarCita().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> pc.initialize(citas.get(lccv.getTable().getSelectedRow()), p.getNombre())));
 	}
 	
 	private void cargarCalendarioCitas(String fecha, int idMedico) {
 		
-		List<CitaDto> citas = cm.getCitasFecha(fecha, idMedico);
+		citas = cm.getCitasFecha(fecha, idMedico);
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
-	    String header[] = new String[] { "Nombre", "Fecha", "Hora Inicio", "Hora fin",
+	    String header[] = new String[] { "Id Cita", "Nombre", "Fecha", "Hora Inicio", "Hora fin",
 	    									"Informacion", "Acudio" };
 	    dm.setColumnIdentifiers(header);
 	    
@@ -63,7 +70,9 @@ public class ListaCalendarioCitasControlador {
 		for (CitaDto c : citas) {
 			PacienteDto p = pm.getPacienteById(c.getId_paciente()).get(0);
 			Vector<Object> data = new Vector<Object>();
+			data.add(c.getId());
 	        data.add(p.getNombre());
+	        this.p.setNombre(p.getNombre());
 	        data.add(c.getFecha());
 	        data.add(c.getHorario_inicio());
 	        data.add(c.getHorario_fin());

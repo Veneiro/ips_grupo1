@@ -1,5 +1,7 @@
 package controlador;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -13,10 +15,12 @@ public class PrescripcionesControlador {
 
     private PrescripcionesVista pV;
     private PrescripcionesModelo pM;
+    private int idPaciente;
 
-    public PrescripcionesControlador() {
+    public PrescripcionesControlador(int idPaciente) {
 	pV = new PrescripcionesVista();
 	pM = new PrescripcionesModelo();
+	this.idPaciente = idPaciente;
     }
 
     public void inicializar() {
@@ -34,6 +38,8 @@ public class PrescripcionesControlador {
 	try {
 	    p = new PrescripcionDto();
 
+	    p.setPaciente_id(idPaciente);
+
 	    p.setIndicaciones(pV.getIndicacionesTextPane().getText());
 
 	    p.setMedicamento(false);
@@ -43,6 +49,8 @@ public class PrescripcionesControlador {
 	    p.setIntervalo(pV.getTextField_Intervalo().getText());
 
 	    p.setDuracion(pV.getTextField_Duracion().getText());
+
+	    p.setFecha(Date.from(Instant.now()));
 
 	    pM.addPrescripcion(p);
 	    JOptionPane.showMessageDialog(pV, "Prescripción añadida correctamente");
