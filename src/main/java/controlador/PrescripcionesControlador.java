@@ -36,7 +36,7 @@ public class PrescripcionesControlador {
 
 	    p.setIndicaciones(pV.getIndicacionesTextPane().getText());
 
-	    // p.setMedicamento(false);
+	    p.setMedicamento(false);
 
 	    p.setCantidad(pV.getTextField_Cantidad().getText());
 
