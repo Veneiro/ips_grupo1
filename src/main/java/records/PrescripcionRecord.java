@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PrescripcionRecord {
 
-    private int id, paciente_id;
+    private Integer id, paciente_id;
     private boolean medicamento;
     private String nombre, indicaciones, cantidad, intervalo, duracion;
     private String fecha, hora;
