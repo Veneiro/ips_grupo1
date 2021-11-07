@@ -91,7 +91,7 @@ public class HistorialAdminControlador {
 		for (PrescripcionDto prescripcion : prescripciones) {
 			data = new Vector<Object>();
 			data.add(prescripcion.getIndicaciones());
-			data.add(prescripcion.getMedicamento());
+			data.add(prescripcion.getNombre());
 			data.add(prescripcion.getCantidad());
 			data.add(prescripcion.getIntervalo());
 			data.add(prescripcion.getDuracion());
