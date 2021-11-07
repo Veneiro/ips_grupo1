@@ -14,6 +14,11 @@ public class PrescripcionesModelo {
 	return db.executeQueryPojo(PrescripcionRecord.class, sql);
     }
 
+    public List<PrescripcionRecord> findByPacienteId(int idPaciente) {
+	String sql = "SELECT * FROM TPRESCRIPCIONES WHERE PACIENTE_ID = ?";
+	return db.executeQueryPojo(PrescripcionRecord.class, sql, idPaciente);
+    }
+
     public List<PrescripcionRecord> getListaPrescripcionesNoRepetidas() {
 	String sql = "SELECT DISTINCT NOMBRE, INDICACIONES, CANTIDAD, INTERVALO, DURACION FROM TPRESCRIPCIONES ORDER BY NOMBRE";
 	return db.executeQueryPojo(PrescripcionRecord.class, sql);
