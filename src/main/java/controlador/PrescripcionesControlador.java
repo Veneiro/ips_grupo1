@@ -1,78 +1,155 @@
 package controlador;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-import dtos.MedicamentoDto;
-import dtos.PrescripcionDto;
 import modelo.PrescripcionesModelo;
+import records.PrescripcionRecord;
+import util.NoEditableTableModel;
 import util.SwingUtil;
+import util.Util;
 import vista.PrescripcionesVista;
 
 public class PrescripcionesControlador {
 
-	private PrescripcionesVista pV;
-	private PrescripcionesModelo pM;
+    private PrescripcionesVista pV;
+    private PrescripcionesModelo pM;
+    private int idPaciente;
+    private Map<Integer, PrescripcionRecord> mapTable;
 
-	public PrescripcionesControlador() {
-		pV = new PrescripcionesVista();
-		pM = new PrescripcionesModelo();
+    public PrescripcionesControlador(int idPaciente) {
+	pV = new PrescripcionesVista();
+	pM = new PrescripcionesModelo();
+	this.idPaciente = idPaciente;
+    }
+
+    public void inicializar() {
+
+	cargarPrescripciones();
+	habilitarMedicamento();
+	checkAddButton();
+
+	pV.getBtnNewButton_1().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addPrescripcion()));
+
+	pV.getTextFieldNombre().getDocument().addDocumentListener(new DocumentListener() {
+
+	    @Override
+	    public void removeUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+
+	    @Override
+	    public void insertUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+
+	    @Override
+	    public void changedUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+	});
+
+	pV.getIndicacionesTextPane().getDocument().addDocumentListener(new DocumentListener() {
+
+	    @Override
+	    public void removeUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+
+	    @Override
+	    public void insertUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+
+	    @Override
+	    public void changedUpdate(DocumentEvent e) {
+		checkAddButton();
+	    }
+	});
+
+	pV.getChckbxMedicamento().addItemListener(new ItemListener() {
+
+	    @Override
+	    public void itemStateChanged(ItemEvent e) {
+		habilitarMedicamento();
+	    }
+	});
+
+	pV.setLocationRelativeTo(null);
+	pV.setVisible(true);
+    }
+
+    private void habilitarMedicamento() {
+	boolean check = pV.getChckbxMedicamento().isSelected();
+	pV.getTextField_Cantidad().setEnabled(check);
+	pV.getTextField_Intervalo().setEnabled(check);
+	pV.getTextField_Duracion().setEnabled(check);
+    }
+
+    private void checkAddButton() {
+	if (pV.getTextFieldNombre().getText().isEmpty() || pV.getIndicacionesTextPane().getText().isEmpty())
+	    pV.getBtnNewButton_1().setEnabled(false);
+	else
+	    pV.getBtnNewButton_1().setEnabled(true);
+    }
+
+    private void addPrescripcion() {
+	PrescripcionRecord p;
+
+	try {
+	    p = new PrescripcionRecord();
+
+	    p.setNombre(pV.getTextFieldNombre().getText());
+
+	    p.setPaciente_id(idPaciente);
+
+	    p.setIndicaciones(pV.getIndicacionesTextPane().getText());
+
+	    p.setMedicamento(pV.getChckbxMedicamento().isSelected());
+
+	    p.setCantidad(pV.getTextField_Cantidad().getText());
+
+	    p.setIntervalo(pV.getTextField_Intervalo().getText());
+
+	    p.setDuracion(pV.getTextField_Duracion().getText());
+
+	    p.setFecha(Util.dateToIsoString(Date.from(Instant.now())));
+
+	    p.setHora(Util.dateToIsoHour(Date.from(Instant.now())));
+
+	    pM.addPrescripcion(p);
+	    JOptionPane.showMessageDialog(pV, "Prescripción añadida correctamente");
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	cargarPrescripciones();
+    }
+
+    private void cargarPrescripciones() {
+	int fila = 0;
+
+	pV.setModeloTablaPrescripciones(new NoEditableTableModel(
+		new String[] { "Nombre", "Indicaciones", "Cantidad", "Intervalo", "Duración" }, 0));
+
+	List<PrescripcionRecord> lM = pM.getListaPrescripcionesNoRepetidas();
+	mapTable = new HashMap<>();
+
+	for (PrescripcionRecord p : lM) {
+	    mapTable.put(fila, p);
+	    pV.getModeloTablaPrescripciones().addRow(new Object[] { p.getNombre(), p.getIndicaciones(), p.getCantidad(),
+		    p.getIntervalo(), p.getDuracion() });
 	}
 
-	public void inicializar() {
-		pV.setLocationRelativeTo(null);
-		pV.setVisible(true);
-		cargarMedicamentos();
-
-		pV.getBtnNuevoMedicamento().addActionListener(e -> SwingUtil.exceptionWrapper(() -> nuevoMedicamento()));
-
-		pV.getBtnNewButton_1().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addPrescripcion()));
-
-	}
-
-	private void nuevoMedicamento() {
-		String nombre = JOptionPane.showInputDialog("Introduzca el nombre del medicamento");
-		MedicamentoDto m = new MedicamentoDto(nombre);
-		pM.addMedicamento(m);
-		cargarMedicamentos();
-	}
-
-	private void addPrescripcion() {
-		PrescripcionDto p;
-
-		try {
-			p = new PrescripcionDto();
-
-			p.setIndicaciones(pV.getIndicacionesTextPane().getText());
-
-			if (pV.getTable().isColumnSelected(0) && pV.getTable().getValueAt(pV.getTable().getSelectedRow(),
-					pV.getTable().getSelectedColumn()) != null)
-				p.setMedicamento(pV.getTable()
-						.getValueAt(pV.getTable().getSelectedRow(), pV.getTable().getSelectedColumn()).toString());
-			else {
-				p.setMedicamento(null);
-			}
-
-			p.setCantidad(pV.getTextField_Cantidad().getText());
-
-			p.setIntervalo(pV.getTextField_Intervalo().getText());
-
-			p.setDuracion(pV.getTextField_Duracion().getText());
-
-			pM.addPrescripcion(p);
-			JOptionPane.showMessageDialog(pV, "Prescripción añadida correctamente");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private void cargarMedicamentos() {
-		List<MedicamentoDto> lM = pM.getListaMedicamentos();
-		for (int i = 0; i < lM.size(); i++) {
-			pV.getTable().getModel().setValueAt(lM.get(i).getNombre(), i, 0);
-		}
-	}
+	pV.getTable().setModel(pV.getModeloTablaPrescripciones());
+    }
 
 }
