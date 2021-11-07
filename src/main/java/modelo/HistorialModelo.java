@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.List;
 
+import dtos.DiagnosticoDto;
 import dtos.HistorialDto;
 import util.Database;
 
@@ -30,7 +31,12 @@ public class HistorialModelo {
 	}
 	
 	public List<Object[]> getMasComunDiagnostico(){
-		String sql = "Select MAX(contador) FROM (Select count(diagnostico) from THistoriales)";
+		String sql = "Select MAX(contador) FROM (Select count(diagnostico) from TDiagnosticos)";
 		return db.executeQueryArray(sql);
+	}
+	
+	public List<DiagnosticoDto> getAllDiagnosticos(){
+		String sql = "Select * From TDiagnosticos";
+		return db.executeQueryPojo(DiagnosticoDto.class, sql);
 	}
 }
