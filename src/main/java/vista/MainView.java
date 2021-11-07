@@ -8,8 +8,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import controlador.EstadisticasGerenteControlador;
 import controlador.ListaCalendarioCitasControlador;
 import modelo.CitaModelo;
+import modelo.HistorialModelo;
 import modelo.PacienteModelo;
 
 public class MainView {
@@ -46,7 +48,7 @@ public class MainView {
     private void initialize() {
 	frame = new JFrame();
 	frame.setResizable(false);
-	frame.setBounds(100, 100, 533, 366);
+	frame.setBounds(100, 100, 533, 500);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.getContentPane().setLayout(null);
 
@@ -76,5 +78,17 @@ public class MainView {
 	});
 	btnAdmin.setBounds(10, 54, 495, 85);
 	frame.getContentPane().add(btnAdmin);
+	
+	JButton btnGerente = new JButton("Gerente");
+	btnGerente.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			EstadisticasGerenteControlador egc = new EstadisticasGerenteControlador(new HistorialModelo()
+					, new CitaModelo(), new PacienteModelo(), new EstadisticasGerenteVista());
+			egc.inicilizar();
+		}
+	});
+	btnGerente.setBounds(10, 327, 495, 85);
+	frame.getContentPane().add(btnGerente);
     }
 }

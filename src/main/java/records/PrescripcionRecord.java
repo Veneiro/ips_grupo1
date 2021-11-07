@@ -1,6 +1,4 @@
-package dtos;
-
-import java.util.Date;
+package records;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PrescripcionDto {
+public class PrescripcionRecord {
 
     private int id, paciente_id;
     private boolean medicamento;
     private String nombre, indicaciones, cantidad, intervalo, duracion;
-    private Date fecha;
+    private String fecha, hora;
+
 }
