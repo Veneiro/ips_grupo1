@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import dtos.CauseDto;
 import dtos.CitaDto;
+import dtos.RegistroDto;
 import lombok.Getter;
 import lombok.Setter;
 import modelo.CauseModel;
@@ -16,6 +17,7 @@ import modelo.CitaModelo;
 import modelo.HistorialModelo;
 import modelo.MedicoModelo;
 import modelo.PacienteModelo;
+import modelo.RegistroModelo;
 import util.SwingUtil;
 import vista.AddCauseView;
 import vista.AppointmentView;
@@ -79,6 +81,8 @@ public class PacienteControlador {
 		ctm.updateAcudio(cita.getId(), "Acudio");
 		JOptionPane.showMessageDialog(null, "La actualización " + "se ha realizado correctamente");
 		cita.setAcudio("Acudió");
+		RegistroModelo.addRegistro(new RegistroDto("Médico " + cita.getId_medico(),
+			"Indica que el paciente " + cita.getId_paciente() + " acudió a la cita " + cita.getId()));
 	    }
 
 	});
@@ -90,6 +94,8 @@ public class PacienteControlador {
 		ctm.updateAcudio(cita.getId(), "No Acudio");
 		JOptionPane.showMessageDialog(null, "La actualización " + "se ha realizado correctamente");
 		cita.setAcudio("No acudió");
+		RegistroModelo.addRegistro(new RegistroDto("Médico " + cita.getId_medico(),
+			"Indica que el paciente " + cita.getId_paciente() + " no acudió a la cita " + cita.getId()));
 	    }
 
 	});
@@ -103,7 +109,8 @@ public class PacienteControlador {
     }
 
     private void addPrescripcion() {
-	PrescripcionesControlador controller = new PrescripcionesControlador(cita.getId_paciente());
+	PrescripcionesControlador controller = new PrescripcionesControlador(cita.getId_paciente(),
+		cita.getId_medico());
 	controller.inicializar();
 	updateList();
     }

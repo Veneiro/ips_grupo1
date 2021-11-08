@@ -25,14 +25,16 @@ public class PrescripcionesControlador {
 
     private PrescripcionesVista pV;
     private PrescripcionesModelo pM;
-    private int idPaciente;
+    private int idPaciente, idMedico;
     private Map<Integer, PrescripcionRecord> mapTable;
 
-    public PrescripcionesControlador(int idPaciente) {
+    public PrescripcionesControlador(int idPaciente, int idMedico) {
 	pV = new PrescripcionesVista();
 	pM = new PrescripcionesModelo();
 	if (idPaciente > 0)
 	    this.idPaciente = idPaciente;
+	if (idMedico > 0)
+	    this.idMedico = idMedico;
     }
 
     public void inicializar() {
@@ -125,7 +127,7 @@ public class PrescripcionesControlador {
 
 	    p.setDuracion(pV.getTextField_Duracion().getText());
 
-	    RegistroModelo.addRegistro(new RegistroDto("Médico X", "Crea prescripción " + p.getNombre()));
+	    RegistroModelo.addRegistro(new RegistroDto("Médico " + idMedico, "Crea prescripción " + p.getNombre()));
 
 	    pM.addPrescripcion(p);
 	    JOptionPane.showMessageDialog(pV, "Prescripción añadida correctamente, no olvide asignarla.");
@@ -145,7 +147,7 @@ public class PrescripcionesControlador {
 
 	    p.setHora(Util.dateToIsoHour(Date.from(Instant.now())));
 
-	    RegistroModelo.addRegistro(new RegistroDto("Médico X", "Asigna prescripción: " + p.getId()));
+	    RegistroModelo.addRegistro(new RegistroDto("Médico " + idMedico, "Asigna prescripción: " + p.getId()));
 
 	    pM.addPrescripcion(p);
 	    JOptionPane.showMessageDialog(pV, "Prescripción asignada correctamente");
