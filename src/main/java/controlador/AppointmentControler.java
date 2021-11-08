@@ -3,7 +3,9 @@ package controlador;
 import javax.swing.DefaultListModel;
 
 import dtos.CauseDto;
+import dtos.RegistroDto;
 import modelo.CauseModel;
+import modelo.RegistroModelo;
 import util.SwingUtil;
 import vista.AddCauseView;
 import vista.NonExistenceView;
@@ -64,6 +66,7 @@ public class AppointmentControler {
 	String DATE = day + " / " + month + " / " + year;
 	cdto.setDATE(DATE);
 	cdto.setID(id);
+	RegistroModelo.addRegistro(new RegistroDto("Médico X", "Añade causa id: " + cdto.getID()));
 	modelo_causa.insertCause(cdto);
 	vista_causa.setVisible(false);
     }

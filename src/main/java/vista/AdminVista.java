@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import controlador.JornadasControlador;
 import controlador.ListaCalendarioCitasAdminControlador;
 import controlador.ListarJornadasControlador;
+import controlador.RegistroControlador;
 import logic.Admin;
 import logic.CrearCitas;
 import modelo.CitaModelo;
@@ -52,7 +53,7 @@ public class AdminVista {
     private void initialize() {
 	frmIhospitalMain = new JFrame();
 	frmIhospitalMain.setTitle("iHospital : Main Window");
-	frmIhospitalMain.setBounds(100, 100, 453, 306);
+	frmIhospitalMain.setBounds(100, 100, 453, 319);
 	frmIhospitalMain.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	frmIhospitalMain.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 	frmIhospitalMain.setLocationRelativeTo(null);
@@ -89,12 +90,12 @@ public class AdminVista {
 	frmIhospitalMain.getContentPane().add(btnListarJornadas);
 
 	frmIhospitalMain.getContentPane().add(btnAsignarJornada);
-	
+
 	JButton btnComprobarCitas = new JButton("Comprobar Citas Creadas");
 	btnComprobarCitas.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			
-		}
+	    public void actionPerformed(ActionEvent e) {
+
+	    }
 	});
 	frmIhospitalMain.getContentPane().add(btnComprobarCitas);
 
@@ -109,5 +110,14 @@ public class AdminVista {
 	    }
 	});
 	frmIhospitalMain.getContentPane().add(btnCalendarioCitas);
+
+	JButton btnRegistro = new JButton("Registro");
+	btnRegistro.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		RegistroControlador controller = new RegistroControlador();
+		controller.inicializar();
+	    }
+	});
+	frmIhospitalMain.getContentPane().add(btnRegistro);
     }
 }

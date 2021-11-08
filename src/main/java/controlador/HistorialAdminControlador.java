@@ -11,11 +11,13 @@ import dtos.DiagnosticoDto;
 import dtos.HistorialDto;
 import dtos.MedicoDto;
 import dtos.PacienteDto;
+import dtos.RegistroDto;
 import modelo.DiagnosticoModelo;
 import modelo.HistorialModelo;
 import modelo.MedicoModelo;
 import modelo.PacienteModelo;
 import modelo.PrescripcionesModelo;
+import modelo.RegistroModelo;
 import records.PrescripcionRecord;
 import vista.HistorialesAdminVista;
 
@@ -42,6 +44,7 @@ public class HistorialAdminControlador {
     }
 
     private void inicializarVistaHistorial() {
+	RegistroModelo.addRegistro(new RegistroDto("Administrativo", "Consulta historial"));
 	hv.setVisible(true);
     }
 
@@ -101,7 +104,7 @@ public class HistorialAdminControlador {
 	    data.add(prescripcion.getIntervalo());
 	    data.add(prescripcion.getDuracion());
 	    data.add(prescripcion.getFecha());
-	    
+
 	    dm.addRow(data);
 	}
 
