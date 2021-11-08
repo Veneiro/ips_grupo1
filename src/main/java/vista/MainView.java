@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import controlador.EstadisticasGerenteControlador;
 import controlador.ListaCalendarioCitasControlador;
+import controlador.MedicoCrearCitasControlador;
 import modelo.CitaModelo;
 import modelo.HistorialModelo;
 import modelo.PacienteModelo;
@@ -60,7 +61,7 @@ public class MainView {
 		if (idMedico != null) {
 		    ListaCalendarioCitasControlador controller = new ListaCalendarioCitasControlador(
 			    new ListaCalendarioCitasVista(), new CitaModelo(), new PacienteModelo(),
-			    Integer.valueOf(idMedico));
+			    Integer.valueOf(idMedico), new MedicoCrearCitasControlador(new CrearCitaMedicoVista()));
 		    controller.inicializar();
 		}
 

@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import controlador.AdministradorControlador;
 import controlador.JornadasControlador;
 import controlador.ListaCalendarioCitasAdminControlador;
 import controlador.ListarJornadasControlador;
@@ -23,6 +24,7 @@ import modelo.PacienteModelo;
 public class AdminVista {
 
     private JFrame frmIhospitalMain;
+    private AdministradorControlador ac = new AdministradorControlador(new AprobarCitasVista());
 
     /**
      * Launch the application.
@@ -94,7 +96,7 @@ public class AdminVista {
 	JButton btnComprobarCitas = new JButton("Comprobar Citas Creadas");
 	btnComprobarCitas.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
-
+	    	ac.initializeAprobarCitas();
 	    }
 	});
 	frmIhospitalMain.getContentPane().add(btnComprobarCitas);
