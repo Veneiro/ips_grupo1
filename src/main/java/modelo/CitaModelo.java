@@ -14,9 +14,9 @@ public class CitaModelo {
 		return db.executeQueryPojo(CitaDto.class, sql);
 	}
 	
-	public void updateAcudio(int id) {
-		String sql = "UPDATE TCITAS SET acudio = 1 WHERE id = " + id;
-		db.executeUpdate(sql);
+	public void updateAcudio(int id, String texto) {
+		String sql = "UPDATE TCITAS SET acudio = ? WHERE id = " + id;
+		db.executeUpdate(sql, texto);
 	}
 	
 	public List<CitaDto> getListaCitasFecha(String fecha){

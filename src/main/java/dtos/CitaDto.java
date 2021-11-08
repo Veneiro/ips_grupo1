@@ -23,7 +23,7 @@ public class CitaDto {
 	private String contacto;
 	private String fecha;
 	private String informacion;
-	private int acudio;
+	private String acudio;
 	private int id_paciente;
 	private int id_medico;
 	private String especialidad;

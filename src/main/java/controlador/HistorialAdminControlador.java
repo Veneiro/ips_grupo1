@@ -9,9 +9,11 @@ import javax.swing.table.DefaultTableModel;
 
 import dtos.DiagnosticoDto;
 import dtos.HistorialDto;
+import dtos.MedicoDto;
 import dtos.PacienteDto;
 import modelo.DiagnosticoModelo;
 import modelo.HistorialModelo;
+import modelo.MedicoModelo;
 import modelo.PacienteModelo;
 import modelo.PrescripcionesModelo;
 import records.PrescripcionRecord;
@@ -25,6 +27,7 @@ public class HistorialAdminControlador {
     private DiagnosticoModelo dgm;
     private PrescripcionesModelo prm;
     private int idPaciente;
+    private MedicoModelo mm;
 
     public HistorialAdminControlador(HistorialModelo hm, HistorialesAdminVista hv, int idPaciente) {
 	this.hm = hm;
@@ -33,6 +36,7 @@ public class HistorialAdminControlador {
 	this.pm = new PacienteModelo();
 	this.dgm = new DiagnosticoModelo();
 	this.prm = new PrescripcionesModelo();
+	this.mm = new MedicoModelo();
 
 	inicializarVistaHistorial();
     }
@@ -70,7 +74,7 @@ public class HistorialAdminControlador {
 	hv.getTable().setModel(dm);
 
 	dm = new DefaultTableModel(0, 0);
-	header = new String[] { "Diagnostico", "Fecha" };
+	header = new String[] { "Diagnostico", "Fecha", "Medico" };
 	dm.setColumnIdentifiers(header);
 	List<DiagnosticoDto> diagnosticos = dgm.getDiaganosticoByPacienteId(idPaciente);
 	for (DiagnosticoDto diagnostico : diagnosticos) {
@@ -78,6 +82,8 @@ public class HistorialAdminControlador {
 
 	    data.add(diagnostico.getDiagnostico());
 	    data.add(diagnostico.getFecha());
+	    MedicoDto medico = mm.getListaMedicosById(diagnostico.getId_medico()).get(0);
+	    data.add(medico.getNombre());
 	    dm.addRow(data);
 	}
 
@@ -86,7 +92,7 @@ public class HistorialAdminControlador {
 	dm = new DefaultTableModel(0, 0);
 	header = new String[] { "Indicaciones", "Medicamento", "Cantidad", "Intervalo", "Duracion", "Fecha" };
 	dm.setColumnIdentifiers(header);
-	List<PrescripcionRecord> prescripciones = prm.findByPacienteId(historial.get(0).getId_prescripcion());
+	List<PrescripcionRecord> prescripciones = prm.findByPacienteId(idPaciente);
 	for (PrescripcionRecord prescripcion : prescripciones) {
 	    data = new Vector<Object>();
 	    data.add(prescripcion.getIndicaciones());
@@ -95,6 +101,8 @@ public class HistorialAdminControlador {
 	    data.add(prescripcion.getIntervalo());
 	    data.add(prescripcion.getDuracion());
 	    data.add(prescripcion.getFecha());
+	    
+	    dm.addRow(data);
 	}
 
 	hv.getTablePrescriciones().setModel(dm);
