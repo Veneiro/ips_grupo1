@@ -74,7 +74,38 @@ public class AdministradorControlador {
 	}
 
 	private void insertToDB() {
+		for (int i = 0; i < acv.getTable().getHeight(); i++) {
+			if((boolean)acv.getTable().getValueAt(i, 8) == true) {
+				CitaDto cdto = new CitaDto();
+				cdto.setId((int)acv.getTable().getValueAt(i, 0));
+				cdto.setHorario_inicio((String)acv.getTable().getValueAt(i, 1));
+				cdto.setHorario_fin((String)acv.getTable().getValueAt(i, 2));
+				cdto.setUbicacion((String)acv.getTable().getValueAt(i, 3));
+				cdto.setNombre_paciente((String)acv.getTable().getValueAt(i, 4));
+				cdto.setId_paciente(getIdPaciente((String)acv.getTable().getValueAt(i, 4)));
+				cdto.setId_medico(getIdMedico((String)acv.getTable().getValueAt(i, 5)));
+				cm.insertCita(cdto);
+			}
+		}
 		
+	}
+
+	private int getIdMedico(String nombre) {
+		for (MedicoDto medico : mm.getListaMedicos()) {
+			if(medico.getNombre().equals(nombre)) {
+				return medico.getId();
+			}
+		}
+		return -1;
+	}
+
+	private int getIdPaciente(String nombre) {
+		for (PacienteDto paciente : pm.getListaPacientes()) {
+			if(paciente.getNombre().equals(nombre)) {
+				return paciente.getId();
+			}
+		}
+		return -1;
 	}
 
 	public void avisoUrgente(CitaDto cita, String horaEntrada, PacienteDto p) {
