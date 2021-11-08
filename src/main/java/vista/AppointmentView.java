@@ -15,6 +15,8 @@ import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import lombok.Getter;
+@Getter
 @SuppressWarnings({ "serial", "rawtypes" })
 public class AppointmentView extends JDialog {
 
@@ -36,15 +38,18 @@ public class AppointmentView extends JDialog {
     private JScrollPane scrollPane;
     private JLabel lblPaciente;
     private JButton btnAddPrescripcion;
+    private JButton btnHistorial;
+    private JButton btnAcudio;
+    private JButton btnNoAcudio;
 
     /**
      * Create the dialog.
      */
     public AppointmentView() {
 	setTitle("iHospital : Cita");
-	setModal(true);
+	//setModal(true);
 	setResizable(false);
-	setBounds(100, 100, 450, 350);
+	setBounds(100, 100, 450, 423);
 	getContentPane().setLayout(new BorderLayout());
 	contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 	getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -66,6 +71,18 @@ public class AppointmentView extends JDialog {
 	btnAddPrescripcion = new JButton("A\u00F1adir prescripci\u00F3n");
 	btnAddPrescripcion.setBounds(5, 238, 429, 25);
 	contentPanel.add(btnAddPrescripcion);
+	
+	btnHistorial = new JButton("Historial");
+	btnHistorial.setBounds(5, 273, 429, 25);
+	contentPanel.add(btnHistorial);
+	
+	btnAcudio = new JButton("Acudio");
+	btnAcudio.setBounds(5, 308, 214, 25);
+	contentPanel.add(btnAcudio);
+	
+	btnNoAcudio = new JButton("No Acudio");
+	btnNoAcudio.setBounds(220, 308, 214, 25);
+	contentPanel.add(btnNoAcudio);
 	{
 	    JPanel buttonPane = new JPanel();
 	    buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -200,5 +217,4 @@ public class AppointmentView extends JDialog {
     public JButton getBtnAddPrescripcion() {
 	return btnAddPrescripcion;
     }
-
 }

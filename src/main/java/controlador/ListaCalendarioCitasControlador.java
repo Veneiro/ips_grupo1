@@ -12,11 +12,9 @@ import javax.swing.table.DefaultTableModel;
 import dtos.CitaDto;
 import dtos.PacienteDto;
 import modelo.CitaModelo;
-import modelo.HistorialModelo;
 import modelo.PacienteModelo;
 import util.SwingUtil;
 import vista.AppointmentView;
-import vista.HistorialesVista;
 import vista.ListaCalendarioCitasVista;
 
 public class ListaCalendarioCitasControlador {
@@ -48,15 +46,7 @@ public class ListaCalendarioCitasControlador {
 		SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy");
 		Date date = new Date(System.currentTimeMillis());
 		cargarCalendarioCitas(formatter.format(date), idMedico);
-		lccv.getBtnHistorial().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				HistorialControlador  hc = new HistorialControlador(new HistorialModelo(), new HistorialesVista(), idMedico);
-				hc.inicializar();
-			}
-			
-		});
+		
 		lccv.getBtnBuscar().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -74,7 +64,7 @@ public class ListaCalendarioCitasControlador {
 		citas = cm.getCitasFecha(fecha, idMedico);
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
 	    String header[] = new String[] { "Id Cita", "Nombre", "Fecha", "Hora Inicio", "Hora fin",
-	    									"Informacion", "Acudio" };
+	    									"Informacion", "Acudio", "Hora Entrada", "Hora Salida" };
 	    dm.setColumnIdentifiers(header);
 	    
 
@@ -89,6 +79,8 @@ public class ListaCalendarioCitasControlador {
 	        data.add(c.getHorario_fin());
 	        data.add(c.getInformacion());
 	        data.add(c.getAcudio());
+	        data.add(c.getHora_entrada());
+	        data.add(c.getHora_salida());
 			dm.addRow(data);
 		}
 		lccv.getTable().setModel(dm);

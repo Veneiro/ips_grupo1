@@ -100,7 +100,7 @@ public class ListaCalendarioCitasAdminControlador {
 		citas = cm.getAllCitas();
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
 	    String header[] = new String[] { "Nombre", "Fecha", "Hora Inicio", "Hora fin",
-	    		"Informacion", "Acudio" };
+	    		"Informacion", "Acudio", "Hora Entrada", "Hora Salida" };
 	    dm.setColumnIdentifiers(header);
 	    
 
@@ -113,6 +113,8 @@ public class ListaCalendarioCitasAdminControlador {
 	        data.add(c.getHorario_fin());
 	        data.add(c.getInformacion());
 	        data.add(c.getAcudio());
+	        data.add(c.getHora_entrada());
+	        data.add(c.getHora_salida());
 			dm.addRow(data);
 		}
 		lcav.getTableCitas().setModel(dm);
@@ -122,7 +124,7 @@ public class ListaCalendarioCitasAdminControlador {
 		citas = cm.getAllCitasFecha(fecha);
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
 		String header[] = new String[] { "Nombre", "Fecha", "Hora Inicio", "Hora fin",
-	    		"Informacion", "Acudio" };
+	    		"Informacion", "Acudio", "Hora Entrada", "Hora Salida" };
 	    dm.setColumnIdentifiers(header);
 	    
 
@@ -135,6 +137,8 @@ public class ListaCalendarioCitasAdminControlador {
 	        data.add(c.getHorario_fin());
 	        data.add(c.getInformacion());
 	        data.add(c.getAcudio());
+	        data.add(c.getHora_entrada());
+	        data.add(c.getHora_salida());
 			dm.addRow(data);
 		}
 		lcav.getTableCitas().setModel(dm);

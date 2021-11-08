@@ -1,4 +1,4 @@
- package vista;
+package vista;
 
 import java.awt.Font;
 import java.awt.Rectangle;
@@ -33,7 +33,7 @@ public class HistorialesVista extends JFrame {
 	}
 	
 	public void inicializar() {
-		setBounds(new Rectangle(300, 300, 1000, 500));
+		setBounds(new Rectangle(300, 300, 1100, 500));
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -46,11 +46,12 @@ public class HistorialesVista extends JFrame {
 		getContentPane().add(lblHistorial);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setBounds(0, 442, 986, 21);
+		btnSalir.setBounds(0, 442, 1076, 21);
 		getContentPane().add(btnSalir);
 		
 		btnModificar = new JButton("Modificar\r\nDiagnostico");
-		btnModificar.setBounds(911, 22, 75, 419);
+		btnModificar.setHorizontalAlignment(SwingConstants.RIGHT);
+		btnModificar.setBounds(911, 22, 165, 419);
 		getContentPane().add(btnModificar);
 		
 		scrollPaneTabla = new JScrollPane();
