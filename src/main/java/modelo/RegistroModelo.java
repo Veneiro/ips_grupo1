@@ -1,10 +1,12 @@
 package modelo;
 
+import java.util.Date;
 import java.util.List;
 
 import dtos.RegistroDto;
 import records.RegistroRecord;
 import util.Database;
+import util.Util;
 
 public class RegistroModelo {
 
@@ -41,9 +43,15 @@ public class RegistroModelo {
 	return db.executeQueryPojo(RegistroRecord.class, sql, "%" + que + "%");
     }
 
-    public List<RegistroRecord> findByFecha(String fecha) {
-	String sql = "SELECT * FROM TREGISTRO WHERE FECHA LIKE ?";
+    public List<RegistroRecord> findByFecha(Date fecha) {
+	String sql = "SELECT * FROM TREGISTRO WHERE FECHA = ?";
 
-	return db.executeQueryPojo(RegistroRecord.class, sql, "%" + fecha + "%");
+	return db.executeQueryPojo(RegistroRecord.class, sql, Util.dateToIsoString(fecha) + "%");
+    }
+
+    public List<RegistroRecord> findBySearch(String text) {
+	String sql = "SELECT * FROM TREGISTRO WHERE QUIEN LIKE ? OR QUE LIKE ?";
+
+	return db.executeQueryPojo(RegistroRecord.class, sql, "%" + text + "%", "%" + text + "%");
     }
 }
