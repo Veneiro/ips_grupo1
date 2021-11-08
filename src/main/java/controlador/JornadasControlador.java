@@ -17,9 +17,11 @@ import javax.swing.event.ListSelectionListener;
 import dtos.EnfermeroDto;
 import dtos.JornadaLaboralDto;
 import dtos.MedicoDto;
+import dtos.RegistroDto;
 import modelo.EnfermeroModelo;
 import modelo.JornadaModelo;
 import modelo.MedicoModelo;
+import modelo.RegistroModelo;
 import util.NoEditableTableModel;
 import util.SwingUtil;
 import vista.AsignarJornadaVista;
@@ -156,6 +158,8 @@ public class JornadasControlador {
 		    || (j.getDia_comienzo().equals(j.getDia_fin()) && j.getHora_salida().before(j.getHora_entrada())))
 		JOptionPane.showMessageDialog(vista_jornadas, "La fecha de comienzo debe ser anterior a la de fin.");
 	    else {
+		RegistroModelo.addRegistro(new RegistroDto("Administrativo", "Asigna jornada"));
+
 		modelo_jornada.addJornada(j);
 		JOptionPane.showMessageDialog(vista_jornadas, "Jornada añadida correctamente.");
 	    }

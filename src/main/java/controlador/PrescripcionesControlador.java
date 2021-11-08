@@ -12,7 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import dtos.RegistroDto;
 import modelo.PrescripcionesModelo;
+import modelo.RegistroModelo;
 import records.PrescripcionRecord;
 import util.NoEditableTableModel;
 import util.SwingUtil;
@@ -123,6 +125,8 @@ public class PrescripcionesControlador {
 
 	    p.setDuracion(pV.getTextField_Duracion().getText());
 
+	    RegistroModelo.addRegistro(new RegistroDto("Médico X", "Crea prescripción " + p.getNombre()));
+
 	    pM.addPrescripcion(p);
 	    JOptionPane.showMessageDialog(pV, "Prescripción añadida correctamente, no olvide asignarla.");
 	} catch (Exception e) {
@@ -140,6 +144,8 @@ public class PrescripcionesControlador {
 	    p.setFecha(Util.dateToIsoString(Date.from(Instant.now())));
 
 	    p.setHora(Util.dateToIsoHour(Date.from(Instant.now())));
+
+	    RegistroModelo.addRegistro(new RegistroDto("Médico X", "Asigna prescripción: " + p.getId()));
 
 	    pM.addPrescripcion(p);
 	    JOptionPane.showMessageDialog(pV, "Prescripción asignada correctamente");
