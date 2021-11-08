@@ -12,6 +12,7 @@ import dtos.PacienteDto;
 import logic.Admin;
 import modelo.CitaPendienteModelo;
 import modelo.MedicoModelo;
+import modelo.PacienteModelo;
 import util.SwingUtil;
 import vista.CrearCitaMedicoVista;
 
@@ -22,6 +23,7 @@ public class MedicoCrearCitasControlador {
 	private CitaPendienteModelo cm = new CitaPendienteModelo();
 	private List<PacienteDto> pdto = new ArrayList<PacienteDto>();
 	private MedicoModelo mm = new MedicoModelo();
+	private PacienteModelo pm = new PacienteModelo();
 	
 
 	public MedicoCrearCitasControlador(CrearCitaMedicoVista ccmv) {
@@ -54,9 +56,11 @@ public class MedicoCrearCitasControlador {
 		for (MedicoDto medico : mm.getListaMedicos()) {
 			if(medico.getId() == idMedico) {
 				cidto.setNOMBRE_MEDICO(medico.getNombre());
+				cidto.setCONTACTO_MEDICO(medico.getEmail());
 			}
 		}
-		for (PacienteDto paciente : pdto) {
+		cidto.setUBICACION(ccmv.getTxtUbicacion().getText());
+		for (PacienteDto paciente : pm.getListaPacientes()) {
 			if(paciente.getNombre().equals(ccmv.getCbPacientes().getSelectedItem().toString())) {
 				cidto.setIDPACIENTE(paciente.getId());
 			}
