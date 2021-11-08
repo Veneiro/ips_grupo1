@@ -1,32 +1,25 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import javax.swing.JList;
-import java.awt.GridLayout;
-import javax.swing.JTextPane;
-import javax.swing.JTextField;
-import javax.swing.BoxLayout;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 public class CrearCitaMedicoVista extends JDialog {
 
 	private static final long serialVersionUID = -4122790949612125305L;
 	private final JPanel contentPanel = new JPanel();
 
-	private JPanel buttonPane;
-	private JButton okButton;
-	private JButton cancelButton;
+	
 	private JLabel lblTitle;
 	private JPanel panel;
 	private JPanel panel_2;
@@ -182,12 +175,12 @@ public class CrearCitaMedicoVista extends JDialog {
 			panel_7 = new JPanel();
 			panel_7.setLayout(new GridLayout(3, 1, 0, 0));
 			panel_7.add(getLblNewLabel_5());
-			panel_7.add(getTextField_3());
+			panel_7.add(getTxtUbicacion());
 		}
 		return panel_7;
 	}
 
-	private JTextField getTextField_3() {
+	public JTextField getTxtUbicacion() {
 		if (txtUbicación == null) {
 			txtUbicación = new JTextField();
 			txtUbicación.setColumns(10);
