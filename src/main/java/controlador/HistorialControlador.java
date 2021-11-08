@@ -13,9 +13,11 @@ import javax.swing.table.DefaultTableModel;
 
 import dtos.DiagnosticoDto;
 import dtos.HistorialDto;
+import dtos.MedicoDto;
 import dtos.PacienteDto;
 import modelo.DiagnosticoModelo;
 import modelo.HistorialModelo;
+import modelo.MedicoModelo;
 import modelo.PacienteModelo;
 import modelo.PrescripcionesModelo;
 import records.PrescripcionRecord;
@@ -28,15 +30,19 @@ public class HistorialControlador {
     private HistorialesVista hv;
     private DiagnosticoModelo dgm;
     private PrescripcionesModelo prm;
+    private MedicoModelo mm;
     private int idPaciente;
+    private int idMedico;
 
-    public HistorialControlador(HistorialModelo hm, HistorialesVista hv, int idPaciente) {
+    public HistorialControlador(HistorialModelo hm, HistorialesVista hv, int idPaciente, int idMedico) {
 	this.hm = hm;
 	this.hv = hv;
 	this.idPaciente = idPaciente;
 	this.pm = new PacienteModelo();
 	this.dgm = new DiagnosticoModelo();
 	this.prm = new PrescripcionesModelo();
+	this.idMedico = idMedico;
+	this.mm = new MedicoModelo();
 
 	inicializarVistaHistorial();
     }
@@ -64,6 +70,7 @@ public class HistorialControlador {
 		    String fecha = dtf.format(LocalDateTime.now());
 		    diagnostico.setFecha(fecha);
 		    diagnostico.setId_paciente(idPaciente);
+		    diagnostico.setId_medico(idMedico);
 		    dgm.addDiagnostico(diagnostico);
 		    cargarHistorial(idPaciente);
 		}
@@ -89,14 +96,15 @@ public class HistorialControlador {
 	hv.getTable().setModel(dm);
 
 	dm = new DefaultTableModel(0, 0);
-	header = new String[] { "Diagnostico", "Fecha" };
+	header = new String[] { "Diagnostico", "Fecha", "Medico" };
 	dm.setColumnIdentifiers(header);
 	List<DiagnosticoDto> diagnosticos = dgm.getDiaganosticoByPacienteId(idPaciente);
 	for (DiagnosticoDto diagnostico : diagnosticos) {
 	    data = new Vector<Object>();
-
 	    data.add(diagnostico.getDiagnostico());
 	    data.add(diagnostico.getFecha());
+	    MedicoDto medico = mm.getListaMedicosById(diagnostico.getId_medico()).get(0);
+	    data.add(medico.getNombre());
 	    dm.addRow(data);
 	}
 

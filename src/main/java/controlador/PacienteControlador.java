@@ -65,7 +65,7 @@ public class PacienteControlador {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				HistorialControlador hc = new HistorialControlador(new HistorialModelo(), new HistorialesVista(),
-						cita.getId_paciente());
+						cita.getId_paciente(), cita.getId_medico());
 				hc.inicializar();
 			}
 

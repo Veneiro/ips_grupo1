@@ -15,8 +15,8 @@ public class DiagnosticoModelo {
 	}
 	
 	public void addDiagnostico(DiagnosticoDto diagnostico) {
-		String sql = "Insert into TDiagnosticos(id_paciente, diagnostico, fecha) values (?,?,?) ";
-		db.executeUpdate(sql, diagnostico.getId_paciente(), diagnostico.getDiagnostico(), diagnostico.getFecha());
+		String sql = "Insert into TDiagnosticos(id_paciente, diagnostico, fecha, id_medico) values (?,?,?,?) ";
+		db.executeUpdate(sql, diagnostico.getId_paciente(), diagnostico.getDiagnostico(), diagnostico.getFecha(), diagnostico.getId_medico());
 		
 	}
 }

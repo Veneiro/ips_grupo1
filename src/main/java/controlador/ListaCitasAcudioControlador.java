@@ -66,7 +66,7 @@ public class ListaCitasAcudioControlador {
 					int idPaciente = Integer.valueOf(lcv.getTableCitas()
 													.getValueAt(lcv.getTableCitas().getSelectedRow(), 0).toString());
 					HistorialControlador controller = new HistorialControlador(new HistorialModelo(), new HistorialesVista(), 
-							idPaciente);
+							idPaciente, idMedico);
 					controller.inicializar();
 				}else {
 					JOptionPane.showMessageDialog(null, "Por favor, seleccione primero un paciente.");
