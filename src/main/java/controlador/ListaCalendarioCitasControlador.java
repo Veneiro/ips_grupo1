@@ -28,13 +28,15 @@ public class ListaCalendarioCitasControlador {
     List<CitaDto> citas;
     PacienteControlador pc = new PacienteControlador(new PacienteModelo(), new AppointmentView());
     PacienteDto p = new PacienteDto();
+    private MedicoCrearCitasControlador mccc;
 
     public ListaCalendarioCitasControlador(ListaCalendarioCitasVista lccv, CitaModelo cm, PacienteModelo pm,
-	    int idMedico) {
+	    int idMedico, MedicoCrearCitasControlador medicoCrearCitasControlador) {
 	this.lccv = lccv;
 	this.cm = cm;
 	this.pm = pm;
 	this.idMedico = idMedico;
+	this.mccc = medicoCrearCitasControlador;
 
 	inicializarVistaListaCalendarioCitas();
     }
@@ -60,6 +62,8 @@ public class ListaCalendarioCitasControlador {
 	});
 	lccv.getBtnGestionarCita().addActionListener(e -> SwingUtil
 		.exceptionWrapper(() -> pc.initialize(citas.get(lccv.getTable().getSelectedRow()), p.getNombre())));
+	lccv.getBtnProponerCita().addActionListener(e -> SwingUtil
+			.exceptionWrapper(() -> mccc.initializate(idMedico)));
     }
 
     private void cargarCalendarioCitas(String fecha, int idMedico) {
