@@ -61,7 +61,7 @@ public class RegistroVista extends JFrame {
 	desdeSpinner.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.DAY_OF_YEAR));
 	JSpinner.DateEditor de = new JSpinner.DateEditor(desdeSpinner, "yyyy-MM-dd");
 	desdeSpinner.setEditor(de);
-	desdeSpinner.setBounds(89, 70, 89, 20);
+	desdeSpinner.setBounds(89, 70, 90, 20);
 	panelIntroducirFecha.add(desdeSpinner);
 
 	lblBusqueda = new JLabel("Buscar: ");
@@ -83,7 +83,7 @@ public class RegistroVista extends JFrame {
 		    desdeSpinner.setEnabled(false);
 	    }
 	});
-	chckbxDesde.setBounds(10, 69, 97, 23);
+	chckbxDesde.setBounds(10, 69, 62, 23);
 	panelIntroducirFecha.add(chckbxDesde);
 
 	scrollPane = new JScrollPane();

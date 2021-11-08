@@ -1,12 +1,10 @@
 package modelo;
 
-import java.util.Date;
 import java.util.List;
 
 import dtos.RegistroDto;
 import records.RegistroRecord;
 import util.Database;
-import util.Util;
 
 public class RegistroModelo {
 
@@ -43,10 +41,10 @@ public class RegistroModelo {
 	return db.executeQueryPojo(RegistroRecord.class, sql, "%" + que + "%");
     }
 
-    public List<RegistroRecord> findByFecha(Date fecha) {
+    public List<RegistroRecord> findByFecha(String fecha) {
 	String sql = "SELECT * FROM TREGISTRO WHERE FECHA = ?";
 
-	return db.executeQueryPojo(RegistroRecord.class, sql, Util.dateToIsoString(fecha) + "%");
+	return db.executeQueryPojo(RegistroRecord.class, sql, fecha);
     }
 
     public List<RegistroRecord> findBySearch(String text) {

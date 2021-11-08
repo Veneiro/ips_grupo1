@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -13,6 +15,7 @@ import dtos.RegistroDto;
 import modelo.RegistroModelo;
 import records.RegistroRecord;
 import util.NoEditableTableModel;
+import util.Util;
 import vista.RegistroVista;
 
 public class RegistroControlador {
@@ -53,6 +56,14 @@ public class RegistroControlador {
 	    }
 	});
 
+	rV.getDesdeSpinner().addChangeListener(new ChangeListener() {
+
+	    @Override
+	    public void stateChanged(ChangeEvent e) {
+		cargarListaRegistros();
+	    }
+	});
+
 	RegistroModelo.addRegistro(new RegistroDto("Administrativo", "Consulta registro"));
 
 	rV.setVisible(true);
@@ -73,7 +84,7 @@ public class RegistroControlador {
 	}
 
 	if (rV.getChckbxDesde().isSelected()) {
-	    for (RegistroRecord r : rM.findByFecha((Date) rV.getDesdeSpinner().getValue())) {
+	    for (RegistroRecord r : rM.findByFecha(Util.dateToIsoString((Date) rV.getDesdeSpinner().getValue()))) {
 		if (lR.contains(r))
 		    aux.add(r);
 	    }
