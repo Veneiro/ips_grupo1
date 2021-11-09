@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import lombok.Getter;
+import javax.swing.SpinnerNumberModel;
 @Getter
 @SuppressWarnings({ "serial", "rawtypes" })
 public class AppointmentView extends JDialog {
@@ -139,6 +140,7 @@ public class AppointmentView extends JDialog {
     public JSpinner getSpEntryHour() {
 	if (spEntryHour == null) {
 	    spEntryHour = new JSpinner();
+	    spEntryHour.setModel(new SpinnerNumberModel(9, 0, 23, 1));
 	    spEntryHour.setValue(ldt.getHour());
 	    spEntryHour.setBounds(39, 61, 39, 20);
 	}
@@ -148,6 +150,7 @@ public class AppointmentView extends JDialog {
     public JSpinner getSpEntryMin() {
 	if (spEntryMin == null) {
 	    spEntryMin = new JSpinner();
+	    spEntryMin.setModel(new SpinnerNumberModel(54, 0, 59, 1));
 	    spEntryMin.setValue(ldt.getMinute());
 	    spEntryMin.setBounds(98, 61, 39, 20);
 	}
@@ -157,6 +160,7 @@ public class AppointmentView extends JDialog {
     public JSpinner getSpOutHour() {
 	if (spOutHour == null) {
 	    spOutHour = new JSpinner();
+	    spOutHour.setModel(new SpinnerNumberModel(10, 0, 23, 1));
 	    spOutHour.setValue(ldt.getHour() + 1);
 	    spOutHour.setBounds(287, 61, 39, 20);
 	}
@@ -166,6 +170,7 @@ public class AppointmentView extends JDialog {
     public JSpinner getSpOutMin() {
 	if (spOutMin == null) {
 	    spOutMin = new JSpinner();
+	    spOutMin.setModel(new SpinnerNumberModel(55, 0, 59, 1));
 	    spOutMin.setValue(ldt.getMinute());
 	    spOutMin.setBounds(346, 61, 39, 20);
 	}
