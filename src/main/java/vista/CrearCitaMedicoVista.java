@@ -13,6 +13,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.SpinnerNumberModel;
 
 public class CrearCitaMedicoVista extends JDialog {
 
@@ -296,6 +297,7 @@ public class CrearCitaMedicoVista extends JDialog {
 	public JSpinner getSpEntryHour() {
 		if (spEntryHour == null) {
 			spEntryHour = new JSpinner();
+			spEntryHour.setModel(new SpinnerNumberModel(0, 0, 23, 1));
 			spEntryHour.setBounds(84, 11, 110, 20);
 		}
 		return spEntryHour;
@@ -303,6 +305,7 @@ public class CrearCitaMedicoVista extends JDialog {
 	public JSpinner getSpEntryMin() {
 		if (spEntryMin == null) {
 			spEntryMin = new JSpinner();
+			spEntryMin.setModel(new SpinnerNumberModel(0, 0, 59, 1));
 			spEntryMin.setBounds(213, 11, 110, 20);
 		}
 		return spEntryMin;
@@ -310,6 +313,7 @@ public class CrearCitaMedicoVista extends JDialog {
 	public JSpinner getSpOutHour() {
 		if (spOutHour == null) {
 			spOutHour = new JSpinner();
+			spOutHour.setModel(new SpinnerNumberModel(0, 0, 23, 1));
 			spOutHour.setBounds(78, 11, 113, 20);
 		}
 		return spOutHour;
@@ -317,6 +321,7 @@ public class CrearCitaMedicoVista extends JDialog {
 	public JSpinner getSpOutMin() {
 		if (spOutMin == null) {
 			spOutMin = new JSpinner();
+			spOutMin.setModel(new SpinnerNumberModel(0, 0, 59, 1));
 			spOutMin.setBounds(212, 11, 113, 20);
 		}
 		return spOutMin;
