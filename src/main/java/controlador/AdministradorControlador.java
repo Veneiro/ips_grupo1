@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 import dtos.CitaDto;
@@ -43,16 +42,19 @@ public class AdministradorControlador {
 
 	public void initializeAprobarCitas() {
 		initializateTable();
-		acv.getBtnConfirmar().addActionListener(e -> SwingUtil.exceptionWrapper(() -> insertToDB()));
-		acv.getBtnBack().addActionListener(e -> SwingUtil.exceptionWrapper(() -> closeWindow()));
+		acv.getBtnConfirmar().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> insertToDB()));
+		acv.getBtnBack().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> closeWindow()));
 		acv.setLocationRelativeTo(null);
 		acv.setVisible(true);
 	}
 
 	private void initializateTable() {
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
-		String header[] = new String[] { "ID Cita", "Hora Inicio", "Hora fin", "Ubicación", "Nombre Paciente",
-				"Nombre Médico", "Contacto Médico", "Aprobada" };
+		String header[] = new String[] { "Id Cita", "Nombre Paciente", "Nombre Médico",
+				"Fecha", "Hora Inicio", "Hora fin", "Ubicación",
+				"Contacto Médico", "Aprobada" };
 		dm.setColumnIdentifiers(header);
 
 		List<CitaPendienteDto> citasPendientes = cpm.getCitasPorAprobar();
@@ -60,11 +62,12 @@ public class AdministradorControlador {
 			PacienteDto p = pm.getPacienteById(c.getIDPACIENTE()).get(0);
 			Vector<Object> data = new Vector<Object>();
 			data.add(c.getID());
+			data.add(p.getNombre());
+			data.add(c.getNOMBRE_MEDICO());
+			data.add(c.getFECHA());
 			data.add(c.getHORA_ENTRADA());
 			data.add(c.getHORA_SALIDA());
 			data.add(c.getUBICACION());
-			data.add(p.getNombre());
-			data.add(c.getNOMBRE_MEDICO());
 			data.add(c.getCONTACTO_MEDICO());
 			data.add("false");
 			dm.addRow(data);
@@ -132,15 +135,20 @@ public class AdministradorControlador {
 
 	private void insertToDB() {
 		for (int i = 0; i < acv.getTable().getRowCount(); i++) {
-			if (acv.getTable().getValueAt(i, 7).equals("true")) {
+			if (acv.getTable().getValueAt(i, 8).equals("true")) {
 				CitaDto cdto = new CitaDto();
-				cdto.setId((int) acv.getTable().getValueAt(i, 0));
-				cdto.setHorario_inicio((String) acv.getTable().getValueAt(i, 1));
-				cdto.setHorario_fin((String) acv.getTable().getValueAt(i, 2));
-				cdto.setUbicacion((String) acv.getTable().getValueAt(i, 3));
-				cdto.setNombre_paciente((String) acv.getTable().getValueAt(i, 4));
-				cdto.setId_paciente(getIdPaciente((String) acv.getTable().getValueAt(i, 4)));
-				cdto.setId_medico(getIdMedico((String) acv.getTable().getValueAt(i, 5)));
+				cdto.setId((int)acv.getTable().getValueAt(i, 0));
+				cdto.setNombre_paciente(
+						(String) acv.getTable().getValueAt(i, 1));
+				cdto.setId_paciente(getIdPaciente(
+						(String) acv.getTable().getValueAt(i, 1)));
+				cdto.setId_medico(
+						getIdMedico((String) acv.getTable().getValueAt(i, 2)));
+				cdto.setFecha((String) acv.getTable().getValueAt(i, 3));
+				cdto.setHorario_inicio(
+						(String) acv.getTable().getValueAt(i, 4));
+				cdto.setHorario_fin((String) acv.getTable().getValueAt(i, 5));
+				cdto.setUbicacion((String) acv.getTable().getValueAt(i, 6));
 				cim.addCita(cdto);
 				cim.updateCitaPendiente(cdto.getId());
 				acv.setVisible(false);
@@ -180,7 +188,8 @@ public class AdministradorControlador {
 		}
 	}
 
-	private void sendMail(CitaDto cita, MedicoDto medico, String horaEntrada, PacienteDto p) {
+	private void sendMail(CitaDto cita, MedicoDto medico, String horaEntrada,
+			PacienteDto p) {
 		int id = 0;
 		String hora = horaEntrada;
 		String msg = "";
@@ -198,23 +207,27 @@ public class AdministradorControlador {
 		msg += "</p>";
 		msg += "</p>";
 		msg += "<p>";
-		msg += "Se le ha asignado una <strong>cita urgente</strong> con id <strong>" + id + "</strong>";
+		msg += "Se le ha asignado una <strong>cita urgente</strong> con id <strong>"
+				+ id + "</strong>";
 		msg += "</p>";
 		msg += "<p>";
 		msg += "</p>";
 		msg += "<table class=\"demoTable\" style=\"height: 54px;\">";
 		msg += "<thead>";
 		msg += "<tr>";
-		msg += "<td><span style=\"color: #c82828;\"><strong>Paciente</strong> </span>: " + p.getNombre() + "</td>";
+		msg += "<td><span style=\"color: #c82828;\"><strong>Paciente</strong> </span>: "
+				+ p.getNombre() + "</td>";
 		msg += "</tr>";
 		msg += "<tr>";
-		msg += "<td><span style=\"color: #c82828;\"><strong>Médico</strong> </span>: " + medico.getNombre() + "</td>";
+		msg += "<td><span style=\"color: #c82828;\"><strong>Médico</strong> </span>: "
+				+ medico.getNombre() + "</td>";
 		msg += "</tr>";
 		msg += "</thead>";
 		msg += "<tbody>";
 		msg += "<tr>";
-		msg += "<td>Su cita tiene asignada como hora de inicio las <strong>" + hora
-				+ "</strong> horas y tendrá lugar en la sala <strong>" + cita.getUbicacion() + "</strong></td>";
+		msg += "<td>Su cita tiene asignada como hora de inicio las <strong>"
+				+ hora + "</strong> horas y tendrá lugar en la sala <strong>"
+				+ cita.getUbicacion() + "</strong></td>";
 		msg += "</tr>";
 		msg += "<tr> <td>Tenga en cuenta que este horaria y sala <strong>pueden estar sujetos a cambios</strong>, se le notificará con tiempo en caso de cualquier cambio</td></tr>";
 		msg += "</tbody>";
