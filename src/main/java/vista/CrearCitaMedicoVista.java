@@ -13,13 +13,15 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.SpinnerNumberModel;
+import java.awt.FlowLayout;
+import com.toedter.calendar.JDateChooser;
 
 public class CrearCitaMedicoVista extends JDialog {
 
 	private static final long serialVersionUID = -4122790949612125305L;
 	private final JPanel contentPanel = new JPanel();
 
-	
 	private JLabel lblTitle;
 	private JPanel panel;
 	private JPanel panel_2;
@@ -52,12 +54,22 @@ public class CrearCitaMedicoVista extends JDialog {
 	private JSpinner spOutMin;
 	private JComboBox cbPacientes;
 	private JLabel lblNewLabel_1;
+	private JLabel lblFecha;
+	private JPanel panel_11;
+	private JPanel panel_12;
+	private JPanel panel_13;
+	private JPanel panel_14;
+	private JDateChooser dateChooser;
+	private JPanel panel_15;
+	private JPanel panel_16;
+	private JPanel panel_17;
+	private JPanel panel_18;
 
 	/**
 	 * Create the dialog.
 	 */
 	public CrearCitaMedicoVista() {
-		setBounds(100, 100, 873, 506);
+		setBounds(100, 100, 647, 506);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -102,7 +114,8 @@ public class CrearCitaMedicoVista extends JDialog {
 	private JPanel getPnLabels() {
 		if (pnLabels == null) {
 			pnLabels = new JPanel();
-			pnLabels.setLayout(new GridLayout(4, 0, 0, 0));
+			pnLabels.setLayout(new GridLayout(5, 0, 0, 0));
+			pnLabels.add(getLblFecha());
 			pnLabels.add(getLblHoraEntrada());
 			pnLabels.add(getLblHoraSalida());
 			pnLabels.add(getLblUbicación());
@@ -114,7 +127,8 @@ public class CrearCitaMedicoVista extends JDialog {
 	private JPanel getPanel_3() {
 		if (panel_3 == null) {
 			panel_3 = new JPanel();
-			panel_3.setLayout(new GridLayout(4, 0, 0, 0));
+			panel_3.setLayout(new GridLayout(5, 0, 0, 0));
+			panel_3.add(getPanel_11());
 			panel_3.add(getPanel_5());
 			panel_3.add(getPanel_6());
 			panel_3.add(getPanel_7());
@@ -175,7 +189,7 @@ public class CrearCitaMedicoVista extends JDialog {
 			panel_7 = new JPanel();
 			panel_7.setLayout(new GridLayout(3, 1, 0, 0));
 			panel_7.add(getLblNewLabel_5());
-			panel_7.add(getTxtUbicacion());
+			panel_7.add(getPanel_12());
 		}
 		return panel_7;
 	}
@@ -208,18 +222,21 @@ public class CrearCitaMedicoVista extends JDialog {
 		}
 		return lblNewLabel_5;
 	}
+
 	public JButton getBtnEnviar() {
 		if (btnEnviar == null) {
 			btnEnviar = new JButton("ENVIAR A REVISI\u00D3N");
 		}
 		return btnEnviar;
 	}
+
 	public JButton getBtnCancelar() {
 		if (btnCancelar == null) {
 			btnCancelar = new JButton("CANCELAR");
 		}
 		return btnCancelar;
 	}
+
 	private JLabel getLblPaciente() {
 		if (lblPaciente == null) {
 			lblPaciente = new JLabel("PACIENTE DE LA CITA:");
@@ -228,18 +245,21 @@ public class CrearCitaMedicoVista extends JDialog {
 		}
 		return lblPaciente;
 	}
+
 	private JPanel getPanel_1() {
 		if (panel_1 == null) {
 			panel_1 = new JPanel();
 		}
 		return panel_1;
 	}
+
 	private JPanel getPanel_4() {
 		if (panel_4 == null) {
 			panel_4 = new JPanel();
 		}
 		return panel_4;
 	}
+
 	private JPanel getPanel_8() {
 		if (panel_8 == null) {
 			panel_8 = new JPanel();
@@ -250,6 +270,7 @@ public class CrearCitaMedicoVista extends JDialog {
 		}
 		return panel_8;
 	}
+
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("Seleccione un Paciente");
@@ -257,80 +278,171 @@ public class CrearCitaMedicoVista extends JDialog {
 		}
 		return lblNewLabel;
 	}
+
 	private JPanel getPanel_9() {
 		if (panel_9 == null) {
 			panel_9 = new JPanel();
-			panel_9.setLayout(null);
-			panel_9.add(getLblEntry());
+			panel_9.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			panel_9.add(getSpEntryHour());
+			panel_9.add(getLblEntry());
 			panel_9.add(getSpEntryMin());
 		}
 		return panel_9;
 	}
+
 	private JPanel getPanel_10() {
 		if (panel_10 == null) {
 			panel_10 = new JPanel();
-			panel_10.setLayout(null);
-			panel_10.add(getLblOut());
+			panel_10.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			panel_10.add(getSpOutHour());
+			panel_10.add(getLblOut());
 			panel_10.add(getSpOutMin());
 		}
 		return panel_10;
 	}
+
 	private JLabel getLblEntry() {
 		if (lblEntry == null) {
 			lblEntry = new JLabel(":");
 			lblEntry.setHorizontalAlignment(SwingConstants.CENTER);
-			lblEntry.setBounds(173, 14, 61, 14);
 		}
 		return lblEntry;
 	}
+
 	private JLabel getLblOut() {
 		if (lblOut == null) {
 			lblOut = new JLabel(":");
 			lblOut.setHorizontalAlignment(SwingConstants.CENTER);
-			lblOut.setBounds(172, 14, 63, 14);
 		}
 		return lblOut;
 	}
+
 	public JSpinner getSpEntryHour() {
 		if (spEntryHour == null) {
 			spEntryHour = new JSpinner();
-			spEntryHour.setBounds(84, 11, 110, 20);
+			spEntryHour.setModel(new SpinnerNumberModel(0, 0, 23, 1));
 		}
 		return spEntryHour;
 	}
+
 	public JSpinner getSpEntryMin() {
 		if (spEntryMin == null) {
 			spEntryMin = new JSpinner();
-			spEntryMin.setBounds(213, 11, 110, 20);
+			spEntryMin.setModel(new SpinnerNumberModel(0, 0, 59, 1));
 		}
 		return spEntryMin;
 	}
+
 	public JSpinner getSpOutHour() {
 		if (spOutHour == null) {
 			spOutHour = new JSpinner();
-			spOutHour.setBounds(78, 11, 113, 20);
+			spOutHour.setModel(new SpinnerNumberModel(0, 0, 23, 1));
 		}
 		return spOutHour;
 	}
+
 	public JSpinner getSpOutMin() {
 		if (spOutMin == null) {
 			spOutMin = new JSpinner();
-			spOutMin.setBounds(212, 11, 113, 20);
+			spOutMin.setModel(new SpinnerNumberModel(0, 0, 59, 1));
 		}
 		return spOutMin;
 	}
+
 	public JComboBox getCbPacientes() {
 		if (cbPacientes == null) {
 			cbPacientes = new JComboBox();
 		}
 		return cbPacientes;
 	}
+
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
 			lblNewLabel_1 = new JLabel("");
 		}
 		return lblNewLabel_1;
+	}
+
+	private JLabel getLblFecha() {
+		if (lblFecha == null) {
+			lblFecha = new JLabel("FECHA DE LA CITA:");
+			lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			lblFecha.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblFecha;
+	}
+
+	private JPanel getPanel_11() {
+		if (panel_11 == null) {
+			panel_11 = new JPanel();
+			panel_11.setLayout(new GridLayout(3, 1, 0, 0));
+			panel_11.add(getPanel_15());
+			panel_11.add(getPanel_16());
+		}
+		return panel_11;
+	}
+
+	private JPanel getPanel_12() {
+		if (panel_12 == null) {
+			panel_12 = new JPanel();
+			panel_12.setLayout(new BorderLayout(0, 0));
+			panel_12.add(getPanel_13(), BorderLayout.WEST);
+			panel_12.add(getTxtUbicacion());
+			panel_12.add(getPanel_14(), BorderLayout.EAST);
+		}
+		return panel_12;
+	}
+
+	private JPanel getPanel_13() {
+		if (panel_13 == null) {
+			panel_13 = new JPanel();
+		}
+		return panel_13;
+	}
+
+	private JPanel getPanel_14() {
+		if (panel_14 == null) {
+			panel_14 = new JPanel();
+		}
+		return panel_14;
+	}
+
+	public JDateChooser getDateChooser() {
+		if (dateChooser == null) {
+			dateChooser = new JDateChooser();
+		}
+		return dateChooser;
+	}
+
+	private JPanel getPanel_15() {
+		if (panel_15 == null) {
+			panel_15 = new JPanel();
+		}
+		return panel_15;
+	}
+
+	private JPanel getPanel_16() {
+		if (panel_16 == null) {
+			panel_16 = new JPanel();
+			panel_16.setLayout(new BorderLayout(0, 0));
+			panel_16.add(getDateChooser());
+			panel_16.add(getPanel_17(), BorderLayout.WEST);
+			panel_16.add(getPanel_18(), BorderLayout.EAST);
+		}
+		return panel_16;
+	}
+
+	private JPanel getPanel_17() {
+		if (panel_17 == null) {
+			panel_17 = new JPanel();
+		}
+		return panel_17;
+	}
+
+	private JPanel getPanel_18() {
+		if (panel_18 == null) {
+			panel_18 = new JPanel();
+		}
+		return panel_18;
 	}
 }
