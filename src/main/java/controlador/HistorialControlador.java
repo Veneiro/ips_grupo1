@@ -114,7 +114,6 @@ public class HistorialControlador {
 	    data.add(prescripcion.getIntervalo());
 	    data.add(prescripcion.getDuracion());
 	    data.add(prescripcion.getFecha());
-	    dm.addRow(data);
 	}
 
 	hv.getTablePrescriciones().setModel(dm);
