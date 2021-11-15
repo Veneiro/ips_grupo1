@@ -1,8 +1,6 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.time.LocalDateTime;
 
@@ -51,6 +49,8 @@ public class AppointmentView extends JDialog {
     @Setter
     private NoEditableTableModel modeloTablaPrescripciones;
     private JScrollPane scrollPanePrescripciones;
+    private JButton btnEDO;
+    private JPanel buttonPane;
 
     /**
      * Create the dialog.
@@ -60,9 +60,10 @@ public class AppointmentView extends JDialog {
 	setModal(true);
 	setResizable(false);
 	setBounds(100, 100, 450, 500);
-	getContentPane().setLayout(new BorderLayout());
+	getContentPane().setLayout(null);
+	contentPanel.setBounds(0, 0, 434, 428);
 	contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-	getContentPane().add(contentPanel, BorderLayout.CENTER);
+	getContentPane().add(contentPanel);
 	contentPanel.setLayout(null);
 	contentPanel.add(getScrollPane());
 	contentPanel.add(getBtnAddCause());
@@ -83,11 +84,13 @@ public class AppointmentView extends JDialog {
 	contentPanel.add(btnAddPrescripcion);
 
 	{
-	    JPanel buttonPane = new JPanel();
-	    buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-	    getContentPane().add(buttonPane, BorderLayout.SOUTH);
+	    buttonPane = new JPanel();
+	    buttonPane.setBounds(0, 428, 434, 33);
+	    getContentPane().add(buttonPane);
+	    buttonPane.setLayout(null);
 	    buttonPane.add(getBtnContinueButton());
 	    getRootPane().setDefaultButton(continueButton);
+	    buttonPane.add(getBtnEDO());
 	}
 
 	scrollPanePrescripciones = new JScrollPane();
@@ -106,6 +109,7 @@ public class AppointmentView extends JDialog {
     public JButton getBtnContinueButton() {
 	if (continueButton == null) {
 	    continueButton = new JButton("Continuar");
+	    continueButton.setBounds(335, 0, 89, 23);
 	    continueButton.setActionCommand("OK");
 	}
 	return continueButton;
@@ -229,4 +233,13 @@ public class AppointmentView extends JDialog {
 	return btnAddPrescripcion;
     }
 
+    public JButton getBtnEDO() {
+	if (btnEDO == null) {
+	    btnEDO = new JButton("EDO");
+	    btnEDO.setForeground(new Color(255, 0, 0));
+	    btnEDO.setFont(new Font("Tahoma", Font.BOLD, 11));
+	    btnEDO.setBounds(10, 0, 89, 23);
+	}
+	return btnEDO;
+    }
 }
