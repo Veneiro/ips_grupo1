@@ -1,6 +1,7 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.time.LocalDateTime;
@@ -12,14 +13,24 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
-@SuppressWarnings({ "serial", "rawtypes" })
+import lombok.Getter;
+import lombok.Setter;
+import util.NoEditableTableModel;
+
+@Getter
 public class AppointmentView extends JDialog {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private JPanel contentPanel = new JPanel();
-    private JList listCauses;
+    private JList<String> listCauses;
     private AddCauseView pacientes;
     private JButton btnAddCause;
     private JPanel pnEntryOut = new JPanel();
@@ -36,6 +47,10 @@ public class AppointmentView extends JDialog {
     private JScrollPane scrollPane;
     private JLabel lblPaciente;
     private JButton btnAddPrescripcion;
+    private JTable tablePrescripciones;
+    @Setter
+    private NoEditableTableModel modeloTablaPrescripciones;
+    private JScrollPane scrollPanePrescripciones;
 
     /**
      * Create the dialog.
@@ -44,7 +59,7 @@ public class AppointmentView extends JDialog {
 	setTitle("iHospital : Cita");
 	setModal(true);
 	setResizable(false);
-	setBounds(100, 100, 450, 350);
+	setBounds(100, 100, 450, 500);
 	getContentPane().setLayout(new BorderLayout());
 	contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 	getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -64,8 +79,9 @@ public class AppointmentView extends JDialog {
 	pnEntryOut.add(getLblPaciente());
 
 	btnAddPrescripcion = new JButton("A\u00F1adir prescripci\u00F3n");
-	btnAddPrescripcion.setBounds(5, 238, 429, 25);
+	btnAddPrescripcion.setBounds(5, 388, 429, 25);
 	contentPanel.add(btnAddPrescripcion);
+
 	{
 	    JPanel buttonPane = new JPanel();
 	    buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -73,6 +89,18 @@ public class AppointmentView extends JDialog {
 	    buttonPane.add(getBtnContinueButton());
 	    getRootPane().setDefaultButton(continueButton);
 	}
+
+	scrollPanePrescripciones = new JScrollPane();
+	scrollPanePrescripciones.setBounds(5, 242, 429, 133);
+
+	modeloTablaPrescripciones = new NoEditableTableModel(
+		new String[] { "Nombre", "Indicacciones", "Cantidad", "Intervalo", "Duración" }, 0);
+	tablePrescripciones = new JTable(modeloTablaPrescripciones);
+	tablePrescripciones.setFillsViewportHeight(true);
+	tablePrescripciones.setBorder(new LineBorder(new Color(0, 0, 0)));
+
+	scrollPanePrescripciones.setViewportView(tablePrescripciones);
+	contentPanel.add(scrollPanePrescripciones);
     }
 
     public JButton getBtnContinueButton() {
@@ -83,9 +111,9 @@ public class AppointmentView extends JDialog {
 	return continueButton;
     }
 
-    public JList getListCauses() {
+    public JList<String> getListCauses() {
 	if (listCauses == null) {
-	    listCauses = new JList();
+	    listCauses = new JList<>();
 	}
 	return listCauses;
     }
@@ -93,7 +121,7 @@ public class AppointmentView extends JDialog {
     public JButton getBtnAddCause() {
 	if (btnAddCause == null) {
 	    btnAddCause = new JButton("A\u00F1adir Causa");
-	    btnAddCause.setBounds(5, 204, 429, 23);
+	    btnAddCause.setBounds(5, 206, 429, 23);
 	}
 	return btnAddCause;
     }
