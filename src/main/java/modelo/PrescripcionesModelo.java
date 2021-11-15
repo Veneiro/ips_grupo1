@@ -20,7 +20,7 @@ public class PrescripcionesModelo {
     }
 
     public List<PrescripcionRecord> getListaPrescripcionesNoRepetidas() {
-	String sql = "SELECT DISTINCT NOMBRE, INDICACIONES, CANTIDAD, INTERVALO, DURACION FROM TPRESCRIPCIONES ORDER BY NOMBRE";
+	String sql = "SELECT DISTINCT NOMBRE, INDICACIONES, CANTIDAD, INTERVALO, DURACION, MEDICAMENTO FROM TPRESCRIPCIONES ORDER BY NOMBRE";
 	return db.executeQueryPojo(PrescripcionRecord.class, sql);
     }
 
@@ -34,5 +34,10 @@ public class PrescripcionesModelo {
 
 	db.executeUpdate(sql, p.getNombre(), p.getPaciente_id(), p.getIndicaciones(), p.isMedicamento(),
 		p.getCantidad(), p.getIntervalo(), p.getDuracion(), p.getFecha(), p.getHora());
+    }
+
+    public List<PrescripcionRecord> getListaPrescripcionesPaciente(int idPaciente) {
+	String sql = "SELECT NOMBRE, INDICACIONES, CANTIDAD, INTERVALO, DURACION, FECHA FROM TPRESCRIPCIONES  WHERE PACIENTE_ID = ?  ORDER BY FECHA";
+	return db.executeQueryPojo(PrescripcionRecord.class, sql, idPaciente);
     }
 }
