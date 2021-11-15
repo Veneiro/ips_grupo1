@@ -16,6 +16,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JToggleButton;
+import javax.swing.JCheckBox;
 
 @SuppressWarnings({ "serial", "rawtypes" })
 public class AppointmentView extends JDialog {
@@ -50,6 +54,10 @@ public class AppointmentView extends JDialog {
 	private JPanel pnEntry;
 	private JPanel pnOut;
 	private JPanel pnAcudioSiNo;
+	private JButton btnCancel;
+	private JPanel panel;
+	private JPanel panel_1;
+	private JCheckBox chckbxToggleHours;
 
 	/**
 	 * Create the dialog.
@@ -81,6 +89,7 @@ public class AppointmentView extends JDialog {
 		getPnLabels().add(getLblEntryHour());
 		getPnEntry().add(getSpEntryMin());
 		getPnOut().add(getSpOutMin());
+		getPnLabels().add(getPanel_1());
 		getPnLabels().add(getLblOutHour());
 		getPnName().add(getLblPaciente());
 		getPnButtons().setLayout(new GridLayout(4, 1, 0, 0));
@@ -98,6 +107,7 @@ public class AppointmentView extends JDialog {
 			buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			buttonPane.add(getBtnCancel());
 			buttonPane.add(getBtnContinueButton());
 			getRootPane().setDefaultButton(continueButton);
 		}
@@ -281,15 +291,16 @@ public class AppointmentView extends JDialog {
 	private JPanel getPnLabels() {
 		if (pnLabels == null) {
 			pnLabels = new JPanel();
-			pnLabels.setLayout(new GridLayout(0, 2, 0, 0));
+			pnLabels.setLayout(new GridLayout(0, 3, 0, 0));
 		}
 		return pnLabels;
 	}
 	private JPanel getPnHours() {
 		if (pnHours == null) {
 			pnHours = new JPanel();
-			pnHours.setLayout(new GridLayout(0, 2, 0, 0));
+			pnHours.setLayout(new GridLayout(0, 3, 0, 0));
 			pnHours.add(getPnEntry());
+			pnHours.add(getPanel());
 			pnHours.add(getPnOut());
 		}
 		return pnHours;
@@ -313,5 +324,30 @@ public class AppointmentView extends JDialog {
 			pnAcudioSiNo.setLayout(new GridLayout(0, 2, 0, 0));
 		}
 		return pnAcudioSiNo;
+	}
+	public JButton getBtnCancel() {
+		if (btnCancel == null) {
+			btnCancel = new JButton("Cancelar");
+		}
+		return btnCancel;
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.add(getChckbxToggleHours());
+		}
+		return panel;
+	}
+	private JPanel getPanel_1() {
+		if (panel_1 == null) {
+			panel_1 = new JPanel();
+		}
+		return panel_1;
+	}
+	public JCheckBox getChckbxToggleHours() {
+		if (chckbxToggleHours == null) {
+			chckbxToggleHours = new JCheckBox("Toggle Hours");
+		}
+		return chckbxToggleHours;
 	}
 }
