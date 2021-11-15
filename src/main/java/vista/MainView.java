@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import controlador.BackupDBControlador;
 import controlador.EstadisticasGerenteControlador;
 import controlador.ListaCalendarioCitasControlador;
 import controlador.MedicoCrearCitasControlador;
@@ -26,6 +27,7 @@ public class MainView {
 	EventQueue.invokeLater(new Runnable() {
 	    public void run() {
 		try {
+		    new BackupDBControlador();
 		    MainView window = new MainView();
 		    window.frame.setVisible(true);
 		    window.frame.setLocationRelativeTo(null);
@@ -79,15 +81,15 @@ public class MainView {
 	});
 	btnAdmin.setBounds(10, 54, 495, 85);
 	frame.getContentPane().add(btnAdmin);
-	
+
 	JButton btnGerente = new JButton("Gerente");
 	btnGerente.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			EstadisticasGerenteControlador egc = new EstadisticasGerenteControlador(new HistorialModelo()
-					, new CitaModelo(), new PacienteModelo(), new EstadisticasGerenteVista());
-			egc.inicilizar();
-		}
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		EstadisticasGerenteControlador egc = new EstadisticasGerenteControlador(new HistorialModelo(),
+			new CitaModelo(), new PacienteModelo(), new EstadisticasGerenteVista());
+		egc.inicilizar();
+	    }
 	});
 	btnGerente.setBounds(10, 327, 495, 85);
 	frame.getContentPane().add(btnGerente);
