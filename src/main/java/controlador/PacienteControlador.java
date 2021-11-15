@@ -33,7 +33,8 @@ public class PacienteControlador {
 	private CitaDto cita;
 	private CitaModelo ctm;
 
-	public PacienteControlador(PacienteModelo pacienteModelo, AppointmentView pacienteVista) {
+	public PacienteControlador(PacienteModelo pacienteModelo,
+			AppointmentView pacienteVista) {
 		this.vista_cita = pacienteVista;
 		this.modelo_paciente = pacienteModelo;
 		this.cm = new CauseModel();
@@ -44,14 +45,24 @@ public class PacienteControlador {
 	public void initialize(CitaDto cita, String nombrePaciente) {
 		this.cita = cita;
 		updateList();
-		
-		vista_cita.getBtnContinueButton().addActionListener(e -> SwingUtil.exceptionWrapper(() -> insertCitaToDB()));
-		vista_cita.getBtnAddCause().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addCause()));
-		vista_cita.getBtnAddPrescripcion().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addPrescripcion()));
-		vista_cita.getBtnHistorial().addActionListener(e -> SwingUtil.exceptionWrapper(() -> getHistorial()));
-		vista_cita.getBtnAcudio().addActionListener(e -> SwingUtil.exceptionWrapper(() -> acudio()));
-		vista_cita.getBtnNoAcudio().addActionListener(e -> SwingUtil.exceptionWrapper(() -> noAcudio()));
-		
+
+		vista_cita.getBtnContinueButton().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> insertCitaToDB()));
+		vista_cita.getBtnAddCause().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> addCause()));
+		vista_cita.getBtnAddPrescripcion().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> addPrescripcion()));
+		vista_cita.getBtnHistorial().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> getHistorial()));
+		vista_cita.getBtnAcudio().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> acudio()));
+		vista_cita.getBtnNoAcudio().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> noAcudio()));
+		vista_cita.getBtnCancel().addActionListener(e -> SwingUtil
+				.exceptionWrapper(() -> vista_cita.setVisible(false)));
+		vista_cita.getChckbxToggleHours().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> toggleHours()));
+
 		vista_cita.getLblPaciente().setText(nombrePaciente);
 		String entry = cita.getHorario_inicio();
 		String out = cita.getHorario_fin();
@@ -59,45 +70,68 @@ public class PacienteControlador {
 		String[] sEntry = entry.split(":");
 		String[] sOut = out.split(":");
 
-		vista_cita.getSpEntryHour().setValue(Integer.parseInt(sEntry[0].trim()));
+		vista_cita.getSpEntryHour()
+				.setValue(Integer.parseInt(sEntry[0].trim()));
 		vista_cita.getSpEntryMin().setValue(Integer.parseInt(sEntry[1].trim()));
 		vista_cita.getSpOutHour().setValue(Integer.parseInt(sOut[0].trim()));
 		vista_cita.getSpOutMin().setValue(Integer.parseInt(sOut[1].trim()));
 		showVistaCita();
 	}
-	
+
+	private void toggleHours() {
+		if (vista_cita.getChckbxToggleHours().isSelected()) {
+			vista_cita.getSpEntryHour().setEnabled(true);
+			vista_cita.getSpEntryMin().setEnabled(true);
+			vista_cita.getSpOutHour().setEnabled(true);
+			vista_cita.getSpOutMin().setEnabled(true);
+		} else {
+			vista_cita.getSpEntryHour().setEnabled(false);
+			vista_cita.getSpEntryMin().setEnabled(false);
+			vista_cita.getSpOutHour().setEnabled(false);
+			vista_cita.getSpOutMin().setEnabled(false);
+		}
+
+	}
+
 	private void getHistorial() {
-		HistorialControlador hc = new HistorialControlador(new HistorialModelo(), new HistorialesVista(),
+		HistorialControlador hc = new HistorialControlador(
+				new HistorialModelo(), new HistorialesVista(),
 				cita.getId_paciente(), cita.getId_medico());
 		hc.inicializar();
 	}
-	
+
 	private void acudio() {
 		ctm.updateAcudio(cita.getId(), "Acudio");
-		JOptionPane.showMessageDialog(null, "La actualización " + "se ha realizado correctamente");
+		JOptionPane.showMessageDialog(null,
+				"La actualización " + "se ha realizado correctamente");
 		cita.setAcudio("Acudió");
-		RegistroModelo.addRegistro(new RegistroDto("Médico " + cita.getId_medico(),
-				"Indica que el paciente " + cita.getId_paciente() + " acudió a la cita " + cita.getId()));
+		RegistroModelo
+				.addRegistro(new RegistroDto("Médico " + cita.getId_medico(),
+						"Indica que el paciente " + cita.getId_paciente()
+								+ " acudió a la cita " + cita.getId()));
 	}
-	
+
 	private void noAcudio() {
 		ctm.updateAcudio(cita.getId(), "No Acudio");
-		JOptionPane.showMessageDialog(null, "La actualización " + "se ha realizado correctamente");
+		JOptionPane.showMessageDialog(null,
+				"La actualización " + "se ha realizado correctamente");
 		cita.setAcudio("No acudió");
-		RegistroModelo.addRegistro(new RegistroDto("Médico " + cita.getId_medico(),
-				"Indica que el paciente " + cita.getId_paciente() + " no acudió a la cita " + cita.getId()));
+		RegistroModelo
+				.addRegistro(new RegistroDto("Médico " + cita.getId_medico(),
+						"Indica que el paciente " + cita.getId_paciente()
+								+ " no acudió a la cita " + cita.getId()));
 	}
 
 	private void addCause() {
-		AppointmentControler controller = new AppointmentControler(new CauseModel(), new AddCauseView(),
-				new NonExistenceView());
+		AppointmentControler controller = new AppointmentControler(
+				new CauseModel(), new AddCauseView(), new NonExistenceView());
 		controller.initialize(cita.getId());
 		updateList();
 	}
 
 	private void addPrescripcion() {
-		PrescripcionesControlador controller = new PrescripcionesControlador(cita.getId_paciente(),
-				cita.getId_medico());
+		PrescripcionesControlador controller = new PrescripcionesControlador(
+				cita.getId_paciente(), cita.getId_medico());
 		controller.inicializar();
 		updateList();
 	}
@@ -115,6 +149,10 @@ public class PacienteControlador {
 	}
 
 	public void showVistaCita() {
+		vista_cita.getSpEntryHour().setEnabled(false);
+		vista_cita.getSpEntryMin().setEnabled(false);
+		vista_cita.getSpOutHour().setEnabled(false);
+		vista_cita.getSpOutMin().setEnabled(false);
 		vista_cita.setLocationRelativeTo(null);
 		vista_cita.setVisible(true);
 	}
@@ -126,9 +164,10 @@ public class PacienteControlador {
 		String mine = vista_cita.getSpEntryMin().getValue().toString();
 		String houro = vista_cita.getSpOutHour().getValue().toString();
 		String mineo = vista_cita.getSpOutMin().getValue().toString();
-
-		cidto.setHora_entrada(houre + " : " + mine);
-		cidto.setHora_salida(houro + " : " + mineo);
+		if (vista_cita.getChckbxToggleHours().isSelected()) {
+			cidto.setHora_entrada(houre + " : " + mine);
+			cidto.setHora_salida(houro + " : " + mineo);
+		}
 		cidto.setHorario_inicio(cita.getHorario_inicio());
 		cidto.setHorario_fin(cita.getHorario_fin());
 		cidto.setId(cita.getId());
