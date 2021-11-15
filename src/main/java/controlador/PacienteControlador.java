@@ -3,6 +3,7 @@ package controlador;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 import dtos.CauseDto;
 import dtos.CitaDto;
@@ -44,6 +45,7 @@ public class PacienteControlador {
 	vista_cita.getBtnContinueButton().addActionListener(e -> SwingUtil.exceptionWrapper(() -> insertCitaToDB()));
 	vista_cita.getBtnAddCause().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addCause()));
 	vista_cita.getBtnAddPrescripcion().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addPrescripcion()));
+	vista_cita.getBtnEDO().addActionListener(e -> SwingUtil.exceptionWrapper(() -> newEDO()));
 	vista_cita.getLblPaciente().setText(nombrePaciente);
 	String entry = cita.getHorario_inicio();
 	String out = cita.getHorario_fin();
@@ -58,6 +60,12 @@ public class PacienteControlador {
 
 	_cargarPrescripciones();
 	showVistaCita();
+    }
+
+    private void newEDO() {
+	String name = JOptionPane.showInputDialog("Introduzca el nombre de la EDO");
+	new EDOControlador(name, cita);
+	JOptionPane.showMessageDialog(vista_cita, "Se ha informado a gerencia");
     }
 
     private void addCause() {
