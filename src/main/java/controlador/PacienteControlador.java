@@ -15,7 +15,10 @@ import modelo.CitaModelo;
 import modelo.HistorialModelo;
 import modelo.MedicoModelo;
 import modelo.PacienteModelo;
+import modelo.PrescripcionesModelo;
 import modelo.RegistroModelo;
+import records.PrescripcionRecord;
+import util.NoEditableTableModel;
 import util.SwingUtil;
 import vista.AddCauseView;
 import vista.AppointmentView;
@@ -32,11 +35,13 @@ public class PacienteControlador {
 	private MedicoModelo mm;
 	private CitaDto cita;
 	private CitaModelo ctm;
+	private PrescripcionesModelo pM;
 
 	public PacienteControlador(PacienteModelo pacienteModelo,
 			AppointmentView pacienteVista) {
 		this.vista_cita = pacienteVista;
 		this.modelo_paciente = pacienteModelo;
+		this.pM = new PrescripcionesModelo();
 		this.cm = new CauseModel();
 		this.mm = new MedicoModelo();
 		this.ctm = new CitaModelo();
@@ -75,6 +80,7 @@ public class PacienteControlador {
 		vista_cita.getSpEntryMin().setValue(Integer.parseInt(sEntry[1].trim()));
 		vista_cita.getSpOutHour().setValue(Integer.parseInt(sOut[0].trim()));
 		vista_cita.getSpOutMin().setValue(Integer.parseInt(sOut[1].trim()));
+		_cargarPrescripciones();
 		showVistaCita();
 	}
 
@@ -178,5 +184,27 @@ public class PacienteControlador {
 		cidto.setAcudio(cita.getAcudio());
 		cm.insertCita(cidto);
 		vista_cita.setVisible(false);
+	}
+
+	void _cargarPrescripciones() {
+		vista_cita
+				.setModeloTablaPrescripciones(
+						new NoEditableTableModel(
+								new String[] { "Nombre", "Indicacciones",
+										"Cantidad", "Intervalo", "Duración" },
+								0));
+
+		List<PrescripcionRecord> lM = pM
+				.getListaPrescripcionesPaciente(cita.getId_paciente());
+
+		for (PrescripcionRecord p : lM) {
+			vista_cita.getModeloTablaPrescripciones()
+					.addRow(new Object[] { p.getNombre(), p.getIndicaciones(),
+							p.getCantidad(), p.getIntervalo(),
+							p.getDuracion() });
+		}
+
+		vista_cita.getTablePrescripciones()
+				.setModel(vista_cita.getModeloTablaPrescripciones());
 	}
 }
