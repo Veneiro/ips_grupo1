@@ -17,4 +17,5 @@ public class CitaPendienteDto {
 	private int IDPACIENTE;
 	private int ID_MEDICO;
 	private String FECHA;
+	private String ESTADO;
 }
