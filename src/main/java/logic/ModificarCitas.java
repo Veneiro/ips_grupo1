@@ -233,4 +233,43 @@ public class ModificarCitas {
 	    return true;
 	return false;
     }
+    
+    public List<MedicoDto> filtrarMedicosSinCitasColisionantes(Date horaEntrada, Date horaSalida, Date fecha) {
+		List<MedicoDto> res = new ArrayList<MedicoDto>();
+		Format formatterHora = new SimpleDateFormat("HH:mm");
+		Format formatterDia = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			fecha = (Date) formatterDia.parseObject(formatterDia.format(fecha));
+		} catch (ParseException e1) {
+			throw new ApplicationException(e1);
+		}
+		for (MedicoDto medico : medicosAñadibles) {
+			List<CitaDto> citasDto = new LectorDeDatos().getListaCitasDeMedico(medico);
+			if (!algunaCitaColisionante(horaEntrada, horaSalida, fecha, formatterHora, formatterDia, citasDto)) {
+				res.add(medico);
+			}
+		}
+		return res;
+	}
+
+	private boolean algunaCitaColisionante(Date horaEntrada, Date horaSalida, Date fecha, Format formatterHora, Format formatterDia,
+			List<CitaDto> citasDto) {
+		for (CitaDto citaDto : citasDto) {
+			try {
+				if (citaDto.getFecha() != null) {
+					Date fechaAjena = (Date) formatterDia.parseObject(citaDto.getFecha());
+					if (fecha.compareTo(fechaAjena) == 0) {
+						Date horaEntradaAjena = (Date) formatterHora.parseObject(citaDto.getHorario_inicio());
+						Date horaSalidaAjena = (Date) formatterHora.parseObject(citaDto.getHorario_fin());
+						if (colisionHorarios(horaEntrada, horaSalida, horaEntradaAjena, horaSalidaAjena)) {
+							return true;
+						}
+					}
+				}
+			} catch (ParseException e) {
+				// Se ignora la cita
+			}
+		}
+		return false;
+	}
 }

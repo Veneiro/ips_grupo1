@@ -80,6 +80,7 @@ public class CitaVista extends JDialog {
     private JCheckBox chckbxUrgente;
     private AdministradorControlador ac = new AdministradorControlador();
     LocalDateTime ldt = LocalDateTime.now();
+    private JButton btnBuscarMedicosSinCitasConflictivas;
 
     /**
      * Create the frame.
@@ -125,6 +126,7 @@ public class CitaVista extends JDialog {
 	contentPane.add(getLblEspecialidades());
 	contentPane.add(getChckbxEspecialidad());
 	contentPane.add(getChckbxUrgente());
+	contentPane.add(getBtnBuscarMedicosSinCitasConflictivas());
     }
 
     public void visible(boolean visible) {
@@ -573,4 +575,32 @@ public class CitaVista extends JDialog {
 	}
 	return chckbxUrgente;
     }
+	private JButton getBtnBuscarMedicosSinCitasConflictivas() {
+		if (btnBuscarMedicosSinCitasConflictivas == null) {
+			btnBuscarMedicosSinCitasConflictivas = new JButton("Buscar m\u00E9dicos sin citas conflictivas");
+			btnBuscarMedicosSinCitasConflictivas.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					buscarMedicosSinCitasConflictivas();
+				}
+			});
+			btnBuscarMedicosSinCitasConflictivas.setBounds(720, 134, 222, 22);
+		}
+		return btnBuscarMedicosSinCitasConflictivas;
+	}
+	
+	private void buscarMedicosSinCitasConflictivas() {
+		if (getSpHoraEntrada().isEnabled()) {
+		    Date horaEntrada = (Date) getSpHoraEntrada().getValue();
+		    Date horaSalida = (Date) getSpHoraSalida().getValue();
+		    Date fecha = (Date) getSpDia().getValue();
+		    List<MedicoDto> medicosValidos = admin.filtrarMedicosSinCitasColisionantes(horaEntrada, horaSalida, fecha);
+		    modeloListMedicos.clear();
+			for (MedicoDto m : medicosValidos) {
+			    modeloListMedicos.addElement(m);
+			}
+			getBtnDesfiltrar().setEnabled(true);
+		} else {
+			JOptionPane.showMessageDialog(this, "Necesitas definir un horario antes");
+		}
+	}
 }
