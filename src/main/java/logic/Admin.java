@@ -8,11 +8,15 @@ import java.util.Date;
 import java.util.List;
 
 import dtos.CitaDto;
+import dtos.JornadaLaboralDto;
 import dtos.MedicoDto;
 import dtos.PacienteDto;
+import modelo.JornadaModelo;
 import modelo.LectorDeDatos;
 import modelo.MedicoModelo;
 import modelo.PacienteModelo;
+import records.JornadaLaboralRecord;
+import records.RecordAssembler;
 import util.ApplicationException;
 
 /**
@@ -48,7 +52,7 @@ public class Admin {
 	 * @param filtro
 	 * @return lista filtrada de los médicos
 	 */
-	public List<MedicoDto> filtrarMedicos(String filtro) {
+	public List<MedicoDto> filtrarMedicos(String filtro, List<MedicoDto> medicos) {
 		List<MedicoDto> listaFiltrada = new ArrayList<MedicoDto>();
 		for (MedicoDto m : medicos) {
 			if (m.toString().trim().toLowerCase().contains(filtro.toLowerCase())) {
@@ -57,7 +61,7 @@ public class Admin {
 		}
 		return listaFiltrada;
 	}
-	
+
 	public List<PacienteDto> filtrarPacientes(String filtro) {
 		List<PacienteDto> listaFiltrada = new ArrayList<PacienteDto>();
 		for (PacienteDto p : pacientes) {
@@ -67,8 +71,9 @@ public class Admin {
 		}
 		return listaFiltrada;
 	}
-	
-	public List<MedicoDto> filtrarMedicosSinCitasColisionantes(Date horaEntrada, Date horaSalida, Date fecha) {
+
+	public List<MedicoDto> filtrarMedicosSinCitasColisionantes(Date horaEntrada, Date horaSalida, Date fecha,
+			List<MedicoDto> medicos) {
 		List<MedicoDto> res = new ArrayList<MedicoDto>();
 		Format formatterHora = new SimpleDateFormat("HH:mm");
 		Format formatterDia = new SimpleDateFormat("dd-MM-yyyy");
@@ -86,8 +91,58 @@ public class Admin {
 		return res;
 	}
 
-	private boolean algunaCitaColisionante(Date horaEntrada, Date horaSalida, Date fecha, Format formatterHora, Format formatterDia,
-			List<CitaDto> citasDto) {
+	public List<MedicoDto> filtrarMedicosConJornadaLaboral(Date horaEntrada, Date horaSalida, Date fecha,
+			List<MedicoDto> medicos) {
+		List<MedicoDto> res = new ArrayList<MedicoDto>();
+		Format formatterDia = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			fecha = (Date) formatterDia.parseObject(formatterDia.format(fecha));
+		} catch (ParseException e1) {
+			throw new ApplicationException(e1);
+		}
+		JornadaModelo modelo = new JornadaModelo();
+		for (MedicoDto medico : medicos) {
+			List<JornadaLaboralRecord> jornadas = modelo.findByName(medico.getNombre());
+			if (algunaJornadaColisionante(jornadas, fecha, horaEntrada, horaSalida)) {
+				res.add(medico);
+			}
+		}
+		return res;
+	}
+
+	private boolean algunaJornadaColisionante(List<JornadaLaboralRecord> jornadas, Date fecha, Date horaEntrada,
+			Date horaSalida) {
+		for (JornadaLaboralRecord jornada : jornadas) {
+			JornadaLaboralDto j = RecordAssembler.toDto(jornada);
+			if (j.getDia_comienzo() != null && j.getDia_fin() != null) {
+				if (fecha.before(j.getDia_comienzo()) || fecha.after(j.getDia_fin())) {
+					return true;
+				}
+				try {
+					if (colisionHorarios(horaEntrada, horaSalida, j.getHora_entrada(), j.getHora_salida())) {
+						return true;
+					}
+				} catch (ParseException e) {
+					// Se ignora la jornada
+				}
+			}
+		}
+		return false;
+	}
+
+	public List<MedicoDto> filtrarMedicosPorEspecialidad(String especialidad, List<MedicoDto> medicos) {
+		List<MedicoDto> listaFiltrada = new ArrayList<MedicoDto>();
+		for (MedicoDto m : medicos) {
+			if (m.getEspecialidad() != null)
+				if (m.getEspecialidad().equals(especialidad)) {
+					listaFiltrada.add(m);
+				}
+		}
+		return listaFiltrada;
+	}
+
+	private boolean algunaCitaColisionante(Date horaEntrada, Date horaSalida, Date fecha, Format formatterHora,
+			Format formatterDia, List<CitaDto> citasDto) {
 		for (CitaDto citaDto : citasDto) {
 			try {
 				if (citaDto.getFecha() != null) {
@@ -106,7 +161,7 @@ public class Admin {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Comprueba si hay intersección entre 2 horarios.
 	 * 
@@ -135,4 +190,5 @@ public class Admin {
 			return true;
 		return false;
 	}
+
 }
