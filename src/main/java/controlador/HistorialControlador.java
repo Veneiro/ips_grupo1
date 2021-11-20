@@ -13,12 +13,14 @@ import dtos.HistorialDto;
 import dtos.MedicoDto;
 import dtos.PacienteDto;
 import dtos.RegistroDto;
+import dtos.VacunaDto;
 import modelo.DiagnosticoModelo;
 import modelo.HistorialModelo;
 import modelo.MedicoModelo;
 import modelo.PacienteModelo;
 import modelo.PrescripcionesModelo;
 import modelo.RegistroModelo;
+import modelo.VacunaModelo;
 import records.PrescripcionRecord;
 import vista.HistorialesVista;
 
@@ -32,6 +34,7 @@ public class HistorialControlador {
 	private MedicoModelo mm;
 	private int idPaciente;
 	private int idMedico;
+	private VacunaModelo vm;
 
 	public HistorialControlador(HistorialModelo hm, HistorialesVista hv, int idPaciente, int idMedico) {
 		this.hm = hm;
@@ -42,6 +45,7 @@ public class HistorialControlador {
 		this.prm = new PrescripcionesModelo();
 		this.idMedico = idMedico;
 		this.mm = new MedicoModelo();
+		this.vm = new VacunaModelo();
 
 		inicializarVistaHistorial();
 	}
@@ -53,6 +57,7 @@ public class HistorialControlador {
 	}
 
 	public void inicializar() {
+		HistorialControlador hc = this;
 		hv.getBtnSalir().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -60,7 +65,7 @@ public class HistorialControlador {
 
 			}
 		});
-		HistorialControlador hc = this;
+		
 		hv.getBtnModificar().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -69,6 +74,16 @@ public class HistorialControlador {
 				
 			}
 		});
+		hv.getBtnVacunas().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VacunaMenuControlador vmc = new VacunaMenuControlador(hc, idPaciente, idMedico);
+				vmc.inicializar();
+				
+			}
+		});
+		
 		cargarHistorial(idPaciente);
 	}
 
@@ -76,12 +91,11 @@ public class HistorialControlador {
 		List<HistorialDto> historial = hm.getHistorialPaciente(idPaciente);
 		List<PacienteDto> paciente = pm.getPacienteById(idPaciente);
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
-		String header[] = new String[] { "Nombre", "Vacunas", "Antecedentes", "Informacion Adicional" };
+		String header[] = new String[] { "Nombre", "Antecedentes", "Informacion Adicional" };
 		dm.setColumnIdentifiers(header);
 
 		Vector<Object> data = new Vector<Object>();
 		data.add(paciente.get(0).getNombre());
-		data.add(historial.get(0).getVacunas());
 		data.add(historial.get(0).getAntecedentes());
 		data.add(historial.get(0).getInformacionAdicional());
 		dm.addRow(data);
@@ -120,8 +134,23 @@ public class HistorialControlador {
 
 			dm.addRow(data);
 		}
-
+		
 		hv.getTablePrescriciones().setModel(dm);
+		
+		dm = new DefaultTableModel(0, 0);
+		header = new String[] { "Vacuna", "Fecha", "Hora" };
+		dm.setColumnIdentifiers(header);
+		List<VacunaDto> vacunas = vm.getVacunasByPacienteId(idPaciente);
+		for (VacunaDto vacuna : vacunas) {
+			data = new Vector<Object>();
+			data.add(vacuna.getVacuna());
+			data.add(vacuna.getFecha());
+			data.add(vacuna.getHora());
+			
+			dm.addRow(data);
+		}
+		
+		hv.getTableVacunas().setModel(dm);
 
 	}
 }

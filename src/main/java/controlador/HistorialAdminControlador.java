@@ -64,12 +64,11 @@ public class HistorialAdminControlador {
 	List<HistorialDto> historial = hm.getHistorialPaciente(idPaciente);
 	List<PacienteDto> paciente = pm.getPacienteById(idPaciente);
 	DefaultTableModel dm = new DefaultTableModel(0, 0);
-	String header[] = new String[] { "Nombre", "Vacunas", "Antecedentes", "Informacion Adicional" };
+	String header[] = new String[] { "Nombre", "Antecedentes", "Informacion Adicional" };
 	dm.setColumnIdentifiers(header);
 
 	Vector<Object> data = new Vector<Object>();
 	data.add(paciente.get(0).getNombre());
-	data.add(historial.get(0).getVacunas());
 	data.add(historial.get(0).getAntecedentes());
 	data.add(historial.get(0).getInformacionAdicional());
 	dm.addRow(data);
