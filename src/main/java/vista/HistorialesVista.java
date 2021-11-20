@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.awt.Rectangle;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,7 +15,7 @@ import lombok.Getter;
 
 @SuppressWarnings("serial")
 @Getter
-public class HistorialesVista extends JFrame {
+public class HistorialesVista extends JDialog {
 
 	private JLabel lblHistorial;
 	private JButton btnSalir;
