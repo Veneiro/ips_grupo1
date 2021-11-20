@@ -40,4 +40,9 @@ public class PrescripcionesModelo {
 	String sql = "SELECT NOMBRE, INDICACIONES, CANTIDAD, INTERVALO, DURACION, FECHA FROM TPRESCRIPCIONES  WHERE PACIENTE_ID = ?  ORDER BY FECHA";
 	return db.executeQueryPojo(PrescripcionRecord.class, sql, idPaciente);
     }
+
+    public List<PrescripcionRecord> getListaPrescripcionesNoRepetidasByName(String text) {
+	String sql = "SELECT DISTINCT NOMBRE, INDICACIONES, CANTIDAD, INTERVALO, DURACION, MEDICAMENTO FROM TPRESCRIPCIONES WHERE NOMBRE LIKE ? ORDER BY NOMBRE";
+	return db.executeQueryPojo(PrescripcionRecord.class, sql, "%" + text + "%");
+    }
 }

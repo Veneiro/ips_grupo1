@@ -3,6 +3,7 @@ package controlador;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -78,6 +79,24 @@ public class PrescripcionesControlador {
 	    @Override
 	    public void changedUpdate(DocumentEvent e) {
 		checkAddButton();
+	    }
+	});
+
+	pV.getTextFieldBuscar().getDocument().addDocumentListener(new DocumentListener() {
+
+	    @Override
+	    public void removeUpdate(DocumentEvent e) {
+		cargarPrescripciones();
+	    }
+
+	    @Override
+	    public void insertUpdate(DocumentEvent e) {
+		cargarPrescripciones();
+	    }
+
+	    @Override
+	    public void changedUpdate(DocumentEvent e) {
+		cargarPrescripciones();
 	    }
 	});
 
@@ -162,10 +181,16 @@ public class PrescripcionesControlador {
 
 	pV.setModeloTablaPrescripciones(new NoEditableTableModel(new String[] { "Nombre" }, 0));
 
-	List<PrescripcionRecord> lM = pM.getListaPrescripcionesNoRepetidas();
+	List<PrescripcionRecord> lP = new ArrayList<>();
 	mapTable = new HashMap<>();
 
-	for (PrescripcionRecord p : lM) {
+	if (pV.getTextFieldBuscar().getText().trim().isEmpty()) {
+	    lP = pM.getListaPrescripcionesNoRepetidas();
+	} else {
+	    lP = pM.getListaPrescripcionesNoRepetidasByName(pV.getTextFieldBuscar().getText());
+	}
+
+	for (PrescripcionRecord p : lP) {
 	    mapTable.put(fila, p);
 	    pV.getModeloTablaPrescripciones().addRow(new Object[] { p.getNombre(), p.getIndicaciones(), p.getCantidad(),
 		    p.getIntervalo(), p.getDuracion() });
