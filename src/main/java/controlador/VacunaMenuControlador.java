@@ -30,7 +30,8 @@ public class VacunaMenuControlador {
 	}
 
 	private void inicializarNuevaVacunaVista() {
-		
+		NuevaVacunaControlador nvc = new NuevaVacunaControlador(idPaciente, hc);
+		nvc.inicializar();
 	}
 
 	private void inicializarModificarVista() {

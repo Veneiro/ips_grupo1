@@ -13,4 +13,14 @@ public class VacunaModelo {
 		String sql = "select * from TVacunas v where v.paciente_id = ?";
 		return db.executeQueryPojo(VacunaDto.class, sql, id);
 	}
+	
+	public void addVacuna(int idPaciente, String fecha, String hora, String vacuna) {
+		String sql = "insert into TVacunas (paciente_id, fecha, hora, vacuna) values (?,?,?,?)";
+		db.executeUpdate(sql, idPaciente, fecha, hora, vacuna);
+	}
+	
+	public void updateVacuna( String vacunaN, String horaN, String vacunaA, String horaA, String fecha) {
+		String sql = "update TVacunas set vacuna = ?, hora = ? where vacuna = ? AND hora = ? AND fecha = ?";
+		db.executeUpdate(sql, vacunaN, horaN, vacunaA, horaA, fecha);
+	}
 }

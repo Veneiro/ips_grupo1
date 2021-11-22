@@ -42,7 +42,22 @@ public class ModificarVacunaControlador {
 			public void actionPerformed(ActionEvent e) {
 				String vacuna = JOptionPane.showInputDialog("Introduzca la vacuna");
 				String hora = JOptionPane.showInputDialog("Introduzca la hora en la que se produjo");
+				String vacunaA = String.valueOf(mvv.getTableVacunas().getValueAt(mvv.getTableVacunas().getSelectedRow(), 0));
+				String horaA  = String.valueOf(mvv.getTableVacunas().getValueAt(mvv.getTableVacunas().getSelectedRow(), 2));
+				if (vacuna.isEmpty()) {
+					vacuna = vacunaA;
+				}
 				
+				if (hora.isEmpty()) {
+					hora = horaA;
+				}
+				
+				String fecha = String.valueOf(mvv.getTableVacunas().getValueAt(mvv.getTableVacunas().getSelectedRow(), 1));
+				
+				vm.updateVacuna(vacuna, hora, vacunaA, horaA, fecha);
+				
+				hc.cargarHistorial(idPaciente);
+				cargarListaVacunas();
 			}
 			
 		});
