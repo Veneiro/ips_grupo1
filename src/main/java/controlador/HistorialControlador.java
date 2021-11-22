@@ -8,12 +8,14 @@ import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
+import dtos.AntecedenteDto;
 import dtos.DiagnosticoDto;
 import dtos.HistorialDto;
 import dtos.MedicoDto;
 import dtos.PacienteDto;
 import dtos.RegistroDto;
 import dtos.VacunaDto;
+import modelo.AntecedentesModelo;
 import modelo.DiagnosticoModelo;
 import modelo.HistorialModelo;
 import modelo.MedicoModelo;
@@ -35,6 +37,7 @@ public class HistorialControlador {
 	private int idPaciente;
 	private int idMedico;
 	private VacunaModelo vm;
+	private AntecedentesModelo am;
 
 	public HistorialControlador(HistorialModelo hm, HistorialesVista hv, int idPaciente, int idMedico) {
 		this.hm = hm;
@@ -46,6 +49,7 @@ public class HistorialControlador {
 		this.idMedico = idMedico;
 		this.mm = new MedicoModelo();
 		this.vm = new VacunaModelo();
+		this.am = new AntecedentesModelo();
 
 		inicializarVistaHistorial();
 	}
@@ -84,21 +88,36 @@ public class HistorialControlador {
 			}
 		});
 		
+		hv.getBtnAntecedentes().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AntecedentesMenuControlador amc = new AntecedentesMenuControlador(hc, idPaciente, idMedico);
+				amc.inicializar();
+			}
+			
+		});
+		
 		cargarHistorial(idPaciente);
 	}
 
 	public void cargarHistorial(int idPaciente) {
 		List<HistorialDto> historial = hm.getHistorialPaciente(idPaciente);
 		List<PacienteDto> paciente = pm.getPacienteById(idPaciente);
+		List<AntecedenteDto> antecedentes = am.getByPacienteId(idPaciente);
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
-		String header[] = new String[] { "Nombre", "Antecedentes", "Informacion Adicional" };
+		String header[] = new String[] { "Nombre", "Antecedentes", "Fecha Comienzo", "Informacion Adicional" };
 		dm.setColumnIdentifiers(header);
 
 		Vector<Object> data = new Vector<Object>();
-		data.add(paciente.get(0).getNombre());
-		data.add(historial.get(0).getAntecedentes());
-		data.add(historial.get(0).getInformacionAdicional());
-		dm.addRow(data);
+		for (AntecedenteDto antecedente : antecedentes) {
+			data = new Vector<Object>();
+			data.add(paciente.get(0).getNombre());
+			data.add(antecedente.getAntecedente());
+			data.add(antecedente.getFecha_comienzo());
+			data.add(historial.get(0).getInformacionAdicional());
+			dm.addRow(data);
+		}
 
 		hv.getTable().setModel(dm);
 
