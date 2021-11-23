@@ -17,7 +17,7 @@ import modelo.PacienteModelo;
 
 public class MainView {
 
-    private JFrame frame;
+    private JFrame frmIhospitalMain;
 
     /**
      * Launch the application.
@@ -27,8 +27,8 @@ public class MainView {
 	    public void run() {
 		try {
 		    MainView window = new MainView();
-		    window.frame.setVisible(true);
-		    window.frame.setLocationRelativeTo(null);
+		    window.frmIhospitalMain.setVisible(true);
+		    window.frmIhospitalMain.setLocationRelativeTo(null);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
@@ -47,16 +47,17 @@ public class MainView {
      * Initialize the contents of the frame.
      */
     private void initialize() {
-	frame = new JFrame();
-	frame.setResizable(false);
-	frame.setBounds(100, 100, 533, 500);
-	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	frame.getContentPane().setLayout(null);
+	frmIhospitalMain = new JFrame();
+	frmIhospitalMain.setTitle("iHospital : Main Window");
+	frmIhospitalMain.setResizable(false);
+	frmIhospitalMain.setBounds(100, 100, 533, 500);
+	frmIhospitalMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frmIhospitalMain.getContentPane().setLayout(null);
 
 	JButton btnMedico = new JButton("M\u00E9dico");
 	btnMedico.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
-		String idMedico = JOptionPane.showInputDialog(frame, "Introduzca su id");
+		String idMedico = JOptionPane.showInputDialog(frmIhospitalMain, "Introduzca su id");
 
 		if (idMedico != null) {
 		    ListaCalendarioCitasControlador controller = new ListaCalendarioCitasControlador(
@@ -68,7 +69,7 @@ public class MainView {
 	    }
 	});
 	btnMedico.setBounds(10, 195, 495, 85);
-	frame.getContentPane().add(btnMedico);
+	frmIhospitalMain.getContentPane().add(btnMedico);
 
 	JButton btnAdmin = new JButton("Administrativo");
 	btnAdmin.addActionListener(new ActionListener() {
@@ -78,7 +79,7 @@ public class MainView {
 	    }
 	});
 	btnAdmin.setBounds(10, 54, 495, 85);
-	frame.getContentPane().add(btnAdmin);
+	frmIhospitalMain.getContentPane().add(btnAdmin);
 	
 	JButton btnGerente = new JButton("Gerente");
 	btnGerente.addActionListener(new ActionListener() {
@@ -90,6 +91,6 @@ public class MainView {
 		}
 	});
 	btnGerente.setBounds(10, 327, 495, 85);
-	frame.getContentPane().add(btnGerente);
+	frmIhospitalMain.getContentPane().add(btnGerente);
     }
 }

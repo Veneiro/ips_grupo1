@@ -17,6 +17,7 @@ import modelo.PacienteModelo;
 import modelo.RegistroModelo;
 import util.SwingUtil;
 import vista.AppointmentView;
+import vista.AprobarCitasVistaMedico;
 import vista.ListaCalendarioCitasVista;
 
 public class ListaCalendarioCitasControlador {
@@ -68,8 +69,16 @@ public class ListaCalendarioCitasControlador {
 				.addActionListener(e -> SwingUtil.exceptionWrapper(() -> pc
 						.initialize(citas.get(lccv.getTable().getSelectedRow()),
 								p.getNombre())));
-		lccv.getBtnProponerCita().addActionListener(e -> SwingUtil
-				.exceptionWrapper(() -> mccc.initializate(idMedico)));
+		lccv.getBtnProponerCita().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> mccc.initializate(idMedico)));
+		lccv.getBtnCitasModificadas().addActionListener(e -> SwingUtil
+				.exceptionWrapper(() -> loadCitasMod()));
+	}
+
+	private void loadCitasMod() {
+		CitasModificadasMedicoControlador cmmc = new CitasModificadasMedicoControlador(
+				new AprobarCitasVistaMedico());
+		cmmc.initializeAprobarCitas();
 	}
 
 	private void cargarCalendarioCitas(String fecha, int idMedico) {
@@ -98,7 +107,7 @@ public class ListaCalendarioCitasControlador {
 		}
 		lccv.getTable().setModel(dm);
 	}
-	
+
 	private void primeraCargaCalendario(int idMedico) {
 
 		citas = cm.getCitasMedico(idMedico);
