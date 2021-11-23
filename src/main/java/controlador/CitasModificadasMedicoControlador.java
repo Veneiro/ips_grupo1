@@ -72,12 +72,24 @@ public class CitasModificadasMedicoControlador {
 					&& !acvm.getTable().getValueAt(i, 8).equals("false")) {
 				JOptionPane.showMessageDialog(acvm,
 						"The introduced value is not correct : "
-						+ "Please introduce True or False");
+								+ "Please introduce True or False");
 			} else if (acvm.getTable().getValueAt(i, 8).equals("false")) {
 				JOptionPane.showConfirmDialog(acvm,
 						"Are you sure you want to close? The appointments not "
 								+ "approved will be marked as rejected and removed");
 				// Borrar de la base de datos citas rechazadas por el médico
+
+				// Se borrarán todas las citas pendientes que aparezcan como
+				// falso al darle al botón de confirmar
+
+				// El médicoo tendrá que volver a proponer otra cita si no
+				// estaba conforme con los cambios del admin
+				for (int j2 = 0; j2 < acvm.getTable().getColumnCount(); j2++) {
+					CitaDto cdto = new CitaDto();
+					cdto.setId((int) acvm.getTable().getValueAt(i, j2));	
+					macm.removeMedicos(cdto.getId());
+					cim.updateCitaPendiente(cdto.getId());
+				}
 			}
 		}
 	}

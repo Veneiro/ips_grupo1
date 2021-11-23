@@ -2,6 +2,9 @@ package controlador;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,9 +50,7 @@ public class AdministradorControlador {
 	private ModificarCitaAdminVista mcav = new ModificarCitaAdminVista();
 	private DefaultListModel modelMedicos = new DefaultListModel();
 
-	public AdministradorControlador() {
-
-	}
+	public AdministradorControlador() {}
 
 	public AdministradorControlador(AprobarCitasVista acv) {
 		this.acv = acv;
@@ -178,8 +179,11 @@ public class AdministradorControlador {
 	private void updateDataBase(CitaPendienteDto citaPendiente) {
 		cpdto.setUBICACION(mcav.getTxtUbicacion().getText());
 		Date citaFecha = mcav.getDateChooser().getDate();
-		cpdto.setFECHA(citaFecha.getDay() + "-" + citaFecha.getMonth() + "-"
-				+ citaFecha.getYear());
+		LocalDate fecha = citaFecha.toInstant().atZone(ZoneId.systemDefault())
+				.toLocalDate();
+		cpdto.setFECHA(fecha.get(ChronoField.DAY_OF_MONTH) + "-"
+				+ fecha.get(ChronoField.MONTH_OF_YEAR) + "-"
+				+ fecha.get(ChronoField.YEAR));
 		cpdto.setESTADO("MedicoReview");
 
 		String houre = String.format("%02d", mcav.getSpEntryHour().getValue());
@@ -360,7 +364,8 @@ public class AdministradorControlador {
 			} else if (!acv.getTable().getValueAt(i, 7).equals("true")
 					&& !acv.getTable().getValueAt(i, 7).equals("false")) {
 				JOptionPane.showMessageDialog(acv,
-						"The introduced value is not correct : Please introduce True or False");
+						"The introduced value is not correct : Please "
+						+ "introduce True or False");
 				;
 			}
 		}
