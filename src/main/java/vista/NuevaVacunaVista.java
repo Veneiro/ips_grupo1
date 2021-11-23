@@ -20,10 +20,12 @@ public class NuevaVacunaVista extends JDialog {
 	private JTextField textVacuna;
 	private JTextField textHora;
 	private JButton btnAceptar;
+	private JTextField textFecha;
+	private JLabel lblFecha;
 	
 	public NuevaVacunaVista() {
 		getContentPane().setLayout(null);
-		setBounds(new Rectangle(300, 300, 300, 170));
+		setBounds(new Rectangle(300, 300, 300, 200));
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -52,8 +54,17 @@ public class NuevaVacunaVista extends JDialog {
 		getContentPane().add(lblHora);
 		
 		btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBounds(97, 101, 85, 21);
+		btnAceptar.setBounds(97, 132, 85, 21);
 		getContentPane().add(btnAceptar);
+		
+		textFecha = new JTextField();
+		textFecha.setBounds(97, 88, 96, 19);
+		getContentPane().add(textFecha);
+		textFecha.setColumns(10);
+		
+		lblFecha = new JLabel("Fecha:");
+		lblFecha.setBounds(42, 91, 45, 13);
+		getContentPane().add(lblFecha);
 		
 	}
 }

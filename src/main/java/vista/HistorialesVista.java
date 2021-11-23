@@ -55,7 +55,7 @@ public class HistorialesVista extends JDialog {
 		
 		btnModificar = new JButton("Modificar\r\nDiagnostico");
 		btnModificar.setHorizontalAlignment(SwingConstants.RIGHT);
-		btnModificar.setBounds(910, 180, 166, 124);
+		btnModificar.setBounds(910, 180, 176, 124);
 		getContentPane().add(btnModificar);
 		
 		scrollPaneTabla = new JScrollPane();
@@ -95,11 +95,11 @@ public class HistorialesVista extends JDialog {
 		scrollPaneTabla_3.setViewportView(tableVacunas);
 		
 		btnVacunas = new JButton("Modificar Vacunas");
-		btnVacunas.setBounds(910, 303, 166, 138);
+		btnVacunas.setBounds(910, 303, 176, 138);
 		getContentPane().add(btnVacunas);
 		
 		btnAntecedentes = new JButton("Modificar Antecedentes");
-		btnAntecedentes.setBounds(910, 22, 166, 158);
+		btnAntecedentes.setBounds(910, 22, 176, 158);
 		getContentPane().add(btnAntecedentes);
 	}
 }

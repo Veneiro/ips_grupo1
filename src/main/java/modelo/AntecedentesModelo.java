@@ -25,9 +25,9 @@ public class AntecedentesModelo {
 		return db.executeQueryPojo(AntecedenteDto.class, sql, idPaciente);
 	}
 
-	public void updateAntecedente(String antecedente, String fecha, String antecedenteA, String fechaA) {
-		String sql = "update TAntecedentes set antecedente = ?, fecha_comienzo = ? where antecedente = ? AND fecha_comienzo = ?";
-		db.executeUpdate(sql, antecedente, fecha, antecedenteA, fechaA);
+	public void updateAntecedente(String antecedente, String fecha, String antecedenteA, String fechaA, int idPaciente) {
+		String sql = "update TAntecedentes set antecedente = ?, fecha_comienzo = ? where antecedente = ? AND fecha_comienzo = ? AND paciente_id = ?";
+		db.executeUpdate(sql, antecedente, fecha, antecedenteA, fechaA, idPaciente);
 		
 	}
 }

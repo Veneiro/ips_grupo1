@@ -52,7 +52,10 @@ public class ModificarAntecedenteControlador {
 					fecha = fechaA;
 				}
 				
-				am.updateAntecedente(antecedente, fecha, antecedenteA, fechaA);
+				
+				am.addAntecedente(idPaciente, antecedente, fecha);
+				
+				am.updateAntecedente(antecedenteA + "-ERROR", fechaA, antecedenteA, fechaA, idPaciente);
 				
 				hc.cargarHistorial(idPaciente);
 				cargarListaAntecedentes();

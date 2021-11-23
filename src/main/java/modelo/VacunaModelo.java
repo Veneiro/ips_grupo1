@@ -19,8 +19,8 @@ public class VacunaModelo {
 		db.executeUpdate(sql, idPaciente, fecha, hora, vacuna);
 	}
 	
-	public void updateVacuna( String vacunaN, String horaN, String vacunaA, String horaA, String fecha) {
-		String sql = "update TVacunas set vacuna = ?, hora = ? where vacuna = ? AND hora = ? AND fecha = ?";
-		db.executeUpdate(sql, vacunaN, horaN, vacunaA, horaA, fecha);
+	public void updateVacuna( String vacunaN, String horaN, String fechaN, String vacunaA, String horaA, String fecha, int idPaciente) {
+		String sql = "update TVacunas set vacuna = ?, hora = ?, fecha = ? where vacuna = ? AND hora = ? AND fecha = ? AND paciente_id = ?";
+		db.executeUpdate(sql, vacunaN, horaN, fechaN, vacunaA, horaA, fecha, idPaciente);
 	}
 }
