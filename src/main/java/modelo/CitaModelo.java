@@ -50,16 +50,16 @@ public class CitaModelo {
 	}
 
 	public void addCita(CitaDto cita) {
-		String sql = "INSERT INTO TCITAS (id,horario_inicio,horario_fin,ubicacion,contacto,id_paciente,id_medico,acudio,fecha,informacion,especialidad, hora_entrada, hora_salida, nombre_paciente)"
-				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)";
+		String sql = "INSERT INTO TCITAS (id,horario_inicio,horario_fin,ubicacion,id_paciente,id_medico,acudio,fecha,informacion,especialidad, hora_entrada, hora_salida)"
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)";
 		db.executeUpdate(sql, cita.getId(), cita.getHorario_inicio(), cita.getHorario_fin(), cita.getUbicacion(),
-				cita.getContacto(), cita.getId_paciente(), cita.getId_medico(), cita.getAcudio(), cita.getFecha(),
-				cita.getInformacion(), cita.getEspecialidad(), null, null, cita.getNombre_paciente());
+				cita.getId_paciente(), cita.getId_medico(), cita.getAcudio(), cita.getFecha(),
+				cita.getInformacion(), cita.getEspecialidad(), null, null);
 	}
 
 	public void updateCita(CitaDto cita) {
-		String sql = "UPDATE TCITAS set horario_inicio = ?, horario_fin = ?, ubicacion = ?, contacto = ?, fecha = ? where id = ?";
-		db.executeUpdate(sql, cita.getHorario_inicio(), cita.getHorario_fin(), cita.getUbicacion(), cita.getContacto(),
+		String sql = "UPDATE TCITAS set horario_inicio = ?, horario_fin = ?, ubicacion = ?, fecha = ? where id = ?";
+		db.executeUpdate(sql, cita.getHorario_inicio(), cita.getHorario_fin(), cita.getUbicacion(),
 				cita.getFecha(), cita.getId());
 	}
 }

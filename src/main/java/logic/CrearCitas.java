@@ -169,7 +169,7 @@ public class CrearCitas {
 		}
 		JornadaModelo modelo = new JornadaModelo();
 		for (MedicoDto medicoDto : medicosElegidos) {
-			List<JornadaLaboralRecord> jornadas = modelo.findByName(medicoDto.getNombre());
+			List<JornadaLaboralRecord> jornadas = modelo.findByIdTrabajador(medicoDto.getId());
 			for (JornadaLaboralRecord jornada : jornadas) {
 				JornadaLaboralDto j = RecordAssembler.toDto(jornada);
 				if (j.getDia_comienzo() != null && j.getDia_fin() != null) {

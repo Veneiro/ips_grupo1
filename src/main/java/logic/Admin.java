@@ -102,7 +102,7 @@ public class Admin {
 		}
 		JornadaModelo modelo = new JornadaModelo();
 		for (MedicoDto medico : medicos) {
-			List<JornadaLaboralRecord> jornadas = modelo.findByName(medico.getNombre());
+			List<JornadaLaboralRecord> jornadas = modelo.findByIdTrabajador(medico.getId());
 			if (algunaJornadaColisionante(jornadas, fecha, horaEntrada, horaSalida)) {
 				res.add(medico);
 			}
