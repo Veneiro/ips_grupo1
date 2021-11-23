@@ -76,18 +76,23 @@ public class ModificarCitaVista extends JDialog {
 	private JCheckBox chckbxFiltroCita;
 	private JCheckBox chckbxFiltroEspecialidad;
 	private JCheckBox chckbxFiltroJornada;
+	private JSpinner spDuracion;
+	private JLabel lblDuracion;
+	private JButton btnBuscarHorario;
+	private boolean horarioEncontrado;
 
 	/**
 	 * Create the frame.
 	 */
 	public ModificarCitaVista(CitaDto cita) {
 		this.modificadorCitas = new ModificarCitas(cita);
+		this.horarioEncontrado = false;
 		setTitle("iHospital : Modificar Cita");
 		setResizable(false);
 		setModal(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1028, 561);
+		setBounds(100, 100, 1028, 513);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -123,6 +128,9 @@ public class ModificarCitaVista extends JDialog {
 		contentPane.add(getChckbxFiltroCita());
 		contentPane.add(getChckbxFiltroEspecialidad());
 		contentPane.add(getChckbxFiltroJornada());
+		contentPane.add(getSpDuracion());
+		contentPane.add(getLblDuracion());
+		contentPane.add(getBtnBuscarHorario());
 	}
 
 	public void visible(boolean visible) {
@@ -256,7 +264,7 @@ public class ModificarCitaVista extends JDialog {
 			});
 			btnConfirmar.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnConfirmar.setMnemonic('C');
-			btnConfirmar.setBounds(618, 455, 108, 36);
+			btnConfirmar.setBounds(860, 416, 108, 36);
 		}
 		return btnConfirmar;
 	}
@@ -275,17 +283,19 @@ public class ModificarCitaVista extends JDialog {
 				return;
 			}
 			fecha = (Date) getSpDia().getValue();
-			if (modificadorCitas.hayColisionMismoHorario(horaEntrada, horaSalida, fecha)) {
-				int r = JOptionPane.showConfirmDialog(this,
-						"Hay médicos con citas en el mismo horario. ¿Proseguir igualmente?");
-				if (r != JOptionPane.YES_OPTION)
-					return;
-			}
-			if (modificadorCitas.fueraDeJornadaLaboral(horaEntrada, horaSalida, fecha)) {
-				int r = JOptionPane.showConfirmDialog(this,
-						"La cita no está dentro de la jornada laboral de los médicos. ¿Proseguir igualmente?");
-				if (r != JOptionPane.YES_OPTION)
-					return;
+			if (!horarioEncontrado) {
+				if (modificadorCitas.hayColisionMismoHorario(horaEntrada, horaSalida, fecha)) {
+					int r = JOptionPane.showConfirmDialog(this,
+							"Hay médicos con citas en el mismo horario. ¿Proseguir igualmente?");
+					if (r != JOptionPane.YES_OPTION)
+						return;
+				}
+				if (modificadorCitas.fueraDeJornadaLaboral(horaEntrada, horaSalida, fecha)) {
+					int r = JOptionPane.showConfirmDialog(this,
+							"La cita no está dentro de la jornada laboral de los médicos. ¿Proseguir igualmente?");
+					if (r != JOptionPane.YES_OPTION)
+						return;
+				}
 			}
 		}
 		
@@ -427,7 +437,7 @@ public class ModificarCitaVista extends JDialog {
 	private JTextField getTxtContacto() {
 		if (txtContacto == null) {
 			txtContacto = new JTextField();
-			txtContacto.setBounds(111, 464, 116, 22);
+			txtContacto.setBounds(402, 363, 116, 22);
 			txtContacto.setColumns(10);
 			txtContacto.setText(modificadorCitas.getCita().getContacto());
 		}
@@ -439,7 +449,7 @@ public class ModificarCitaVista extends JDialog {
 			lblInfoContacto = new JLabel("Info. contacto:");
 			lblInfoContacto.setDisplayedMnemonic('I');
 			lblInfoContacto.setLabelFor(getTxtContacto());
-			lblInfoContacto.setBounds(23, 467, 95, 16);
+			lblInfoContacto.setBounds(314, 366, 95, 16);
 		}
 		return lblInfoContacto;
 	}
@@ -447,7 +457,7 @@ public class ModificarCitaVista extends JDialog {
 	private JTextField getTxtUbicacion() {
 		if (txtUbicacion == null) {
 			txtUbicacion = new JTextField();
-			txtUbicacion.setBounds(111, 414, 116, 22);
+			txtUbicacion.setBounds(402, 313, 116, 22);
 			txtUbicacion.setColumns(10);;
 			txtUbicacion.setText(modificadorCitas.getCita().getUbicacion());
 		}
@@ -459,7 +469,7 @@ public class ModificarCitaVista extends JDialog {
 			lblUbic = new JLabel("Ubicaci\u00F3n:");
 			lblUbic.setDisplayedMnemonic('U');
 			lblUbic.setLabelFor(getTxtUbicacion());
-			lblUbic.setBounds(30, 417, 71, 16);
+			lblUbic.setBounds(321, 316, 71, 16);
 		}
 		return lblUbic;
 	}
@@ -564,6 +574,7 @@ public class ModificarCitaVista extends JDialog {
 		getSpDia().setEnabled(selected);
 		getSpHoraEntrada().setEnabled(selected);
 		getSpHoraSalida().setEnabled(selected);
+		getBtnBuscarHorario().setEnabled(selected);
 	}
 	private JLabel getLblEspecialidadCita() {
 		if (lblEspecialidadCita == null) {
@@ -594,8 +605,8 @@ public class ModificarCitaVista extends JDialog {
 	}
 	private JCheckBox getChckbxUrgente() {
 		if (chckbxUrgente == null) {
-			chckbxUrgente = new JCheckBox("Urgente");
-			chckbxUrgente.setBounds(497, 464, 97, 23);
+			chckbxUrgente = new JCheckBox("CITA URGENTE");
+			chckbxUrgente.setBounds(669, 425, 167, 23);
 		}
 		return chckbxUrgente;
 	}
@@ -626,5 +637,66 @@ public class ModificarCitaVista extends JDialog {
 			chckbxFiltroJornada.setBounds(382, 214, 140, 23);
 		}
 		return chckbxFiltroJornada;
+	}
+	private JSpinner getSpDuracion() {
+		if (spDuracion == null) {
+			spDuracion = new JSpinner();
+			spDuracion.setBounds(24, 416, 46, 20);
+		}
+		return spDuracion;
+	}
+	private JLabel getLblDuracion() {
+		if (lblDuracion == null) {
+			lblDuracion = new JLabel("Minutos:");
+			lblDuracion.setBounds(22, 395, 58, 14);
+		}
+		return lblDuracion;
+	}
+	private JButton getBtnBuscarHorario() {
+		if (btnBuscarHorario == null) {
+			btnBuscarHorario = new JButton("Buscar horario");
+			btnBuscarHorario.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						buscarHorario();
+					} catch (ParseException e1) {
+						JOptionPane.showMessageDialog(null, "No se ha encontrado un horario válido para los médicos seleccionados");
+					}
+				}
+			});
+			btnBuscarHorario.setEnabled(false);
+			btnBuscarHorario.setBounds(89, 415, 124, 23);
+		}
+		return btnBuscarHorario;
+	}
+	
+	private void buscarHorario() throws ParseException {
+		int duracion = (int) getSpDuracion().getValue();
+		
+		Date[] fechas = modificadorCitas.buscarHorario(duracion);
+		if (fechas == null) {
+			JOptionPane.showMessageDialog(this, "No se ha encontrado un horario válido para los médicos seleccionados");
+			return;
+		}
+		
+		Date dia = fechas[0];
+		Date horaEntrada = fechas[1];
+		Date horaSalida = fechas[2];
+		Format formatterDia = new SimpleDateFormat("yyyy-MM-dd");
+		Format formatterHora = new SimpleDateFormat("HH:mm");
+		String diaStr = formatterDia.format(dia);
+		String horaEntradaStr = formatterHora.format(horaEntrada);
+		String horaSalidaStr = formatterHora.format(horaSalida);
+		String msg = "Se ha encontrado un horario disponible:\nDía: " + diaStr + "\nHora de entrada: "
+				+ horaEntradaStr + "\nHora de salida: " + horaSalidaStr
+				+ "\n¿Aceptas?";
+		int respuesta = JOptionPane.showConfirmDialog(this, msg);
+		if (respuesta != JOptionPane.YES_OPTION)
+			return;
+		
+		getSpDia().setValue(formatterDia.parseObject(diaStr));
+		getSpHoraEntrada().setValue(formatterHora.parseObject(horaEntradaStr));
+		getSpHoraSalida().setValue(formatterHora.parseObject(horaSalidaStr));
+		this.horarioEncontrado = true;
 	}
 }

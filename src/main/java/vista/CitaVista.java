@@ -36,6 +36,7 @@ import dtos.PacienteDto;
 import logic.Admin;
 import logic.CrearCitas;
 import util.ApplicationException;
+import javax.swing.SpinnerNumberModel;
 
 /**
  * @author Santiago
@@ -83,6 +84,10 @@ public class CitaVista extends JDialog {
 	private JCheckBox chckbxFiltroNombre;
 	private JCheckBox chckbxFiltroCita;
 	private JCheckBox chckbxFiltroJornada;
+	private JButton btnBuscarHorario;
+	private JSpinner spDuracion;
+	private JLabel lblDuracion;
+	private boolean horarioEncontrado;
 
 	/**
 	 * Create the frame.
@@ -131,6 +136,9 @@ public class CitaVista extends JDialog {
 		contentPane.add(getChckbxFiltroNombre());
 		contentPane.add(getChckbxFiltroCita());
 		contentPane.add(getChckbxFiltroJornada());
+		contentPane.add(getBtnBuscarHorario());
+		contentPane.add(getSpDuracion());
+		contentPane.add(getLblDuracion());
 	}
 
 	public void visible(boolean visible) {
@@ -283,17 +291,19 @@ public class CitaVista extends JDialog {
 				return;
 			}
 			fecha = (Date) getSpDia().getValue();
-			if (creadorCitas.hayColisionMismoHorario(horaEntrada, horaSalida, fecha)) {
-				int r = JOptionPane.showConfirmDialog(this,
-						"Hay médicos con citas en el mismo horario. ¿Proseguir igualmente?");
-				if (r != JOptionPane.YES_OPTION)
-					return;
-			}
-			if (creadorCitas.fueraDeJornadaLaboral(horaEntrada, horaSalida, fecha)) {
-				int r = JOptionPane.showConfirmDialog(this,
-						"La cita no está dentro de la jornada laboral de los médicos. ¿Proseguir igualmente?");
-				if (r != JOptionPane.YES_OPTION)
-					return;
+			if (!horarioEncontrado) {
+				if (creadorCitas.hayColisionMismoHorario(horaEntrada, horaSalida, fecha)) {
+					int r = JOptionPane.showConfirmDialog(this,
+							"Hay médicos con citas en el mismo horario. ¿Proseguir igualmente?");
+					if (r != JOptionPane.YES_OPTION)
+						return;
+				}
+				if (creadorCitas.fueraDeJornadaLaboral(horaEntrada, horaSalida, fecha)) {
+					int r = JOptionPane.showConfirmDialog(this,
+							"La cita no está dentro de la jornada laboral de los médicos. ¿Proseguir igualmente?");
+					if (r != JOptionPane.YES_OPTION)
+						return;
+				}
 			}
 		}
 
@@ -481,7 +491,7 @@ public class CitaVista extends JDialog {
 		if (lblInicio == null) {
 			lblInicio = new JLabel("Hora inicio (HH/mm):");
 			lblInicio.setDisplayedMnemonic('H');
-			lblInicio.setBounds(10, 198, 108, 14);
+			lblInicio.setBounds(12, 178, 108, 14);
 		}
 		return lblInicio;
 	}
@@ -491,7 +501,7 @@ public class CitaVista extends JDialog {
 			lblFin = new JLabel("Hora fin (HH/mm):");
 			lblFin.setDisplayedMnemonic('O');
 			lblFin.setLabelFor(lblFin);
-			lblFin.setBounds(12, 231, 95, 14);
+			lblFin.setBounds(14, 211, 95, 14);
 		}
 		return lblFin;
 	}
@@ -502,7 +512,7 @@ public class CitaVista extends JDialog {
 			spHoraEntrada.setEnabled(false);
 			spHoraEntrada.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY));
 			spHoraEntrada.setEditor(new JSpinner.DateEditor(spHoraEntrada, "HH:mm"));
-			spHoraEntrada.setBounds(117, 194, 108, 22);
+			spHoraEntrada.setBounds(119, 174, 108, 22);
 		}
 		return spHoraEntrada;
 	}
@@ -513,7 +523,7 @@ public class CitaVista extends JDialog {
 			spHoraSalida.setEnabled(false);
 			spHoraSalida.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY));
 			spHoraSalida.setEditor(new JSpinner.DateEditor(spHoraSalida, "HH:mm"));
-			spHoraSalida.setBounds(117, 227, 108, 22);
+			spHoraSalida.setBounds(119, 207, 108, 22);
 		}
 		return spHoraSalida;
 	}
@@ -524,7 +534,7 @@ public class CitaVista extends JDialog {
 			spDia.setEnabled(false);
 			spDia.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_YEAR));
 			spDia.setEditor(new JSpinner.DateEditor(spDia, "dd-MM-yyyy"));
-			spDia.setBounds(52, 152, 86, 17);
+			spDia.setBounds(54, 132, 86, 17);
 		}
 		return spDia;
 	}
@@ -532,7 +542,7 @@ public class CitaVista extends JDialog {
 	private JLabel getLblDia() {
 		if (lblDia == null) {
 			lblDia = new JLabel("D\u00EDa:");
-			lblDia.setBounds(12, 151, 44, 21);
+			lblDia.setBounds(14, 131, 44, 21);
 		}
 		return lblDia;
 	}
@@ -554,6 +564,7 @@ public class CitaVista extends JDialog {
 		getSpDia().setEnabled(selected);
 		getSpHoraEntrada().setEnabled(selected);
 		getSpHoraSalida().setEnabled(selected);
+		getBtnBuscarHorario().setEnabled(selected);
 	}
 
 	private JComboBox<String> getCbEspecialidades() {
@@ -635,5 +646,67 @@ public class CitaVista extends JDialog {
 			chckbxFiltroJornada.setBounds(568, 162, 167, 23);
 		}
 		return chckbxFiltroJornada;
+	}
+	private JButton getBtnBuscarHorario() {
+		if (btnBuscarHorario == null) {
+			btnBuscarHorario = new JButton("Buscar horario");
+			btnBuscarHorario.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						buscarHorario();
+					} catch (ParseException e1) {
+						JOptionPane.showMessageDialog(null, "No se ha encontrado un horario válido para los médicos seleccionados");
+					}
+				}
+			});
+			btnBuscarHorario.setEnabled(false);
+			btnBuscarHorario.setBounds(77, 256, 124, 23);
+		}
+		return btnBuscarHorario;
+	}
+	
+	private void buscarHorario() throws ParseException {
+		int duracion = (int) getSpDuracion().getValue();
+		
+		Date[] fechas = creadorCitas.buscarHorario(duracion);
+		if (fechas == null) {
+			JOptionPane.showMessageDialog(this, "No se ha encontrado un horario válido para los médicos seleccionados");
+			return;
+		}
+		
+		Date dia = fechas[0];
+		Date horaEntrada = fechas[1];
+		Date horaSalida = fechas[2];
+		Format formatterDia = new SimpleDateFormat("yyyy-MM-dd");
+		Format formatterHora = new SimpleDateFormat("HH:mm");
+		String diaStr = formatterDia.format(dia);
+		String horaEntradaStr = formatterHora.format(horaEntrada);
+		String horaSalidaStr = formatterHora.format(horaSalida);
+		String msg = "Se ha encontrado un horario disponible:\nDía: " + diaStr + "\nHora de entrada: "
+				+ horaEntradaStr + "\nHora de salida: " + horaSalidaStr
+				+ "\n¿Aceptas?";
+		int respuesta = JOptionPane.showConfirmDialog(this, msg);
+		if (respuesta != JOptionPane.YES_OPTION)
+			return;
+		
+		getSpDia().setValue(formatterDia.parseObject(diaStr));
+		getSpHoraEntrada().setValue(formatterHora.parseObject(horaEntradaStr));
+		getSpHoraSalida().setValue(formatterHora.parseObject(horaSalidaStr));
+		this.horarioEncontrado = true;
+	}
+	private JSpinner getSpDuracion() {
+		if (spDuracion == null) {
+			spDuracion = new JSpinner();
+			spDuracion.setModel(new SpinnerNumberModel(0, 0, null, 1));
+			spDuracion.setBounds(12, 257, 46, 20);
+		}
+		return spDuracion;
+	}
+	private JLabel getLblDuracion() {
+		if (lblDuracion == null) {
+			lblDuracion = new JLabel("Minutos:");
+			lblDuracion.setBounds(10, 236, 58, 14);
+		}
+		return lblDuracion;
 	}
 }

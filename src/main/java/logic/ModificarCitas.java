@@ -4,6 +4,7 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -310,5 +311,33 @@ public class ModificarCitas {
 			}
 		}
 		return false;
+	}
+	
+	public Date[] buscarHorario(int duracion) throws ParseException {
+		Date[] res = new Date[3];		
+		Calendar calendar = Calendar.getInstance();
+		
+		calendar.add(Calendar.HOUR_OF_DAY, 24 * medicosElegidos.size());		
+		calendar.set(Calendar.HOUR_OF_DAY, 9);
+		calendar.set(Calendar.MINUTE, 30);
+		res[0] = calendar.getTime();
+		res[1] = calendar.getTime();
+		
+		int nIntentos = 0;
+		boolean horarioEncontrado = false;
+		do {
+			horarioEncontrado = !fueraDeJornadaLaboral(calendar.getTime(), calendar.getTime(), calendar.getTime());
+			horarioEncontrado = !hayColisionMismoHorario(calendar.getTime(), calendar.getTime(), calendar.getTime());
+			nIntentos++;
+		} while(!horarioEncontrado && nIntentos < 10);
+		
+		if (!horarioEncontrado)
+			return null;
+		
+		calendar.add(Calendar.MINUTE, duracion);
+		res[2] = calendar.getTime();
+		
+		
+		return res;
 	}
 }
