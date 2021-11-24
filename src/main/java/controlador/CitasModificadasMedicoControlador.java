@@ -86,7 +86,8 @@ public class CitasModificadasMedicoControlador {
 				// estaba conforme con los cambios del admin
 				for (int j2 = 0; j2 < acvm.getTable().getColumnCount(); j2++) {
 					CitaDto cdto = new CitaDto();
-					cdto.setId((int) acvm.getTable().getValueAt(i, j2));	
+					cdto.setId(Integer.parseInt(
+							(String) acvm.getTable().getValueAt(i, j2)));
 					macm.removeMedicos(cdto.getId());
 					cim.updateCitaPendiente(cdto.getId());
 				}

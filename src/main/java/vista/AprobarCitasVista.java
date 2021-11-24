@@ -87,7 +87,7 @@ public class AprobarCitasVista extends JDialog {
 
 	public JButton getBtnBack() {
 		if (btnBack == null) {
-			btnBack = new JButton("Go Back");
+			btnBack = new JButton("Atr\u00E1s");
 			btnBack.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		}
 		return btnBack;
