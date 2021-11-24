@@ -39,9 +39,24 @@ public class CitasModificadasMedicoControlador {
 				e -> SwingUtil.exceptionWrapper(() -> insertToDB()));
 		acvm.getBtnBack().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> closeWindow()));
-
+		acvm.getBtnHelp().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> showHelp()));
 		acvm.setLocationRelativeTo(null);
 		acvm.setVisible(true);
+	}
+
+	private void showHelp() {
+		JOptionPane.showMessageDialog(acvm, "Seleccione una de "
+				+ "las citas revisadas y modificadas por el administrador "
+				+ "para comenzar:\n- Cambie el valor de la columna de aprobado "
+				+ "a true si desea aceptar la modificación.\n"
+				+ "- En caso contrario deje el valor por defecto y clicke en "
+				+ "Continuar, se rechazarán las citas con valor false\n"
+				+ "- Si solo desea salir de la ventana sin aceptar o "
+				+ "rechazar clicke en el botón Atrás\n"
+				+ "- Si rechaza una cita modificada pero desea volver a "
+				+ "proponerla con otros valores por favor creela de nuevo desde "
+				+ "la opción de Proponer Citas");
 	}
 
 	private void closeWindow() {

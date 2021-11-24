@@ -25,6 +25,7 @@ public class AprobarCitasVista extends JDialog {
 	private JPanel panel;
 	private JButton btnBack;
 	private JButton btnModificar;
+	private JButton btnHelp;
 
 	/**
 	 * Create the dialog.
@@ -78,6 +79,7 @@ public class AprobarCitasVista extends JDialog {
 		if (panel == null) {
 			panel = new JPanel();
 			panel.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 5));
+			panel.add(getBtnHelp());
 			panel.add(getBtnModificar());
 			panel.add(getBtnBack());
 			panel.add(getBtnConfirmar());
@@ -98,5 +100,12 @@ public class AprobarCitasVista extends JDialog {
 			btnModificar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		}
 		return btnModificar;
+	}
+	public JButton getBtnHelp() {
+		if (btnHelp == null) {
+			btnHelp = new JButton("Help");
+			btnHelp.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		}
+		return btnHelp;
 	}
 }

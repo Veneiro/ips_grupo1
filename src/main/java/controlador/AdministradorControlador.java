@@ -50,7 +50,8 @@ public class AdministradorControlador {
 	private ModificarCitaAdminVista mcav = new ModificarCitaAdminVista();
 	private DefaultListModel modelMedicos = new DefaultListModel();
 
-	public AdministradorControlador() {}
+	public AdministradorControlador() {
+	}
 
 	public AdministradorControlador(AprobarCitasVista acv) {
 		this.acv = acv;
@@ -64,9 +65,19 @@ public class AdministradorControlador {
 				e -> SwingUtil.exceptionWrapper(() -> closeWindow()));
 		acv.getBtnModificar().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> showModificarCita()));
+		acv.getBtnHelp().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> showHelp()));
 
 		acv.setLocationRelativeTo(null);
 		acv.setVisible(true);
+	}
+
+	private void showHelp() {
+		JOptionPane.showMessageDialog(acv, "Opciones:\n1 - Selecciona una "
+				+ "cita propuesta y cambia el ultimo valor a true "
+				+ "para aceptar\n2 - Selecciona una cita propuesta y haz click "
+				+ "en el botón Modificar Cita para cambiar alguno de "
+				+ "los valores propuestos");
 	}
 
 	private void showModificarCita() {
@@ -233,6 +244,9 @@ public class AdministradorControlador {
 	}
 
 	private void updateDB(CitaPendienteDto cpdto) {
+		JOptionPane.showConfirmDialog(mcav, "Si confirma la opción esta cita "
+				+ "será redirigida al médico para obtener confirmación de los "
+				+ "valores cambiados");
 		updateDataBase(cpdto);
 		cpm.updateCita(cpdto);
 		mcav.setVisible(false);
@@ -365,7 +379,7 @@ public class AdministradorControlador {
 					&& !acv.getTable().getValueAt(i, 7).equals("false")) {
 				JOptionPane.showMessageDialog(acv,
 						"The introduced value is not correct : Please "
-						+ "introduce True or False");
+								+ "introduce True or False");
 				;
 			}
 		}
