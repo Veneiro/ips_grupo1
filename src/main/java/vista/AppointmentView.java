@@ -56,6 +56,7 @@ public class AppointmentView extends JDialog {
     private JButton btnNoAcudio;
     private JScrollPane scrollPaneDiagnosticos;
     private JTable tableDiagnosticos;
+    private JButton btnProcedimientos;
 
     /**
      * Create the dialog.
@@ -64,9 +65,9 @@ public class AppointmentView extends JDialog {
 	setTitle("iHospital : Cita");
 	//setModal(true);
 	setResizable(false);
-	setBounds(100, 100, 450, 663);
+	setBounds(100, 100, 450, 700);
 	getContentPane().setLayout(null);
-	contentPanel.setBounds(0, 0, 434, 583);
+	contentPanel.setBounds(0, 0, 434, 614);
 	contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 	getContentPane().add(contentPanel);
 	contentPanel.setLayout(null);
@@ -90,7 +91,7 @@ public class AppointmentView extends JDialog {
 
 	{
 	    buttonPane = new JPanel();
-	    buttonPane.setBounds(0, 593, 434, 33);
+	    buttonPane.setBounds(0, 630, 434, 33);
 	    getContentPane().add(buttonPane);
 	    buttonPane.setLayout(null);
 	    buttonPane.add(getBtnContinueButton());
@@ -113,6 +114,7 @@ public class AppointmentView extends JDialog {
 	contentPanel.add(getBtnAcudio());
 	contentPanel.add(getBtnNoAcudio());
 	contentPanel.add(getScrollPaneDiagnosticos());
+	contentPanel.add(getBtnProcedimientos());
     }
 
     public JButton getBtnContinueButton() {
@@ -268,7 +270,7 @@ public class AppointmentView extends JDialog {
 	public JButton getBtnNoAcudio() {
 		if (btnNoAcudio == null) {
 			btnNoAcudio = new JButton("No Acudio");
-			btnNoAcudio.setBounds(219, 552, 204, 21);
+			btnNoAcudio.setBounds(219, 552, 215, 21);
 		}
 		return btnNoAcudio;
 	}
@@ -281,5 +283,12 @@ public class AppointmentView extends JDialog {
 			scrollPaneDiagnosticos.setViewportView(tableDiagnosticos);
 		}
 		return scrollPaneDiagnosticos;
+	}
+	public JButton getBtnProcedimientos() {
+		if (btnProcedimientos == null) {
+			btnProcedimientos = new JButton("Procedimiento");
+			btnProcedimientos.setBounds(5, 589, 429, 21);
+		}
+		return btnProcedimientos;
 	}
 }

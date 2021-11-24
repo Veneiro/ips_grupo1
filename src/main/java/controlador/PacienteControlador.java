@@ -68,8 +68,14 @@ public class PacienteControlador {
 		vista_cita.getBtnHistorial().addActionListener(e -> SwingUtil.exceptionWrapper(() -> inicializarHistorial()));
 		vista_cita.getBtnAcudio().addActionListener(e -> SwingUtil.exceptionWrapper(() -> acudioCita()));
 		vista_cita.getBtnNoAcudio().addActionListener(e -> SwingUtil.exceptionWrapper(() -> noAcudioCita()));
+		vista_cita.getBtnProcedimientos().addActionListener(e -> SwingUtil.exceptionWrapper(() -> inicializarListaProcedimientos()));
 		_cargarPrescripciones();
 		showVistaCita();
+	}
+
+	private void inicializarListaProcedimientos() {
+		ListaProcedimientosControlador lpc = new ListaProcedimientosControlador(cita);
+		lpc.inicializar();
 	}
 
 	private void noAcudioCita() {
