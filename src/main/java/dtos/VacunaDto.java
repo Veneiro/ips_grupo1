@@ -12,7 +12,7 @@ import lombok.Setter;
 public class VacunaDto {
 
 	private int id;
-	private int id_paciente;
+	private int paciente_id;
 	private String vacuna;
 	private String fecha;
 	private String hora;
