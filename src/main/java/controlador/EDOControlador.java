@@ -21,7 +21,7 @@ import vista.EDOVista;
 
 public class EDOControlador {
 
-    private String nameEdo, observaciones = "Sin definir";
+    private String nameEdo = "Sin definir", observaciones = "Sin definir";
 
     private CitaDto cita;
 
@@ -83,6 +83,13 @@ public class EDOControlador {
     private void sendEmail() {
 	Date now = Date.from(Instant.now());
 	String moment = Util.dateToIsoString(now) + " " + Util.dateToIsoHour(now);
+
+	if (!eV.getTextFieldNombre().getText().isBlank())
+	    nameEdo = eV.getTextFieldNombre().getText();
+
+	if (!eV.getTextPaneObservaciones().getText().isBlank())
+	    observaciones = eV.getTextPaneObservaciones().getText();
+
 	String msg = "";
 
 	msg += "<h1 style=\"text-align: left; color: #ff0000;\">";
