@@ -9,11 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VacunaDto {
+public class ProcedimientoDto {
 
 	private int id;
-	private int paciente_id;
-	private String vacuna;
+	private int cita_id;
+	private String procedimiento;
 	private String fecha;
 	private String hora;
 }
