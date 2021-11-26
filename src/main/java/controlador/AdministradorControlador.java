@@ -1,8 +1,12 @@
 package controlador;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,17 +24,22 @@ import modelo.PacienteModelo;
 import util.SendEmail;
 import util.SwingUtil;
 import vista.AprobarCitasVista;
+import vista.ModificarCitaAdminVista;
 
 @Getter
 @Setter
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class AdministradorControlador {
 
-	CauseModel cm = new CauseModel();
-	MedicoModelo mm = new MedicoModelo();
-	CitaModelo cim = new CitaModelo();
-	PacienteModelo pm = new PacienteModelo();
-	CitaPendienteModelo cpm = new CitaPendienteModelo();
+	private CauseModel cm = new CauseModel();
+	private MedicoModelo mm = new MedicoModelo();
+	private CitaModelo cim = new CitaModelo();
+	private PacienteModelo pm = new PacienteModelo();
+	private CitaPendienteModelo cpm = new CitaPendienteModelo();
 	private AprobarCitasVista acv;
+	private CitaPendienteDto cpdto;
+	private List<CitaPendienteDto> citasPendientes;
+	private ModificarCitaAdminVista mcav = new ModificarCitaAdminVista();
 
 	public AdministradorControlador() {
 
@@ -46,18 +55,98 @@ public class AdministradorControlador {
 				e -> SwingUtil.exceptionWrapper(() -> insertToDB()));
 		acv.getBtnBack().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> closeWindow()));
+		acv.getBtnModificar().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> showModificarCita()));
 		acv.setLocationRelativeTo(null);
 		acv.setVisible(true);
 	}
 
+	private void showModificarCita() {
+
+		cpdto = citasPendientes.get(acv.getTable().getSelectedRow());
+		initializeAdminModify(cpdto);
+		mcav.getBtnModificar().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> updateDB(cpdto)));
+	}
+
+	private void initializeAdminModify(CitaPendienteDto citaPendiente) {
+		String date = citaPendiente.getFECHA();
+		try {
+			Date d = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+			mcav.getDateChooser().setDate(d);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String entryHour = citaPendiente.getHORA_ENTRADA();
+		String[] entrySplit = entryHour.split(":");
+		mcav.getSpEntryHour().setValue(Integer.valueOf(entrySplit[0].trim()));
+		mcav.getSpEntryMin().setValue(Integer.valueOf(entrySplit[1].trim()));
+		;
+
+		String outHour = citaPendiente.getHORA_SALIDA();
+		String[] outSplit = outHour.split(":");
+		mcav.getSpOutHour().setValue(Integer.valueOf(outSplit[0].trim()));
+		mcav.getSpOutMin().setValue(Integer.valueOf(outSplit[1].trim()));
+
+		mcav.getTxtUbicacion().setText(citaPendiente.getUBICACION());
+
+		PacienteDto pSel = null;
+		DefaultComboBoxModel dcm = new DefaultComboBoxModel();
+		for (PacienteDto p : pm.getListaPacientes()) {
+			dcm.addElement(p);
+			if (p.getNombre().equals(citaPendiente.getNOMBRE_PACIENTE())) {
+				pSel = p;
+			}
+		}
+		mcav.getCbPacientes().setModel(dcm);
+		mcav.getCbPacientes().setSelectedItem(pSel);
+
+		mcav.setLocationRelativeTo(null);
+		mcav.setVisible(true);
+	}
+
+	private void updateDataBase(CitaPendienteDto citaPendiente) {
+		cpdto.setUBICACION(mcav.getTxtUbicacion().getText());
+		Date citaFecha = mcav.getDateChooser().getDate();
+		cpdto.setFECHA(citaFecha.getDay() + "-" + citaFecha.getMonth() + "-"
+				+ citaFecha.getYear());
+		cpdto.setESTADO("MedicoReview");
+
+		String houre = String.format("%02d", mcav.getSpEntryHour().getValue());
+		String mine = String.format("%02d", mcav.getSpEntryMin().getValue());
+		String houro = String.format("%02d", mcav.getSpOutHour().getValue());
+		String mineo = String.format("%02d", mcav.getSpOutMin().getValue());
+
+		cpdto.setHORA_ENTRADA(houre + " : " + mine);
+		cpdto.setHORA_SALIDA(houro + " : " + mineo);
+
+		cpdto.setNOMBRE_PACIENTE(
+				((PacienteDto) (mcav.getCbPacientes().getSelectedItem()))
+						.getNombre());
+		cpdto.setID(citaPendiente.getID());
+		cpdto.setCONTACTO_MEDICO(citaPendiente.getCONTACTO_MEDICO());
+		cpdto.setID_MEDICO(citaPendiente.getID_MEDICO());
+		cpdto.setNOMBRE_MEDICO(citaPendiente.getNOMBRE_MEDICO());
+		cpdto.setIDPACIENTE(citaPendiente.getIDPACIENTE());
+	}
+
+	private void updateDB(CitaPendienteDto cpdto) {
+		updateDataBase(cpdto);
+		cpm.updateCita(cpdto);
+		mcav.setVisible(false);
+
+	}
+
 	private void initializateTable() {
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
-		String header[] = new String[] { "Id Cita", "Nombre Paciente", "Nombre Médico",
-				"Fecha", "Hora Inicio", "Hora fin", "Ubicación",
-				"Contacto Médico", "Aprobada" };
+		String header[] = new String[] { "Id Cita", "Nombre Paciente",
+				"Nombre Médico", "Fecha", "Hora Inicio", "Hora fin",
+				"Ubicación", "Contacto Médico", "Aprobada" };
 		dm.setColumnIdentifiers(header);
 
-		List<CitaPendienteDto> citasPendientes = cpm.getCitasPorAprobar();
+		citasPendientes = cpm.getCitasPorAprobar();
 		for (CitaPendienteDto c : citasPendientes) {
 			PacienteDto p = pm.getPacienteById(c.getIDPACIENTE()).get(0);
 			Vector<Object> data = new Vector<Object>();
@@ -76,6 +165,7 @@ public class AdministradorControlador {
 		acv.getTable().setModel(dm);
 	}
 
+	@SuppressWarnings({ "serial", "unused" })
 	private void initializateTable2() {
 		// THE MODEL OF OUR TABLE
 		DefaultTableModel model = new DefaultTableModel(0, 0) {
@@ -137,7 +227,7 @@ public class AdministradorControlador {
 		for (int i = 0; i < acv.getTable().getRowCount(); i++) {
 			if (acv.getTable().getValueAt(i, 8).equals("true")) {
 				CitaDto cdto = new CitaDto();
-				cdto.setId((int)acv.getTable().getValueAt(i, 0));
+				cdto.setId((int) acv.getTable().getValueAt(i, 0));
 				cdto.setNombre_paciente(
 						(String) acv.getTable().getValueAt(i, 1));
 				cdto.setId_paciente(getIdPaciente(

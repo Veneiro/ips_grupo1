@@ -72,26 +72,32 @@ public class MedicoCrearCitasControlador {
 		cidto.setHORA_SALIDA(houro + " : " + mineo);
 		cidto.setID(valorAbsoluto(new Random().nextInt()));
 		cidto.setID_MEDICO(idMedico);
+
 		for (MedicoDto medico : mm.getListaMedicos()) {
 			if (medico.getId() == idMedico) {
 				cidto.setNOMBRE_MEDICO(medico.getNombre());
 				cidto.setCONTACTO_MEDICO(medico.getEmail());
 			}
 		}
+
 		cidto.setUBICACION(ccmv.getTxtUbicacion().getText());
+
 		for (PacienteDto paciente : pm.getListaPacientes()) {
 			if (paciente.getNombre().equals(
 					ccmv.getCbPacientes().getSelectedItem().toString())) {
 				cidto.setIDPACIENTE(paciente.getId());
 			}
 		}
+		
 		cidto.setNOMBRE_PACIENTE(
 				ccmv.getCbPacientes().getSelectedItem().toString());
 		Date citaFecha = ccmv.getDateChooser().getDate();
-		LocalDate fecha = citaFecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		cidto.setFECHA(fecha.get(ChronoField.DAY_OF_MONTH) + "-" + fecha.get(ChronoField.MONTH_OF_YEAR) + "-"
+		LocalDate fecha = citaFecha.toInstant().atZone(ZoneId.systemDefault())
+				.toLocalDate();
+		cidto.setFECHA(fecha.get(ChronoField.DAY_OF_MONTH) + "-"
+				+ fecha.get(ChronoField.MONTH_OF_YEAR) + "-"
 				+ fecha.get(ChronoField.YEAR));
-
+		cidto.setESTADO("AdminReview");
 		cm.insertCita(cidto);
 		ccmv.setVisible(false);
 	}

@@ -13,6 +13,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
+import java.awt.FlowLayout;
 
 public class AprobarCitasVista extends JDialog {
 
@@ -23,6 +24,7 @@ public class AprobarCitasVista extends JDialog {
 	private JButton btnConfirmar;
 	private JPanel panel;
 	private JButton btnBack;
+	private JButton btnModificar;
 
 	/**
 	 * Create the dialog.
@@ -41,7 +43,7 @@ public class AprobarCitasVista extends JDialog {
 		if (lblCitas == null) {
 			lblCitas = new JLabel("Citas pendientes de aprobaci\u00F3n");
 			lblCitas.setForeground(Color.RED);
-			lblCitas.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblCitas.setFont(new Font("Tahoma", Font.BOLD, 18));
 			lblCitas.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblCitas;
@@ -75,7 +77,8 @@ public class AprobarCitasVista extends JDialog {
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
-			panel.setLayout(new GridLayout(0, 2, 0, 0));
+			panel.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 5));
+			panel.add(getBtnModificar());
 			panel.add(getBtnBack());
 			panel.add(getBtnConfirmar());
 		}
@@ -85,7 +88,15 @@ public class AprobarCitasVista extends JDialog {
 	public JButton getBtnBack() {
 		if (btnBack == null) {
 			btnBack = new JButton("Go Back");
+			btnBack.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		}
 		return btnBack;
+	}
+	public JButton getBtnModificar() {
+		if (btnModificar == null) {
+			btnModificar = new JButton("Modificar Cita");
+			btnModificar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		}
+		return btnModificar;
 	}
 }

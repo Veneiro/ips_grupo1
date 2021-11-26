@@ -1,6 +1,7 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
@@ -11,23 +12,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.SpinnerNumberModel;
-import java.awt.FlowLayout;
+
 import com.toedter.calendar.JDateChooser;
-import javax.swing.JScrollPane;
 
-public class CrearCitaMedicoVista extends JDialog {
+@SuppressWarnings("rawtypes")
+public class ModificarCitaAdminVista extends JDialog {
 
-	private static final long serialVersionUID = -4122790949612125305L;
+	private static final long serialVersionUID = -5270197079170765016L;
 	private final JPanel contentPanel = new JPanel();
 
 	private JLabel lblTitle;
 	private JPanel panel;
 	private JPanel panel_2;
 	private JPanel pnLabels;
-	private JPanel pnFields;
+	private JPanel panel_3;
 	private JLabel lblHoraEntrada;
 	private JLabel lblHoraSalida;
 	private JLabel lblUbicación;
@@ -38,7 +39,7 @@ public class CrearCitaMedicoVista extends JDialog {
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
-	private JButton btnEnviar;
+	private JButton btnModificar;
 	private JButton btnCancelar;
 	private JLabel lblPaciente;
 	private JPanel panel_1;
@@ -65,17 +66,12 @@ public class CrearCitaMedicoVista extends JDialog {
 	private JPanel panel_16;
 	private JPanel panel_17;
 	private JPanel panel_18;
-	private JLabel lblNewLabel_2;
-	private JPanel panel_3;
-	private JLabel lblNewLabel_6;
-	private JPanel panel_19;
-	private JScrollPane scrollPane;
 
 	/**
 	 * Create the dialog.
 	 */
-	public CrearCitaMedicoVista() {
-		setBounds(100, 100, 667, 594);
+	public ModificarCitaAdminVista() {
+		setBounds(100, 100, 647, 506);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -85,12 +81,12 @@ public class CrearCitaMedicoVista extends JDialog {
 		contentPanel.add(getPanel_2(), BorderLayout.SOUTH);
 		contentPanel.add(getPanel_1(), BorderLayout.WEST);
 		contentPanel.add(getPanel_4(), BorderLayout.EAST);
-		getRootPane().setDefaultButton(getBtnEnviar());
+		getRootPane().setDefaultButton(getBtnModificar());
 	}
 
 	private JLabel getLblTitle() {
 		if (lblTitle == null) {
-			lblTitle = new JLabel("Crear Cita");
+			lblTitle = new JLabel("Modificar Cita");
 			lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
 			lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		}
@@ -102,7 +98,7 @@ public class CrearCitaMedicoVista extends JDialog {
 			panel = new JPanel();
 			panel.setLayout(new GridLayout(0, 2, 0, 0));
 			panel.add(getPnLabels());
-			panel.add(getPnFields());
+			panel.add(getPanel_3());
 		}
 		return panel;
 	}
@@ -112,7 +108,7 @@ public class CrearCitaMedicoVista extends JDialog {
 			panel_2 = new JPanel();
 			panel_2.setLayout(new GridLayout(0, 2, 0, 0));
 			panel_2.add(getBtnCancelar());
-			panel_2.add(getBtnEnviar());
+			panel_2.add(getBtnModificar());
 		}
 		return panel_2;
 	}
@@ -120,29 +116,27 @@ public class CrearCitaMedicoVista extends JDialog {
 	private JPanel getPnLabels() {
 		if (pnLabels == null) {
 			pnLabels = new JPanel();
-			pnLabels.setLayout(new GridLayout(6, 0, 0, 0));
+			pnLabels.setLayout(new GridLayout(5, 0, 0, 0));
 			pnLabels.add(getLblFecha());
 			pnLabels.add(getLblHoraEntrada());
 			pnLabels.add(getLblHoraSalida());
-			pnLabels.add(getLblPaciente());
-			pnLabels.add(getLblNewLabel_2());
 			pnLabels.add(getLblUbicación());
+			pnLabels.add(getLblPaciente());
 		}
 		return pnLabels;
 	}
 
-	private JPanel getPnFields() {
-		if (pnFields == null) {
-			pnFields = new JPanel();
-			pnFields.setLayout(new GridLayout(6, 0, 0, 0));
-			pnFields.add(getPanel_11());
-			pnFields.add(getPanel_5());
-			pnFields.add(getPanel_6());
-			pnFields.add(getPanel_8());
-			pnFields.add(getPanel_3());
-			pnFields.add(getPanel_7());
+	private JPanel getPanel_3() {
+		if (panel_3 == null) {
+			panel_3 = new JPanel();
+			panel_3.setLayout(new GridLayout(5, 0, 0, 0));
+			panel_3.add(getPanel_11());
+			panel_3.add(getPanel_5());
+			panel_3.add(getPanel_6());
+			panel_3.add(getPanel_7());
+			panel_3.add(getPanel_8());
 		}
-		return pnFields;
+		return panel_3;
 	}
 
 	private JLabel getLblHoraEntrada() {
@@ -231,11 +225,11 @@ public class CrearCitaMedicoVista extends JDialog {
 		return lblNewLabel_5;
 	}
 
-	public JButton getBtnEnviar() {
-		if (btnEnviar == null) {
-			btnEnviar = new JButton("ENVIAR A REVISI\u00D3N");
+	public JButton getBtnModificar() {
+		if (btnModificar == null) {
+			btnModificar = new JButton("APLICAR MODIFICACI\u00D3N");
 		}
-		return btnEnviar;
+		return btnModificar;
 	}
 
 	public JButton getBtnCancelar() {
@@ -453,41 +447,5 @@ public class CrearCitaMedicoVista extends JDialog {
 		}
 		return panel_18;
 	}
-	private JLabel getLblNewLabel_2() {
-		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("M\u00C9DICOS DE LA CITA:");
-			lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		}
-		return lblNewLabel_2;
-	}
-	private JPanel getPanel_3() {
-		if (panel_3 == null) {
-			panel_3 = new JPanel();
-			panel_3.setLayout(new GridLayout(3, 0, 0, 0));
-			panel_3.add(getLblNewLabel_6());
-			panel_3.add(getPanel_19());
-			panel_3.add(getScrollPane());
-		}
-		return panel_3;
-	}
-	private JLabel getLblNewLabel_6() {
-		if (lblNewLabel_6 == null) {
-			lblNewLabel_6 = new JLabel("New label");
-		}
-		return lblNewLabel_6;
-	}
-	private JPanel getPanel_19() {
-		if (panel_19 == null) {
-			panel_19 = new JPanel();
-			panel_19.setLayout(new GridLayout(0, 3, 0, 0));
-		}
-		return panel_19;
-	}
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-		}
-		return scrollPane;
-	}
+
 }
