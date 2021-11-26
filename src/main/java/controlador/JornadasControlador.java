@@ -18,10 +18,12 @@ import dtos.EnfermeroDto;
 import dtos.JornadaLaboralDto;
 import dtos.MedicoDto;
 import dtos.RegistroDto;
+import dtos.TrabajadorDto;
 import modelo.EnfermeroModelo;
 import modelo.JornadaModelo;
 import modelo.MedicoModelo;
 import modelo.RegistroModelo;
+import modelo.TrabajadorModelo;
 import util.NoEditableTableModel;
 import util.SwingUtil;
 import vista.AsignarJornadaVista;
@@ -31,15 +33,17 @@ public class JornadasControlador {
     private AsignarJornadaVista vista_jornadas;
     private EnfermeroModelo modelo_enfermero;
     private MedicoModelo modelo_medico;
+    private TrabajadorModelo modelo_trabajador;
     private JornadaModelo modelo_jornada;
 
-    private Map<Integer, String> mapTable = new HashMap<>();
+    private Map<Integer, TrabajadorDto> mapTable = new HashMap<>();
 
     public JornadasControlador() {
 	this.modelo_medico = new MedicoModelo();
 	this.modelo_enfermero = new EnfermeroModelo();
 	this.modelo_jornada = new JornadaModelo();
 	this.vista_jornadas = new AsignarJornadaVista();
+	this.modelo_trabajador = new TrabajadorModelo();
     }
 
     public void inicializar() {
@@ -94,33 +98,40 @@ public class JornadasControlador {
 		mapTable = new HashMap<>();
 		vista_jornadas.setModeloTabla(new NoEditableTableModel(new String[] { "Nombre", "Especialidad" }, 0));
 		for (MedicoDto m : modelo_medico.getListaMedicos()) {
-		    mapTable.put(fila, m.getNombre());
+		    mapTable.put(fila, modelo_trabajador.findByIdMedico(m.getId()).get(0));
 		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getNombre(), m.getEspecialidad() });
+		    fila++;
 		}
 	    }
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 1) {
+		fila = 0;
 		mapTable = new HashMap<>();
 		for (EnfermeroDto e : modelo_enfermero.getListaEnfermeros()) {
-		    mapTable.put(fila, e.getNombre());
+		    mapTable.put(fila, modelo_trabajador.findByIdEnfermero(e.getId()).get(0));
 		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getNombre() });
+		    fila++;
 		}
 	    }
 	} else {
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 0) {
 		vista_jornadas.setModeloTabla(new NoEditableTableModel(new String[] { "Nombre", "Especialidad" }, 0));
+		fila = 0;
 		mapTable = new HashMap<>();
 		for (MedicoDto m : modelo_medico
 			.getListaMedicosBySearch(vista_jornadas.getBuscarTextField().getText())) {
-		    mapTable.put(fila, m.getNombre());
+		    mapTable.put(fila, modelo_trabajador.findByIdMedico(m.getId()).get(0));
 		    vista_jornadas.getModeloTabla().addRow(new Object[] { m.getNombre(), m.getEspecialidad() });
+		    fila++;
 		}
 	    }
 	    if (vista_jornadas.getTipoEmpleadoComboBox().getSelectedIndex() == 1) {
+		fila = 0;
 		mapTable = new HashMap<>();
 		for (EnfermeroDto e : modelo_enfermero
 			.getListaEnfermerosBySearch(vista_jornadas.getBuscarTextField().getText())) {
-		    mapTable.put(fila, e.getNombre());
+		    mapTable.put(fila, modelo_trabajador.findByIdEnfermero(e.getId()).get(0));
 		    vista_jornadas.getModeloTabla().addRow(new Object[] { e.getNombre() });
+		    fila++;
 		}
 	    }
 	}
@@ -144,7 +155,7 @@ public class JornadasControlador {
 	JornadaLaboralDto j;
 
 	try {
-	    j = new JornadaLaboralDto(mapTable.get(vista_jornadas.getTableEmpleados().getSelectedColumn()),
+	    j = new JornadaLaboralDto(mapTable.get(vista_jornadas.getTableEmpleados().getSelectedRow()).getId(),
 		    (dateFormat.parse(vista_jornadas.getComienzoCalendar().getDate().toString())),
 		    (dateFormat.parse(vista_jornadas.getFinCalendar().getDate().toString())),
 		    (dateFormat.parse(vista_jornadas.getHoraEntradaSpinner().getValue().toString())),
