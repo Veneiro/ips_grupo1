@@ -52,7 +52,7 @@ public class PacienteControlador {
 		vista_cita.getBtnContinueButton().addActionListener(e -> SwingUtil.exceptionWrapper(() -> insertCitaToDB()));
 		vista_cita.getBtnAddCause().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addCause()));
 		vista_cita.getBtnAddPrescripcion().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addPrescripcion()));
-		vista_cita.getBtnEDO().addActionListener(e -> SwingUtil.exceptionWrapper(() -> newEDO()));
+		vista_cita.getBtnEDO().addActionListener(e -> SwingUtil.exceptionWrapper(() -> new EDOControlador(cita)));
 		vista_cita.getLblPaciente().setText(nombrePaciente);
 		String entry = cita.getHorario_inicio();
 		String out = cita.getHorario_fin();
@@ -99,12 +99,6 @@ public class PacienteControlador {
 		HistorialControlador  hc = new HistorialControlador(new HistorialModelo(), new HistorialesVista(),
 				cita.getId_paciente(), cita.getId_medico());
 		hc.inicializar();
-	}
-
-	private void newEDO() {
-		String name = JOptionPane.showInputDialog("Introduzca el nombre de la EDO");
-		new EDOControlador(name, cita);
-		JOptionPane.showMessageDialog(vista_cita, "Se ha informado a gerencia");
 	}
 
 	private void addCause() {
@@ -160,7 +154,7 @@ public class PacienteControlador {
 
 	void _cargarPrescripciones() {
 		vista_cita.setModeloTablaPrescripciones(new NoEditableTableModel(
-				new String[] { "Nombre", "Indicacciones", "Cantidad", "Intervalo", "Duración" }, 0));
+				new String[] { "Nombre", "Indicacciones", "Cantidad", "Intervalo", "Duraciï¿½n" }, 0));
 
 		List<PrescripcionRecord> lM = pM.getListaPrescripcionesPaciente(cita.getId_paciente());
 

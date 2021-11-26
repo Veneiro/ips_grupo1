@@ -3,6 +3,7 @@ package controlador;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -81,12 +82,39 @@ public class PrescripcionesControlador {
 	    }
 	});
 
+	pV.getTextFieldBuscar().getDocument().addDocumentListener(new DocumentListener() {
+
+	    @Override
+	    public void removeUpdate(DocumentEvent e) {
+		cargarPrescripciones();
+	    }
+
+	    @Override
+	    public void insertUpdate(DocumentEvent e) {
+		cargarPrescripciones();
+	    }
+
+	    @Override
+	    public void changedUpdate(DocumentEvent e) {
+		cargarPrescripciones();
+	    }
+	});
+
 	pV.getChckbxMedicamento().addItemListener(new ItemListener() {
 
 	    @Override
 	    public void itemStateChanged(ItemEvent e) {
 		habilitarMedicamento();
 	    }
+	});
+
+	pV.getChckbxFecha().addItemListener(new ItemListener() {
+
+	    @Override
+	    public void itemStateChanged(ItemEvent e) {
+		habilitarFecha();
+	    }
+
 	});
 
 	pV.setLocationRelativeTo(null);
@@ -98,6 +126,12 @@ public class PrescripcionesControlador {
 	pV.getTextField_Cantidad().setEnabled(check);
 	pV.getTextField_Intervalo().setEnabled(check);
 	pV.getTextField_Duracion().setEnabled(check);
+    }
+
+    private void habilitarFecha() {
+	boolean check = pV.getChckbxMedicamento().isSelected();
+	pV.getSpinnerFecha().setEnabled(check);
+	pV.getSpinnerHora().setEnabled(check);
     }
 
     private void checkAddButton() {
@@ -127,9 +161,16 @@ public class PrescripcionesControlador {
 
 	    p.setDuracion(pV.getTextField_Duracion().getText());
 
-	    p.setFecha(Util.dateToIsoString(Date.from(Instant.now())));
+	    if (pV.getChckbxFecha().isSelected()) {
+		p.setFecha(Util.dateToIsoString((Date) pV.getSpinnerFecha().getModel().getValue()));
 
-	    p.setHora(Util.dateToIsoHour(Date.from(Instant.now())));
+		p.setHora(Util.dateToIsoHour((Date) pV.getSpinnerHora().getModel().getValue()));
+
+	    } else {
+		p.setFecha(Util.dateToIsoString(Date.from(Instant.now())));
+
+		p.setHora(Util.dateToIsoHour(Date.from(Instant.now())));
+	    }
 
 	    pM.addPrescripcion(p);
 	    JOptionPane.showMessageDialog(pV, "Prescripción asignada correctamente.");
@@ -162,10 +203,16 @@ public class PrescripcionesControlador {
 
 	pV.setModeloTablaPrescripciones(new NoEditableTableModel(new String[] { "Nombre" }, 0));
 
-	List<PrescripcionRecord> lM = pM.getListaPrescripcionesNoRepetidas();
+	List<PrescripcionRecord> lP = new ArrayList<>();
 	mapTable = new HashMap<>();
 
-	for (PrescripcionRecord p : lM) {
+	if (pV.getTextFieldBuscar().getText().trim().isEmpty()) {
+	    lP = pM.getListaPrescripcionesNoRepetidas();
+	} else {
+	    lP = pM.getListaPrescripcionesNoRepetidasByName(pV.getTextFieldBuscar().getText());
+	}
+
+	for (PrescripcionRecord p : lP) {
 	    mapTable.put(fila, p);
 	    pV.getModeloTablaPrescripciones().addRow(new Object[] { p.getNombre(), p.getIndicaciones(), p.getCantidad(),
 		    p.getIntervalo(), p.getDuracion() });

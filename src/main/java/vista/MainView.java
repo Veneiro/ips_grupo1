@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import controlador.BackupDBControlador;
 import controlador.EstadisticasGerenteControlador;
 import controlador.EstadisticasVacunacionControlador;
 import controlador.ListaCalendarioCitasControlador;
@@ -28,6 +29,7 @@ public class MainView {
 	EventQueue.invokeLater(new Runnable() {
 	    public void run() {
 		try {
+		    new BackupDBControlador();
 		    MainView window = new MainView();
 		    window.frame.setVisible(true);
 		    window.frame.setLocationRelativeTo(null);
@@ -81,7 +83,7 @@ public class MainView {
 	});
 	btnAdmin.setBounds(10, 54, 495, 85);
 	frame.getContentPane().add(btnAdmin);
-	
+
 	JButton btnGerente = new JButton("Gerente");
 	btnGerente.addActionListener(new ActionListener() {
 		@Override
