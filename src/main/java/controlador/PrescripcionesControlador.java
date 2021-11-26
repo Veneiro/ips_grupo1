@@ -108,6 +108,15 @@ public class PrescripcionesControlador {
 	    }
 	});
 
+	pV.getChckbxFecha().addItemListener(new ItemListener() {
+
+	    @Override
+	    public void itemStateChanged(ItemEvent e) {
+		habilitarFecha();
+	    }
+
+	});
+
 	pV.setLocationRelativeTo(null);
 	pV.setVisible(true);
     }
@@ -117,6 +126,12 @@ public class PrescripcionesControlador {
 	pV.getTextField_Cantidad().setEnabled(check);
 	pV.getTextField_Intervalo().setEnabled(check);
 	pV.getTextField_Duracion().setEnabled(check);
+    }
+
+    private void habilitarFecha() {
+	boolean check = pV.getChckbxMedicamento().isSelected();
+	pV.getSpinnerFecha().setEnabled(check);
+	pV.getSpinnerHora().setEnabled(check);
     }
 
     private void checkAddButton() {
@@ -146,9 +161,16 @@ public class PrescripcionesControlador {
 
 	    p.setDuracion(pV.getTextField_Duracion().getText());
 
-	    p.setFecha(Util.dateToIsoString(Date.from(Instant.now())));
+	    if (pV.getChckbxFecha().isSelected()) {
+		p.setFecha(Util.dateToIsoString((Date) pV.getSpinnerFecha().getModel().getValue()));
 
-	    p.setHora(Util.dateToIsoHour(Date.from(Instant.now())));
+		p.setHora(Util.dateToIsoHour((Date) pV.getSpinnerHora().getModel().getValue()));
+
+	    } else {
+		p.setFecha(Util.dateToIsoString(Date.from(Instant.now())));
+
+		p.setHora(Util.dateToIsoHour(Date.from(Instant.now())));
+	    }
 
 	    pM.addPrescripcion(p);
 	    JOptionPane.showMessageDialog(pV, "Prescripción asignada correctamente.");

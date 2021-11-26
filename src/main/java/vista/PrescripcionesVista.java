@@ -1,6 +1,9 @@
 package vista;
 
 import java.awt.Color;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -9,10 +12,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -50,6 +55,9 @@ public class PrescripcionesVista extends JDialog {
     private JTextField textFieldBuscar;
     private JSeparator separator;
     private JLabel lblNewLabel_2;
+    private JCheckBox chckbxFecha;
+    private JSpinner spinnerHora;
+    private JSpinner spinnerFecha;
 
     /**
      * Create the frame.
@@ -59,7 +67,7 @@ public class PrescripcionesVista extends JDialog {
 	setResizable(false);
 	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	setModal(true);
-	setBounds(100, 100, 650, 400);
+	setBounds(100, 100, 650, 450);
 	contentPane = new JPanel();
 	contentPane.setBackground(new Color(211, 211, 211));
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -74,16 +82,16 @@ public class PrescripcionesVista extends JDialog {
 	table.setBounds(10, 30, 100, 186);
 
 	indicacionesTextPane = new JTextPane();
-	indicacionesTextPane.setBounds(219, 193, 404, 123);
+	indicacionesTextPane.setBounds(219, 243, 404, 123);
 	contentPane.add(indicacionesTextPane);
 
 	JLabel lblNewLabel_1 = new JLabel("Indicaciones");
-	lblNewLabel_1.setBounds(219, 168, 80, 14);
+	lblNewLabel_1.setBounds(219, 218, 80, 14);
 	contentPane.add(lblNewLabel_1);
 
 	JScrollPane scrollPane = new JScrollPane();
 	scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-	scrollPane.setBounds(10, 69, 171, 247);
+	scrollPane.setBounds(10, 69, 171, 297);
 	scrollPane.setViewportView(getTable());
 	contentPane.add(scrollPane);
 
@@ -115,7 +123,7 @@ public class PrescripcionesVista extends JDialog {
 	contentPane.add(textField_Duracion);
 
 	btnAsignar = new JButton("Asignar");
-	btnAsignar.setBounds(534, 327, 90, 23);
+	btnAsignar.setBounds(533, 377, 90, 23);
 	contentPane.add(btnAsignar);
 
 	chckbxMedicamento = new JCheckBox("Medicamento");
@@ -123,7 +131,7 @@ public class PrescripcionesVista extends JDialog {
 	contentPane.add(chckbxMedicamento);
 
 	btnCargar = new JButton("Cargar");
-	btnCargar.setBounds(10, 327, 171, 23);
+	btnCargar.setBounds(10, 377, 171, 23);
 	contentPane.add(btnCargar);
 
 	lblNombre = new JLabel("Nombre: ");
@@ -146,11 +154,31 @@ public class PrescripcionesVista extends JDialog {
 
 	separator = new JSeparator();
 	separator.setOrientation(SwingConstants.VERTICAL);
-	separator.setBounds(191, 12, 1, 338);
+	separator.setBounds(191, 12, 1, 388);
 	contentPane.add(separator);
 
 	lblNewLabel_2 = new JLabel("Existentes");
 	lblNewLabel_2.setBounds(10, 44, 90, 14);
 	contentPane.add(lblNewLabel_2);
+
+	chckbxFecha = new JCheckBox("Fecha");
+	chckbxFecha.setBounds(220, 177, 97, 23);
+	contentPane.add(chckbxFecha);
+
+	spinnerHora = new JSpinner();
+	spinnerHora.setEnabled(false);
+	spinnerHora.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.HOUR_OF_DAY));
+	JSpinner.DateEditor de_spinnerHora = new JSpinner.DateEditor(spinnerHora, "HH:mm");
+	spinnerHora.setEditor(de_spinnerHora);
+	spinnerHora.setBounds(554, 178, 60, 20);
+	contentPane.add(spinnerHora);
+
+	spinnerFecha = new JSpinner();
+	spinnerFecha.setEnabled(false);
+	spinnerFecha.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.DAY_OF_YEAR));
+	JSpinner.DateEditor de = new JSpinner.DateEditor(spinnerFecha, "dd-MM-yyyy");
+	spinnerFecha.setEditor(de);
+	spinnerFecha.setBounds(354, 178, 129, 20);
+	contentPane.add(spinnerFecha);
     }
 }
