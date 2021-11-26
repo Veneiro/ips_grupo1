@@ -14,7 +14,7 @@ import lombok.Setter;
 public class JornadaLaboralRecord {
 
     private int id;
-    private int id_trabajador;
+    private String nombre_trabajador;
     private String dia_comienzo, dia_fin, hora_entrada, hora_salida;
     private boolean lunes, martes, miercoles, jueves, viernes, sabado, domingo;
 

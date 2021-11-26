@@ -113,8 +113,7 @@ public class AsignarJornadaVista extends JDialog {
 	jornadaPanel.add(lblFin);
 
 	salidaSpinner = new JSpinner();
-	salidaSpinner.setModel(new SpinnerDateModel(Date.from(Instant.now().plusSeconds(60 * 60 * 24)), null, null,
-		Calendar.DAY_OF_YEAR));
+	salidaSpinner.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.DAY_OF_YEAR));
 	de = new JSpinner.DateEditor(salidaSpinner, "dd-MM-yyyy");
 	salidaSpinner.setEditor(de);
 	salidaSpinner.setBounds(395, 42, 100, 20);

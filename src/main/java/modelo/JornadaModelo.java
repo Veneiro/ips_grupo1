@@ -1,6 +1,5 @@
 package modelo;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,18 +13,18 @@ public class JornadaModelo {
     private Database db = new Database();
 
     public void addJornada(JornadaLaboralDto j) {
-	String sql = "INSERT INTO TJORNADALABORAL(ID_TRABAJADOR, DIA_COMIENZO, HORA_ENTRADA, DIA_FIN, HORA_SALIDA, LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+	String sql = "INSERT INTO TJORNADALABORAL(NOMBRE_TRABAJADOR, DIA_COMIENZO, HORA_ENTRADA, DIA_FIN, HORA_SALIDA, LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO) values (?,?,?,?,?,?,?,?,?,?,?,?)";
 
-	db.executeUpdate(sql, j.getId_trabajador(), Util.dateToIsoString(j.getDia_comienzo()),
+	db.executeUpdate(sql, j.getNombre_trabajador(), Util.dateToIsoString(j.getDia_comienzo()),
 		Util.dateToIsoHour(j.getHora_entrada()), Util.dateToIsoString(j.getDia_fin()),
 		Util.dateToIsoHour(j.getHora_salida()), j.isLunes(), j.isMartes(), j.isMiercoles(), j.isJueves(),
 		j.isViernes(), j.isSabado(), j.isDomingo());
     }
 
     public void updateJornada(int id, JornadaLaboralDto j) {
-	String sql = "UPDATE TJORNADALABORAL SET ID_TRABAJADOR = ?, DIA_COMIENZO = ?, HORA_ENTRADA = ?, DIA_FIN = ?, HORA_SALIDA = ?, LUNES = ?, MARTES = ?, MIERCOLES = ?, JUEVES = ?, VIERNES = ?, SABADO = ?, DOMINGO = ? where id = ?";
+	String sql = "UPDATE TJORNADALABORAL SET NOMBRE_TRABAJADOR = ?, DIA_COMIENZO = ?, HORA_ENTRADA = ?, DIA_FIN = ?, HORA_SALIDA = ?, LUNES = ?, MARTES = ?, MIERCOLES = ?, JUEVES = ?, VIERNES = ?, SABADO = ?, DOMINGO = ? where id = ?";
 
-	db.executeUpdate(sql, j.getId_trabajador(), Util.dateToIsoString(j.getDia_comienzo()),
+	db.executeUpdate(sql, j.getNombre_trabajador(), Util.dateToIsoString(j.getDia_comienzo()),
 		Util.dateToIsoHour(j.getHora_entrada()), Util.dateToIsoString(j.getDia_fin()),
 		Util.dateToIsoHour(j.getHora_salida()), j.isLunes(), j.isMartes(), j.isMiercoles(), j.isJueves(),
 		j.isViernes(), j.isSabado(), j.isDomingo(), id);
@@ -44,15 +43,9 @@ public class JornadaModelo {
     }
 
     public List<JornadaLaboralRecord> findByName(String nombreTrabajador) {
-	List<JornadaLaboralRecord> ret = new ArrayList<>();
+	String sql = "SELECT * FROM TJORNADALABORAL WHERE NOMBRE_TRABAJADOR LIKE ?";
 
-	String sql_med = "SELECT * FROM TJORNADALABORAL AS J, TTRABAJADORES AS T, TMEDICOS AS M WHERE J.ID_TRABAJADOR = T.ID AND T.ID_MEDICO = M.ID AND M.NOMBRE LIKE ?";
-	String sql_enf = "SELECT * FROM TJORNADALABORAL AS J, TTRABAJADORES AS T, TENFERMEROS AS E WHERE J.ID_TRABAJADOR = T.ID AND T.ID_ENFERMERO = E.ID AND E.NOMBRE LIKE ?";
-
-	ret = db.executeQueryPojo(JornadaLaboralRecord.class, sql_med, "%" + nombreTrabajador + "%");
-	ret.addAll(db.executeQueryPojo(JornadaLaboralRecord.class, sql_enf, "%" + nombreTrabajador + "%"));
-
-	return ret;
+	return db.executeQueryPojo(JornadaLaboralRecord.class, sql, "%" + nombreTrabajador + "%");
     }
 
     public List<JornadaLaboralRecord> findJornadaByComienzo(Date diaComienzo) {
@@ -79,7 +72,7 @@ public class JornadaModelo {
     }
 
     public List<JornadaLaboralRecord> findByIdTrabajador(int id) {
-	String sql = "SELECT * FROM TJORNADALABORAL WHERE ID_TRABAJADOR = ?";
-	return db.executeQueryPojo(JornadaLaboralRecord.class, sql, id);
+    	String sql = "SELECT * FROM TJORNADALABORAL WHERE ID_TRABAJADOR = ?";
+    	return db.executeQueryPojo(JornadaLaboralRecord.class, sql, id);
     }
 }

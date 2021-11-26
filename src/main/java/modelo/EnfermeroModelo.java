@@ -18,9 +18,4 @@ public class EnfermeroModelo {
 	String sql = "SELECT * FROM TENFERMEROS WHERE (LOWER(NOMBRE) LIKE ? OR LOWER(ID) LIKE ?)";
 	return db.executeQueryPojo(EnfermeroDto.class, sql, "%" + name + "%", "%" + name + "%");
     }
-
-    public List<EnfermeroDto> findById(int id) {
-	String sql = "SELECT * FROM TENFERMEROS WHERE ID = ?";
-	return db.executeQueryPojo(EnfermeroDto.class, sql, id);
-    }
 }

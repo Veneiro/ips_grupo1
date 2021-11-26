@@ -18,16 +18,10 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import dtos.EnfermeroDto;
 import dtos.JornadaLaboralDto;
-import dtos.MedicoDto;
 import dtos.RegistroDto;
-import dtos.TrabajadorDto;
-import modelo.EnfermeroModelo;
 import modelo.JornadaModelo;
-import modelo.MedicoModelo;
 import modelo.RegistroModelo;
-import modelo.TrabajadorModelo;
 import records.JornadaLaboralRecord;
 import records.RecordAssembler;
 import util.NoEditableTableModel;
@@ -40,7 +34,6 @@ public class ListarJornadasControlador {
     private ListaJornadasVista listaJornadasVista;
     private ModificarJornadaVista modificarVista;
     private JornadaModelo modelo_jornada;
-    private TrabajadorModelo modelo_trabajador;
     private JornadaLaboralDto jornada;
 
     private Map<Integer, Integer> mapTable = new HashMap<>();
@@ -49,7 +42,6 @@ public class ListarJornadasControlador {
     public ListarJornadasControlador() {
 	this.listaJornadasVista = new ListaJornadasVista();
 	this.modelo_jornada = new JornadaModelo();
-	this.modelo_trabajador = new TrabajadorModelo();
     }
 
     public void inicializar() {
@@ -164,9 +156,7 @@ public class ListarJornadasControlador {
 	    lJ = modelo_jornada.findAll();
 
 	} else {
-
 	    lJ = modelo_jornada.findByName(listaJornadasVista.getTextFieldTrabajador().getText());
-
 	}
 
 	if (listaJornadasVista.getChckbxComienzo().isSelected()) {
@@ -213,18 +203,7 @@ public class ListarJornadasControlador {
 	for (JornadaLaboralRecord j : lJ) {
 	    mapTable.put(fila, j.getId());
 
-	    String nombreTrabajador = "";
-	    TrabajadorDto t = modelo_trabajador.findById(j.getId_trabajador()).get(0);
-
-	    if (t.getCategoria().equals("MEDICO")) {
-		MedicoDto m = new MedicoModelo().getListaMedicosById(t.getId_medico()).get(0);
-		nombreTrabajador = m.getNombre();
-	    } else if (t.getCategoria().equals("ENFERMERO")) {
-		EnfermeroDto m = new EnfermeroModelo().findById(t.getId_enfermero()).get(0);
-		nombreTrabajador = m.getNombre();
-	    }
-
-	    listaJornadasVista.getModeloTabla().addRow(new Object[] { nombreTrabajador, j.getDia_comienzo(),
+	    listaJornadasVista.getModeloTabla().addRow(new Object[] { j.getNombre_trabajador(), j.getDia_comienzo(),
 		    j.getDia_fin(), j.getHora_entrada(), j.getHora_salida() });
 
 	    fila++;
@@ -249,7 +228,7 @@ public class ListarJornadasControlador {
 	JornadaLaboralDto j;
 
 	try {
-	    j = new JornadaLaboralDto(jornada.getId_trabajador(),
+	    j = new JornadaLaboralDto(jornada.getNombre_trabajador(),
 		    (dateFormat.parse(modificarVista.getComienzoCalendar().getDate().toString())),
 		    (dateFormat.parse(modificarVista.getFinCalendar().getDate().toString())),
 		    (dateFormat.parse(modificarVista.getHoraEntradaSpinner().getValue().toString())),
