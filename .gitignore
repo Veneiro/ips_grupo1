@@ -2,3 +2,4 @@
 *.class
 *.db
 /target/
+db/ihospital.db
