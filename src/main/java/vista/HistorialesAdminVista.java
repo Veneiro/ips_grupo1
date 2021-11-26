@@ -25,6 +25,8 @@ public class HistorialesAdminVista extends JFrame{
 	private JScrollPane scrollPaneTabla_2;
 	private JTable tableDiagnosticos;
 	private JTable tablePrescriciones;
+	private JScrollPane scrollPaneTabla_3;
+	private JTable tableVacunas;
 	
 	public HistorialesAdminVista() {
 		setTitle("iHospital : Historial");
@@ -32,21 +34,23 @@ public class HistorialesAdminVista extends JFrame{
 	}
 	
 	public void inicializar() {
-		setBounds(new Rectangle(300, 300, 923, 500));
+		
+		setBounds(new Rectangle(300, 300, 923, 650));
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
 		lblHistorial = new JLabel("Historial");
-		lblHistorial.setBounds(0, 0, 986, 22);
+		lblHistorial.setBounds(0, 0, 911, 22);
 		lblHistorial.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblHistorial.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblHistorial);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setBounds(0, 442, 986, 21);
+		btnSalir.setBounds(0, 589, 911, 21);
 		getContentPane().add(btnSalir);
+		
 		
 		scrollPaneTabla = new JScrollPane();
 		scrollPaneTabla.setBounds(0, 22, 911, 158);
@@ -76,5 +80,13 @@ public class HistorialesAdminVista extends JFrame{
 		
 		tablePrescriciones = new JTable();
 		scrollPaneTabla_2.setViewportView(tablePrescriciones);
+		
+		scrollPaneTabla_3 = new JScrollPane();
+		scrollPaneTabla_3.setBounds(0, 440, 911, 149);
+		getContentPane().add(scrollPaneTabla_3);
+		
+		tableVacunas = new JTable();
+		scrollPaneTabla_3.setViewportView(tableVacunas);
+		
 	}
 }

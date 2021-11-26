@@ -1,8 +1,6 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.time.LocalDateTime;
 
@@ -51,18 +49,27 @@ public class AppointmentView extends JDialog {
     @Setter
     private NoEditableTableModel modeloTablaPrescripciones;
     private JScrollPane scrollPanePrescripciones;
+    private JButton btnEDO;
+    private JPanel buttonPane;
+    private JButton btnHistorial;
+    private JButton btnAcudio;
+    private JButton btnNoAcudio;
+    private JScrollPane scrollPaneDiagnosticos;
+    private JTable tableDiagnosticos;
+    private JButton btnProcedimientos;
 
     /**
      * Create the dialog.
      */
     public AppointmentView() {
 	setTitle("iHospital : Cita");
-	setModal(true);
+	//setModal(true);
 	setResizable(false);
-	setBounds(100, 100, 450, 500);
-	getContentPane().setLayout(new BorderLayout());
+	setBounds(100, 100, 450, 700);
+	getContentPane().setLayout(null);
+	contentPanel.setBounds(0, 0, 434, 614);
 	contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-	getContentPane().add(contentPanel, BorderLayout.CENTER);
+	getContentPane().add(contentPanel);
 	contentPanel.setLayout(null);
 	contentPanel.add(getScrollPane());
 	contentPanel.add(getBtnAddCause());
@@ -83,11 +90,13 @@ public class AppointmentView extends JDialog {
 	contentPanel.add(btnAddPrescripcion);
 
 	{
-	    JPanel buttonPane = new JPanel();
-	    buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-	    getContentPane().add(buttonPane, BorderLayout.SOUTH);
+	    buttonPane = new JPanel();
+	    buttonPane.setBounds(0, 630, 434, 33);
+	    getContentPane().add(buttonPane);
+	    buttonPane.setLayout(null);
 	    buttonPane.add(getBtnContinueButton());
 	    getRootPane().setDefaultButton(continueButton);
+	    buttonPane.add(getBtnEDO());
 	}
 
 	scrollPanePrescripciones = new JScrollPane();
@@ -101,11 +110,17 @@ public class AppointmentView extends JDialog {
 
 	scrollPanePrescripciones.setViewportView(tablePrescripciones);
 	contentPanel.add(scrollPanePrescripciones);
+	contentPanel.add(getBtnHistorial());
+	contentPanel.add(getBtnAcudio());
+	contentPanel.add(getBtnNoAcudio());
+	contentPanel.add(getScrollPaneDiagnosticos());
+	contentPanel.add(getBtnProcedimientos());
     }
 
     public JButton getBtnContinueButton() {
 	if (continueButton == null) {
 	    continueButton = new JButton("Continuar");
+	    continueButton.setBounds(335, 0, 89, 23);
 	    continueButton.setActionCommand("OK");
 	}
 	return continueButton;
@@ -229,4 +244,51 @@ public class AppointmentView extends JDialog {
 	return btnAddPrescripcion;
     }
 
+    public JButton getBtnEDO() {
+	if (btnEDO == null) {
+	    btnEDO = new JButton("EDO");
+	    btnEDO.setForeground(new Color(255, 0, 0));
+	    btnEDO.setFont(new Font("Tahoma", Font.BOLD, 11));
+	    btnEDO.setBounds(10, 0, 89, 23);
+	}
+	return btnEDO;
+    }
+	public JButton getBtnHistorial() {
+		if (btnHistorial == null) {
+			btnHistorial = new JButton("Historial");
+			btnHistorial.setBounds(5, 521, 429, 21);
+		}
+		return btnHistorial;
+	}
+	public JButton getBtnAcudio() {
+		if (btnAcudio == null) {
+			btnAcudio = new JButton("Acudio");
+			btnAcudio.setBounds(5, 552, 204, 21);
+		}
+		return btnAcudio;
+	}
+	public JButton getBtnNoAcudio() {
+		if (btnNoAcudio == null) {
+			btnNoAcudio = new JButton("No Acudio");
+			btnNoAcudio.setBounds(219, 552, 215, 21);
+		}
+		return btnNoAcudio;
+	}
+	private JScrollPane getScrollPaneDiagnosticos() {
+		if (scrollPaneDiagnosticos == null) {
+			scrollPaneDiagnosticos = new JScrollPane();
+			scrollPaneDiagnosticos.setBounds(5, 420, 429, 102);
+			
+			tableDiagnosticos = new JTable();
+			scrollPaneDiagnosticos.setViewportView(tableDiagnosticos);
+		}
+		return scrollPaneDiagnosticos;
+	}
+	public JButton getBtnProcedimientos() {
+		if (btnProcedimientos == null) {
+			btnProcedimientos = new JButton("Procedimiento");
+			btnProcedimientos.setBounds(5, 589, 429, 21);
+		}
+		return btnProcedimientos;
+	}
 }

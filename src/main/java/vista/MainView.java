@@ -8,11 +8,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import controlador.BackupDBControlador;
 import controlador.EstadisticasGerenteControlador;
+import controlador.EstadisticasVacunacionControlador;
 import controlador.ListaCalendarioCitasControlador;
+import controlador.MedicoCrearCitasControlador;
 import modelo.CitaModelo;
 import modelo.HistorialModelo;
 import modelo.PacienteModelo;
+import util.SwingUtil;
 
 public class MainView {
 
@@ -25,6 +29,7 @@ public class MainView {
 	EventQueue.invokeLater(new Runnable() {
 	    public void run() {
 		try {
+		    new BackupDBControlador();
 		    MainView window = new MainView();
 		    window.frame.setVisible(true);
 		    window.frame.setLocationRelativeTo(null);
@@ -60,7 +65,7 @@ public class MainView {
 		if (idMedico != null) {
 		    ListaCalendarioCitasControlador controller = new ListaCalendarioCitasControlador(
 			    new ListaCalendarioCitasVista(), new CitaModelo(), new PacienteModelo(),
-			    Integer.valueOf(idMedico));
+			    Integer.valueOf(idMedico), new MedicoCrearCitasControlador(new CrearCitaMedicoVista()));
 		    controller.inicializar();
 		}
 
@@ -78,11 +83,24 @@ public class MainView {
 	});
 	btnAdmin.setBounds(10, 54, 495, 85);
 	frame.getContentPane().add(btnAdmin);
-	
+
 	JButton btnGerente = new JButton("Gerente");
 	btnGerente.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			MenuGerenteVista mgv = new MenuGerenteVista();
+			mgv.setVisible(true);
+			mgv.getBtnEnfermedades().addActionListener(a -> SwingUtil.exceptionWrapper(() -> inicializarEstadisticasEnfermedades()));
+			mgv.getBtnVacunas().addActionListener(a -> SwingUtil.exceptionWrapper(() -> inicializarEstadisticasVacunas()));
+			
+		}
+
+		private void inicializarEstadisticasVacunas() {
+			EstadisticasVacunacionControlador evc = new EstadisticasVacunacionControlador();
+			evc.inicializar();
+		}
+
+		private void inicializarEstadisticasEnfermedades() {
 			EstadisticasGerenteControlador egc = new EstadisticasGerenteControlador(new HistorialModelo()
 					, new CitaModelo(), new PacienteModelo(), new EstadisticasGerenteVista());
 			egc.inicilizar();

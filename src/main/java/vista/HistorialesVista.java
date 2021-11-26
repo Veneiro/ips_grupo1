@@ -1,10 +1,10 @@
- package vista;
+package vista;
 
 import java.awt.Font;
 import java.awt.Rectangle;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,7 +15,7 @@ import lombok.Getter;
 
 @SuppressWarnings("serial")
 @Getter
-public class HistorialesVista extends JFrame {
+public class HistorialesVista extends JDialog {
 
 	private JLabel lblHistorial;
 	private JButton btnSalir;
@@ -26,6 +26,10 @@ public class HistorialesVista extends JFrame {
 	private JScrollPane scrollPaneTabla_2;
 	private JTable tableDiagnosticos;
 	private JTable tablePrescriciones;
+	private JScrollPane scrollPaneTabla_3;
+	private JTable tableVacunas;
+	private JButton btnVacunas;
+	private JButton btnAntecedentes;
 	
 	public HistorialesVista() {
 		setTitle("iHospital : Historial");
@@ -33,7 +37,7 @@ public class HistorialesVista extends JFrame {
 	}
 	
 	public void inicializar() {
-		setBounds(new Rectangle(300, 300, 1000, 500));
+		setBounds(new Rectangle(300, 300, 1100, 650));
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -46,11 +50,12 @@ public class HistorialesVista extends JFrame {
 		getContentPane().add(lblHistorial);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setBounds(0, 442, 986, 21);
+		btnSalir.setBounds(0, 589, 1076, 21);
 		getContentPane().add(btnSalir);
 		
 		btnModificar = new JButton("Modificar\r\nDiagnostico");
-		btnModificar.setBounds(911, 22, 75, 419);
+		btnModificar.setHorizontalAlignment(SwingConstants.RIGHT);
+		btnModificar.setBounds(910, 180, 176, 124);
 		getContentPane().add(btnModificar);
 		
 		scrollPaneTabla = new JScrollPane();
@@ -81,5 +86,20 @@ public class HistorialesVista extends JFrame {
 		
 		tablePrescriciones = new JTable();
 		scrollPaneTabla_2.setViewportView(tablePrescriciones);
+		
+		scrollPaneTabla_3 = new JScrollPane();
+		scrollPaneTabla_3.setBounds(0, 440, 911, 149);
+		getContentPane().add(scrollPaneTabla_3);
+		
+		tableVacunas = new JTable();
+		scrollPaneTabla_3.setViewportView(tableVacunas);
+		
+		btnVacunas = new JButton("Modificar Vacunas");
+		btnVacunas.setBounds(910, 303, 176, 138);
+		getContentPane().add(btnVacunas);
+		
+		btnAntecedentes = new JButton("Modificar Antecedentes");
+		btnAntecedentes.setBounds(910, 22, 176, 158);
+		getContentPane().add(btnAntecedentes);
 	}
 }

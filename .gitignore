@@ -1,5 +1,6 @@
 /target/*
 *.class
-*.db
+ihospital.db
 /target/
-db/ihospital.db
+*.class
+*.db

@@ -15,4 +15,7 @@ public class DiagnosticoDto {
 	private int id_paciente;
 	private String diagnostico;
 	private String fecha;
+	private int id_medico;
+	private String hora_creacion;
+	private String actual;
 }

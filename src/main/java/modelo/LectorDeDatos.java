@@ -53,4 +53,18 @@ public class LectorDeDatos {
 
 		return lista;
 	}
+	
+	/**
+	 * Obtiene las citas del médico indicado.
+	 * 
+	 * @param medico médico cuyas citas se quieren obtener
+	 * @return lista de las citas de ese médico
+	 */
+	public List<CitaDto> getListaCitasDeMedico(MedicoDto medico) {
+		List<CitaDto> lista = new ArrayList<CitaDto>();
+
+		lista.addAll(db.executeQueryPojo(CitaDto.class, TCITAS_MEDICO_SELECT, medico.getId()));
+
+		return lista;
+	}
 }
