@@ -127,8 +127,8 @@ public class LoginControlador {
 	    if (u != null) {
 		String newPassword = generatePassword();
 
-		lM.setPassword(encriptar(newPassword.toCharArray()));
-		lM.setExpiration(expiration);
+		lM.setPassword(u.getId(), encriptar(newPassword.toCharArray()));
+		lM.setExpiration(u.getId(), expiration);
 
 		sendEmail(email, newPassword);
 

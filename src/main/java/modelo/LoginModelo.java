@@ -24,14 +24,14 @@ public class LoginModelo {
 	return db.executeQueryPojo(UserDto.class, sql, email);
     }
 
-    public void setPassword(String password) {
-	String sql = "UPDATE TUSERS SET PASSWORD = ?";
-	db.executeUpdate(sql, password);
+    public void setPassword(int id, String password) {
+	String sql = "UPDATE TUSERS SET PASSWORD = ? WHERE ID = ?";
+	db.executeUpdate(sql, password, id);
     }
 
-    public void setExpiration(String expiration) {
-	String sql = "UPDATE TUSERS SET EXPIRATION = ?";
-	db.executeUpdate(sql, expiration);
+    public void setExpiration(int id, String expiration) {
+	String sql = "UPDATE TUSERS SET EXPIRATION = ? WHERE ID = ?";
+	db.executeUpdate(sql, expiration, id);
     }
 
     public void expire(int id) {
