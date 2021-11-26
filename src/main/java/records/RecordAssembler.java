@@ -14,7 +14,7 @@ public class RecordAssembler {
 	DateFormat hourFormat = new SimpleDateFormat("HH:mm", Locale.US);
 
 	JornadaLaboralDto j = new JornadaLaboralDto();
-	j.setNombre_trabajador(r.getNombre_trabajador());
+	j.setId_trabajador(r.getId_trabajador());
 	try {
 	    j.setDia_comienzo(dateFormat.parse(r.getDia_comienzo()));
 	    j.setDia_fin(dateFormat.parse(r.getDia_fin()));
