@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import controlador.BackupDBControlador;
 import controlador.LoginControlador;
 import lombok.Getter;
 
@@ -31,6 +32,7 @@ public class LoginView {
 	EventQueue.invokeLater(new Runnable() {
 	    public void run() {
 		try {
+		    new BackupDBControlador();
 		    LoginView window = new LoginView();
 		    window.frmIhospitalLogin.setLocationRelativeTo(null);
 		    window.frmIhospitalLogin.setVisible(true);

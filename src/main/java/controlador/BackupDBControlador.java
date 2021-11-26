@@ -24,7 +24,7 @@ public class BackupDBControlador {
     LocalDate now = LocalDate.now();
 
     public BackupDBControlador() {
-	if (now.getDayOfWeek() == DayOfWeek.MONDAY)
+	if (now.getDayOfWeek() == DayOfWeek.TUESDAY)
 	    copyDB();
     }
 
