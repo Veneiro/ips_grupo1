@@ -14,12 +14,14 @@ import modelo.HistorialModelo;
 import modelo.LoginModelo;
 import modelo.PacienteModelo;
 import util.SendEmail;
+import util.SwingUtil;
 import util.Util;
 import vista.AdminVista;
 import vista.CrearCitaMedicoVista;
 import vista.EstadisticasGerenteVista;
 import vista.ListaCalendarioCitasVista;
 import vista.LoginView;
+import vista.MenuGerenteVista;
 
 public class LoginControlador {
 
@@ -59,15 +61,31 @@ public class LoginControlador {
 		break;
 	    }
 	    case "GERENTE": {
-		EstadisticasGerenteControlador egc = new EstadisticasGerenteControlador(new HistorialModelo(),
-			new CitaModelo(), new PacienteModelo(), new EstadisticasGerenteVista());
-		egc.inicilizar();
+		MenuGerenteVista mgv = new MenuGerenteVista();
+		mgv.setVisible(true);
+		mgv.getBtnEnfermedades().addActionListener(
+			a -> SwingUtil.exceptionWrapper(() -> inicializarEstadisticasEnfermedades()));
+		mgv.getBtnVacunas()
+			.addActionListener(a -> SwingUtil.exceptionWrapper(() -> inicializarEstadisticasVacunas()));
+
 		break;
 	    }
 	    }
 	} else {
 	    JOptionPane.showMessageDialog(lV.getFrmIhospitalLogin(), "Usuario y/o contraseña incorrecto/s.");
 	}
+
+    }
+
+    private void inicializarEstadisticasVacunas() {
+	EstadisticasVacunacionControlador evc = new EstadisticasVacunacionControlador();
+	evc.inicializar();
+    }
+
+    private void inicializarEstadisticasEnfermedades() {
+	EstadisticasGerenteControlador egc = new EstadisticasGerenteControlador(new HistorialModelo(), new CitaModelo(),
+		new PacienteModelo(), new EstadisticasGerenteVista());
+	egc.inicilizar();
     }
 
     private void comprobarCaducados() {
