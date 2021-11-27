@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 
-public class AprobarCitasVista extends JDialog {
+public class AprobarCitasVistaMedico extends JDialog {
 
 	private static final long serialVersionUID = 4214030988752432070L;
 	private JLabel lblCitas;
@@ -24,13 +24,12 @@ public class AprobarCitasVista extends JDialog {
 	private JButton btnConfirmar;
 	private JPanel panel;
 	private JButton btnBack;
-	private JButton btnModificar;
 	private JButton btnHelp;
 
 	/**
 	 * Create the dialog.
 	 */
-	public AprobarCitasVista() {
+	public AprobarCitasVistaMedico() {
 		setBounds(100, 100, 864, 546);
 
 		getContentPane().add(getLblCitas(), BorderLayout.NORTH);
@@ -42,7 +41,7 @@ public class AprobarCitasVista extends JDialog {
 
 	private JLabel getLblCitas() {
 		if (lblCitas == null) {
-			lblCitas = new JLabel("Citas pendientes de aprobaci\u00F3n");
+			lblCitas = new JLabel("Citas Propuestas Modificadas");
 			lblCitas.setForeground(Color.RED);
 			lblCitas.setFont(new Font("Tahoma", Font.BOLD, 18));
 			lblCitas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -80,7 +79,6 @@ public class AprobarCitasVista extends JDialog {
 			panel = new JPanel();
 			panel.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 5));
 			panel.add(getBtnHelp());
-			panel.add(getBtnModificar());
 			panel.add(getBtnBack());
 			panel.add(getBtnConfirmar());
 		}
@@ -93,13 +91,6 @@ public class AprobarCitasVista extends JDialog {
 			btnBack.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		}
 		return btnBack;
-	}
-	public JButton getBtnModificar() {
-		if (btnModificar == null) {
-			btnModificar = new JButton("Modificar Cita");
-			btnModificar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		}
-		return btnModificar;
 	}
 	public JButton getBtnHelp() {
 		if (btnHelp == null) {

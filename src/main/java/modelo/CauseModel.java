@@ -11,7 +11,8 @@ public class CauseModel {
 	private static Database db = new Database();
 
 	public void insertCause(CauseDto cdto) {
-		String sql = "INSERT INTO TCAUSA (OBSERVATIONS, DATE, HOUR, NAME, ID) VALUES(?,?,?,?,?)";
+		String sql = "INSERT INTO TCAUSA (OBSERVATIONS, DATE, HOUR, NAME, ID) "
+				+ "VALUES(?,?,?,?,?)";
 
 		db.executeUpdate(sql, cdto.getOBSERVATIONS(), cdto.getDATE(),
 				cdto.getHOUR(), cdto.getNAME(), cdto.getID());
@@ -20,13 +21,18 @@ public class CauseModel {
 	public void insertCita(CitaDto cidto) {
 		int id = cidto.getId();
 		String sql = "UPDATE TCITAS "
-					+ "SET horario_inicio = ?, horario_fin = ?, ubicacion = ?, contacto = ?, id_paciente = ?, id_medico = ?, acudio = ?, fecha = ?, informacion = ?, nombre_paciente = ?, hora_entrada = ?, hora_salida = ?"
-					+ "WHERE id = " + id;
+				+ "SET horario_inicio = ?, horario_fin = ?, "
+				+ "ubicacion = ?, contacto = ?, id_paciente = ?, id_medico = ?"
+				+ ", acudio = ?, fecha = ?, informacion = ?, nombre_paciente = ?"
+				+ ", hora_entrada = ?, hora_salida = ?"
+				+ "WHERE id = " + id;
 
-		db.executeUpdate(sql, cidto.getHorario_inicio(),
-				cidto.getHorario_fin(), cidto.getUbicacion(),
-				cidto.getContacto(), cidto.getId_paciente(),
-				cidto.getId_medico(), cidto.getAcudio(), cidto.getFecha(), cidto.getInformacion(), cidto.getNombre_paciente(), cidto.getHora_entrada(), cidto.getHora_salida());
+		db.executeUpdate(sql, cidto.getHorario_inicio(), cidto.getHorario_fin(),
+				cidto.getUbicacion(), cidto.getContacto(),
+				cidto.getId_paciente(), cidto.getId_medico(), cidto.getAcudio(),
+				cidto.getFecha(), cidto.getInformacion(),
+				cidto.getNombre_paciente(), cidto.getHora_entrada(),
+				cidto.getHora_salida());
 	}
 
 	public List<CauseDto> getCauseList() {

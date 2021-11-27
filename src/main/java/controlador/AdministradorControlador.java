@@ -2,14 +2,20 @@ package controlador;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoField;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import dtos.AsignacionMedicosDto;
 import dtos.CitaDto;
 import dtos.CitaPendienteDto;
 import dtos.MedicoDto;
@@ -19,6 +25,7 @@ import lombok.Setter;
 import modelo.CauseModel;
 import modelo.CitaModelo;
 import modelo.CitaPendienteModelo;
+import modelo.MedicoAsignadoACitaModelo;
 import modelo.MedicoModelo;
 import modelo.PacienteModelo;
 import util.SendEmail;
@@ -31,6 +38,7 @@ import vista.ModificarCitaAdminVista;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class AdministradorControlador {
 
+<<<<<<< HEAD
     private CauseModel cm = new CauseModel();
     private MedicoModelo mm = new MedicoModelo();
     private CitaModelo cim = new CitaModelo();
@@ -181,6 +189,262 @@ public class AdministradorControlador {
 		    return Boolean.class;
 		default:
 		    return String.class;
+=======
+	private MedicoAsignadoACitaModelo macm = new MedicoAsignadoACitaModelo();
+	private CauseModel cm = new CauseModel();
+	private MedicoModelo mm = new MedicoModelo();
+	private CitaModelo cim = new CitaModelo();
+	private PacienteModelo pm = new PacienteModelo();
+	private CitaPendienteModelo cpm = new CitaPendienteModelo();
+	private AprobarCitasVista acv;
+	private CitaPendienteDto cpdto;
+	private List<CitaPendienteDto> citasPendientes;
+	private ModificarCitaAdminVista mcav = new ModificarCitaAdminVista();
+	private DefaultListModel modelMedicos = new DefaultListModel();
+
+	public AdministradorControlador() {
+	}
+
+	public AdministradorControlador(AprobarCitasVista acv) {
+		this.acv = acv;
+	}
+
+	public void initializeAprobarCitas() {
+		initializateTable();
+		acv.getBtnConfirmar().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> insertToDB()));
+		acv.getBtnBack().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> closeWindow()));
+		acv.getBtnModificar().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> showModificarCita()));
+		acv.getBtnHelp().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> showHelp()));
+
+		acv.setLocationRelativeTo(null);
+		acv.setVisible(true);
+	}
+
+	private void showHelp() {
+		JOptionPane.showMessageDialog(acv, "Opciones:\n1 - Selecciona una "
+				+ "cita propuesta y cambia el ultimo valor a true "
+				+ "para aceptar\n2 - Selecciona una cita propuesta y haz click "
+				+ "en el botón Modificar Cita para cambiar alguno de "
+				+ "los valores propuestos");
+	}
+
+	private void showModificarCita() {
+
+		cpdto = citasPendientes.get(acv.getTable().getSelectedRow());
+		initializeAdminModify(cpdto);
+		mcav.getBtnModificar().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> updateDB(cpdto)));
+		mcav.getBtnAdd().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> addMedicToList()));
+		mcav.getBtnRemove().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> removeMedicFromList()));
+	}
+
+	private void removeMedicFromList() {
+		MedicoDto medico = (MedicoDto) mcav.getListMedicos().getSelectedValue();
+		modelMedicos.removeElement(medico);
+	}
+
+	private void initializeAdminModify(CitaPendienteDto citaPendiente) {
+
+		String date = citaPendiente.getFECHA();
+		try {
+			Date d = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+			mcav.getDateChooser().setDate(d);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String entryHour = citaPendiente.getHORA_ENTRADA();
+		String[] entrySplit = entryHour.split(":");
+		mcav.getSpEntryHour().setValue(Integer.valueOf(entrySplit[0].trim()));
+		mcav.getSpEntryMin().setValue(Integer.valueOf(entrySplit[1].trim()));
+		;
+
+		String outHour = citaPendiente.getHORA_SALIDA();
+		String[] outSplit = outHour.split(":");
+		mcav.getSpOutHour().setValue(Integer.valueOf(outSplit[0].trim()));
+		mcav.getSpOutMin().setValue(Integer.valueOf(outSplit[1].trim()));
+
+		mcav.getTxtUbicacion().setText(citaPendiente.getUBICACION());
+
+		PacienteDto pSel = null;
+		DefaultComboBoxModel dcm = new DefaultComboBoxModel();
+		for (PacienteDto p : pm.getListaPacientes()) {
+			dcm.addElement(p);
+			if (p.getNombre().equals(citaPendiente.getNOMBRE_PACIENTE())) {
+				pSel = p;
+			}
+		}
+		mcav.getCbPacientes().setModel(dcm);
+		mcav.getCbPacientes().setSelectedItem(pSel);
+
+		DefaultComboBoxModel dlm = new DefaultComboBoxModel();
+		for (MedicoDto medico : mm.getListaMedicos()) {
+			if (medico.getId() != citaPendiente.getID_MEDICO()) {
+				dlm.addElement(medico);
+			}
+		}
+		mcav.getCbMedicos().setModel(dlm);
+
+		// Lista Auxiliar
+		List<AsignacionMedicosDto> aux = new ArrayList<AsignacionMedicosDto>();
+		// Saco los medicos asignados a la cita y guardo sus ids
+		for (AsignacionMedicosDto medico : macm
+				.getMedicosPendientesAprobarCita()) {
+			if (medico.getId_cita() == citaPendiente.getID()) {
+				aux.add(medico);
+			}
+		}
+
+		// Paso por la lista de medicos y compruebo cual/cuales están añadidos a
+		// la cita pendiente
+		for (MedicoDto medico : mm.getListaMedicos()) {
+			for (AsignacionMedicosDto asignacionMedicosDto : aux) {
+				if (asignacionMedicosDto.getId_medico() == medico.getId()) {
+					modelMedicos.addElement((MedicoDto) medico);
+				}
+			}
+		}
+
+		// Asigno el modelo creado a la lista
+		mcav.getListMedicos().setModel(modelMedicos);
+
+		mcav.setLocationRelativeTo(null);
+		mcav.setVisible(true);
+	}
+
+	private void addMedicToList() {
+		MedicoDto medico = ((MedicoDto) mcav.getCbMedicos().getSelectedItem());
+		if (!isInList(medico)) {
+			modelMedicos.addElement(medico);
+		} else {
+			JOptionPane.showMessageDialog(mcav,
+					"El médico seleccionado ya está asignado a esta cita");
+		}
+	}
+
+	private boolean isInList(MedicoDto medico) {
+		for (int i = 0; i < modelMedicos.getSize(); i++) {
+			if ((((MedicoDto) modelMedicos.getElementAt(i)).getId()) == (medico
+					.getId())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void updateDataBase(CitaPendienteDto citaPendiente) {
+		cpdto.setUBICACION(mcav.getTxtUbicacion().getText());
+		Date citaFecha = mcav.getDateChooser().getDate();
+		LocalDate fecha = citaFecha.toInstant().atZone(ZoneId.systemDefault())
+				.toLocalDate();
+		cpdto.setFECHA(fecha.get(ChronoField.DAY_OF_MONTH) + "-"
+				+ fecha.get(ChronoField.MONTH_OF_YEAR) + "-"
+				+ fecha.get(ChronoField.YEAR));
+		cpdto.setESTADO("MedicoReview");
+
+		String houre = String.format("%02d", mcav.getSpEntryHour().getValue());
+		String mine = String.format("%02d", mcav.getSpEntryMin().getValue());
+		String houro = String.format("%02d", mcav.getSpOutHour().getValue());
+		String mineo = String.format("%02d", mcav.getSpOutMin().getValue());
+
+		cpdto.setHORA_ENTRADA(houre + " : " + mine);
+		cpdto.setHORA_SALIDA(houro + " : " + mineo);
+
+		cpdto.setNOMBRE_PACIENTE(
+				((PacienteDto) (mcav.getCbPacientes().getSelectedItem()))
+						.getNombre());
+		cpdto.setID(citaPendiente.getID());
+		cpdto.setCONTACTO_MEDICO(citaPendiente.getCONTACTO_MEDICO());
+		cpdto.setID_MEDICO(citaPendiente.getID_MEDICO());
+		cpdto.setNOMBRE_MEDICO(citaPendiente.getNOMBRE_MEDICO());
+		cpdto.setIDPACIENTE(citaPendiente.getIDPACIENTE());
+		updateDBMedicosAsignados(citaPendiente.getID());
+	}
+
+	private void updateDBMedicosAsignados(int id) {
+		macm.removeMedicos(id);
+		AsignacionMedicosDto amdto = new AsignacionMedicosDto();
+		List<MedicoDto> medicosPendiente = new ArrayList<MedicoDto>();
+		amdto.setId_cita(id);
+
+		for (int i = 0; i < mcav.getListMedicos().getModel().getSize(); i++) {
+			medicosPendiente.add((MedicoDto) mcav.getListMedicos().getModel()
+					.getElementAt(i));
+		}
+		for (MedicoDto medico : medicosPendiente) {
+			amdto.setId_medico(medico.getId());
+			macm.asignarMedicosPendientes(amdto);
+		}
+	}
+
+	private void insertMedicosAsignadosConfirmados(int id) {
+		AsignacionMedicosDto amdto = new AsignacionMedicosDto();
+		amdto.setId_cita(id);
+
+		for (MedicoDto medico : macm.getMedicosPendientesDeCita(id)) {
+			amdto.setId_medico(medico.getId());
+			macm.asignarMedicosConfirmados(amdto);
+		}
+		macm.removeMedicos(id);
+	}
+
+	private void updateDB(CitaPendienteDto cpdto) {
+		JOptionPane.showConfirmDialog(mcav, "Si confirma la opción esta cita "
+				+ "será redirigida al médico para obtener confirmación de los "
+				+ "valores cambiados");
+		updateDataBase(cpdto);
+		cpm.updateCita(cpdto);
+		mcav.setVisible(false);
+		sendMailAdviseMedic(cpdto);
+
+	}
+
+	private void sendMailAdviseMedic(CitaPendienteDto cpdto) {
+
+		String msg = "";
+		msg += "Se le ha modificado una cita propuesta recientemente, "
+				+ "por favor confirme o rechace los cambios";
+		MedicoDto m = null;
+		for (MedicoDto medico : mm.getListaMedicos()) {
+			if (medico.getId() == cpdto.getID_MEDICO()) {
+				m = medico;
+			}
+		}
+		SendEmail.main("Una proposición de cita ha sido modificada", msg,
+				m.getEmail());
+	}
+
+	private void initializateTable() {
+		DefaultTableModel dm = new DefaultTableModel(0, 0);
+		String header[] = new String[] { "Id Cita", "Nombre Paciente",
+				"Nombre Médico", "Fecha", "Hora Inicio", "Hora fin",
+				"Ubicación", "Contacto Médico", "Aprobada" };
+		dm.setColumnIdentifiers(header);
+
+		citasPendientes = cpm.getCitasPorAprobar();
+		for (CitaPendienteDto c : citasPendientes) {
+			if (c.getESTADO().equals("AdminReview")) {
+				PacienteDto p = pm.getPacienteById(c.getIDPACIENTE()).get(0);
+				Vector<Object> data = new Vector<Object>();
+				data.add(c.getID());
+				data.add(p.getNombre());
+				data.add(c.getNOMBRE_MEDICO());
+				data.add(c.getFECHA());
+				data.add(c.getHORA_ENTRADA());
+				data.add(c.getHORA_SALIDA());
+				data.add(c.getUBICACION());
+				data.add(c.getCONTACTO_MEDICO());
+				data.add("false");
+				dm.addRow(data);
+			}
+>>>>>>> proponerCitas
 		}
 	    }
 	};
@@ -239,11 +503,51 @@ public class AdministradorControlador {
 	}
     }
 
+<<<<<<< HEAD
     private int getIdMedico(String nombre) {
 	for (MedicoDto medico : mm.getListaMedicos()) {
 	    if (medico.getNombre().equals(nombre)) {
 		return medico.getId();
 	    }
+=======
+	private void insertToDB() {
+		for (int i = 0; i < acv.getTable().getRowCount(); i++) {
+			if (acv.getTable().getValueAt(i, 8).equals("true")) {
+				CitaDto cdto = new CitaDto();
+				cdto.setId((int) acv.getTable().getValueAt(i, 0));
+				cdto.setNombre_paciente(
+						(String) acv.getTable().getValueAt(i, 1));
+				cdto.setId_paciente(getIdPaciente(
+						(String) acv.getTable().getValueAt(i, 1)));
+				cdto.setId_medico(
+						getIdMedico((String) acv.getTable().getValueAt(i, 2)));
+				cdto.setFecha((String) acv.getTable().getValueAt(i, 3));
+				cdto.setHorario_inicio(
+						(String) acv.getTable().getValueAt(i, 4));
+				cdto.setHorario_fin((String) acv.getTable().getValueAt(i, 5));
+				cdto.setUbicacion((String) acv.getTable().getValueAt(i, 6));
+				cim.addCita(cdto);
+				insertMedicosAsignadosConfirmados(cdto.getId());
+				cim.updateCitaPendiente(cdto.getId());
+				acv.setVisible(false);
+			} else if (!acv.getTable().getValueAt(i, 7).equals("true")
+					&& !acv.getTable().getValueAt(i, 7).equals("false")) {
+				JOptionPane.showMessageDialog(acv,
+						"The introduced value is not correct : Please "
+								+ "introduce True or False");
+				;
+			}
+		}
+	}
+
+	private int getIdMedico(String nombre) {
+		for (MedicoDto medico : mm.getListaMedicos()) {
+			if (medico.getNombre().equals(nombre)) {
+				return medico.getId();
+			}
+		}
+		return -1;
+>>>>>>> proponerCitas
 	}
 	return -1;
     }
