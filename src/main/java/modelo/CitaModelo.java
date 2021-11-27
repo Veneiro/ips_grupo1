@@ -33,7 +33,7 @@ public class CitaModelo {
 		String sql = "SELECT * FROM TCITAS c WHERE c.fecha = ? AND c.id_medico = ?";
 		return db.executeQueryPojo(CitaDto.class, sql, fecha, idMedico);
 	}
-	
+
 	public List<CitaDto> getCitasMedico(int idMedico) {
 		String sql = "SELECT * FROM TCITAS c WHERE c.id_medico = ?";
 		return db.executeQueryPojo(CitaDto.class, sql, idMedico);
@@ -43,7 +43,7 @@ public class CitaModelo {
 		String sql = "SELECT * FROM TCITAS c WHERE c.fecha = ?";
 		return db.executeQueryPojo(CitaDto.class, sql, fecha);
 	}
-	
+
 	public void updateCitaPendiente(int id) {
 		String sql = "DELETE FROM TCITASPENDIENTES WHERE id = " + id;
 		db.executeUpdate(sql, null);
@@ -52,14 +52,16 @@ public class CitaModelo {
 	public void addCita(CitaDto cita) {
 		String sql = "INSERT INTO TCITAS (id,horario_inicio,horario_fin,ubicacion,id_paciente,id_medico,acudio,fecha,informacion,especialidad, hora_entrada, hora_salida)"
 				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)";
-		db.executeUpdate(sql, cita.getId(), cita.getHorario_inicio(), cita.getHorario_fin(), cita.getUbicacion(),
-				cita.getId_paciente(), cita.getId_medico(), cita.getAcudio(), cita.getFecha(),
-				cita.getInformacion(), cita.getEspecialidad(), null, null);
+		db.executeUpdate(sql, cita.getId(), cita.getHorario_inicio(),
+				cita.getHorario_fin(), cita.getUbicacion(),
+				cita.getId_paciente(), cita.getId_medico(), cita.getAcudio(),
+				cita.getFecha(), cita.getInformacion(), cita.getEspecialidad(),
+				null, null);
 	}
 
 	public void updateCita(CitaDto cita) {
 		String sql = "UPDATE TCITAS set horario_inicio = ?, horario_fin = ?, ubicacion = ?, fecha = ? where id = ?";
-		db.executeUpdate(sql, cita.getHorario_inicio(), cita.getHorario_fin(), cita.getUbicacion(),
-				cita.getFecha(), cita.getId());
+		db.executeUpdate(sql, cita.getHorario_inicio(), cita.getHorario_fin(),
+				cita.getUbicacion(), cita.getFecha(), cita.getId());
 	}
 }

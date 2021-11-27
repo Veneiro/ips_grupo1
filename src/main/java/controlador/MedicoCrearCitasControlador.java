@@ -109,7 +109,6 @@ public class MedicoCrearCitasControlador {
 
 		for (MedicoDto medico : mm.getListaMedicos()) {
 			if (medico.getId() == idMedico) {
-				cidto.setNOMBRE_MEDICO(medico.getNombre());
 				cidto.setCONTACTO_MEDICO(medico.getEmail());
 			}
 		}
@@ -119,12 +118,10 @@ public class MedicoCrearCitasControlador {
 		for (PacienteDto paciente : pm.getListaPacientes()) {
 			if (paciente.getNombre().equals(
 					ccmv.getCbPacientes().getSelectedItem().toString())) {
-				cidto.setIDPACIENTE(paciente.getId());
+				cidto.setID_PACIENTE(paciente.getId());
 			}
 		}
 
-		cidto.setNOMBRE_PACIENTE(
-				ccmv.getCbPacientes().getSelectedItem().toString());
 		Date citaFecha = ccmv.getDateChooser().getDate();
 		LocalDate fecha = citaFecha.toInstant().atZone(ZoneId.systemDefault())
 				.toLocalDate();
@@ -148,12 +145,12 @@ public class MedicoCrearCitasControlador {
 			amdto.setId_medico(medico.getId());
 			mam.asignarMedicosPendientes(amdto);
 		}
-//		for (MedicoDto medico : mm.getListaMedicos()) {
-//			if(cidto.getID_MEDICO() == medico.getId()) {
-//				amdto.setId_medico(medico.getId());
-//				mam.asignarMedicosPendientes(amdto);
-//			}
-//		}
+		for (MedicoDto medico : mm.getListaMedicos()) {
+			if(cidto.getID_MEDICO() == medico.getId()) {
+				amdto.setId_medico(medico.getId());
+				mam.asignarMedicosPendientes(amdto);
+			}
+		}
 		ccmv.setVisible(false);
 	}
 

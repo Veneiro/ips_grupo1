@@ -33,8 +33,8 @@ public class CitasModificadasMedicoControlador {
 		this.acvm = acvm;
 	}
 
-	public void initializeAprobarCitas() {
-		initializateTable();
+	public void initializeAprobarCitas(int idMedicoLogin) {
+		initializateTable(idMedicoLogin);
 		acvm.getBtnConfirmar().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> insertToDB()));
 		acvm.getBtnBack().addActionListener(
@@ -68,8 +68,6 @@ public class CitasModificadasMedicoControlador {
 			if (acvm.getTable().getValueAt(i, 8).equals("true")) {
 				CitaDto cdto = new CitaDto();
 				cdto.setId((int) acvm.getTable().getValueAt(i, 0));
-				cdto.setNombre_paciente(
-						(String) acvm.getTable().getValueAt(i, 1));
 				cdto.setId_paciente(getIdPaciente(
 						(String) acvm.getTable().getValueAt(i, 1)));
 				cdto.setId_medico(
@@ -139,7 +137,7 @@ public class CitasModificadasMedicoControlador {
 		macm.removeMedicos(id);
 	}
 
-	private void initializateTable() {
+	private void initializateTable(int idMedicoLogin) {
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
 		String header[] = new String[] { "Id Cita", "Nombre Paciente",
 				"Nombre Médico", "Fecha", "Hora Inicio", "Hora fin",
@@ -148,12 +146,13 @@ public class CitasModificadasMedicoControlador {
 
 		citasPendientes = cpm.getCitasPorAprobar();
 		for (CitaPendienteDto c : citasPendientes) {
-			if (c.getESTADO().equals("MedicoReview")) {
-				PacienteDto p = pm.getPacienteById(c.getIDPACIENTE()).get(0);
+			if (c.getESTADO().equals("MedicoReview")
+					&& c.getID_MEDICO() == idMedicoLogin) {
+				PacienteDto p = pm.getPacienteById(c.getID_PACIENTE()).get(0);
 				Vector<Object> data = new Vector<Object>();
 				data.add(c.getID());
 				data.add(p.getNombre());
-				data.add(c.getNOMBRE_MEDICO());
+				data.add(getMedicoByID(c.getID_MEDICO()).getNombre());
 				data.add(c.getFECHA());
 				data.add(c.getHORA_ENTRADA());
 				data.add(c.getHORA_SALIDA());
@@ -165,5 +164,14 @@ public class CitasModificadasMedicoControlador {
 		}
 
 		acvm.getTable().setModel(dm);
+	}
+
+	private MedicoDto getMedicoByID(int id) {
+		for (MedicoDto medico : mm.getListaMedicos()) {
+			if (medico.getId() == id) {
+				return medico;
+			}
+		}
+		return null;
 	}
 }

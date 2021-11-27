@@ -27,7 +27,6 @@ public class CitaDto {
 	private int id_paciente;
 	private int id_medico;
 	private String especialidad;
-	private String nombre_paciente;
 	private String hora_entrada;
 	private String hora_salida;
 }

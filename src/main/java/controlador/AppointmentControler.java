@@ -17,7 +17,8 @@ public class AppointmentControler {
 	private NonExistenceView ne;
 	private int id;
 
-	public AppointmentControler(CauseModel causaModel, AddCauseView causeView, NonExistenceView nonExistenceView) {
+	public AppointmentControler(CauseModel causaModel, AddCauseView causeView,
+			NonExistenceView nonExistenceView) {
 		this.vista_causa = causeView;
 		this.modelo_causa = causaModel;
 		this.ne = nonExistenceView;
@@ -25,9 +26,10 @@ public class AppointmentControler {
 
 	public void initialize(int id) {
 		this.id = id;
-		vista_causa.getBtnSave().addActionListener(e -> SwingUtil.exceptionWrapper(() -> insertToDB()));
-		vista_causa.getBtnNonExistence().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addNewCause()));
-
+		vista_causa.getBtnSave().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> insertToDB()));
+		vista_causa.getBtnNonExistence().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> addNewCause()));
 
 		vista_causa.setLocationRelativeTo(null);
 		vista_causa.setVisible(true);
@@ -43,7 +45,8 @@ public class AppointmentControler {
 		showNonExistence();
 
 		@SuppressWarnings("rawtypes")
-		DefaultListModel d = (DefaultListModel) vista_causa.getListCauses().getModel();
+		DefaultListModel d = (DefaultListModel) vista_causa.getListCauses()
+				.getModel();
 		d.addElement(ne.getCause());
 	}
 
@@ -64,7 +67,8 @@ public class AppointmentControler {
 		String DATE = day + " / " + month + " / " + year;
 		cdto.setDATE(DATE);
 		cdto.setID(id);
-		RegistroModelo.addRegistro(new RegistroDto("Médico X", "Añade causa id: " + cdto.getID()));
+		RegistroModelo.addRegistro(
+				new RegistroDto("Médico X", "Añade causa id: " + cdto.getID()));
 		modelo_causa.insertCause(cdto);
 		vista_causa.setVisible(false);
 	}
