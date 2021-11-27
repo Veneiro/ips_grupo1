@@ -22,6 +22,7 @@ import vista.EstadisticasGerenteVista;
 import vista.ListaCalendarioCitasVista;
 import vista.LoginView;
 import vista.MenuGerenteVista;
+import vista.MenuMedicoVista;
 
 public class LoginControlador {
 
@@ -50,10 +51,14 @@ public class LoginControlador {
 	if (u != null && encriptar(password).equals(u.password)) {
 	    switch (u.category.toString()) {
 	    case "MEDICO": {
-		ListaCalendarioCitasControlador controller = new ListaCalendarioCitasControlador(
-			new ListaCalendarioCitasVista(), new CitaModelo(), new PacienteModelo(), u.id_asociado,
-			new MedicoCrearCitasControlador(new CrearCitaMedicoVista()));
-		controller.inicializar();
+	    	ListaCalendarioCitasControlador controller = new ListaCalendarioCitasControlador(
+					new ListaCalendarioCitasVista(), new CitaModelo(),
+					new PacienteModelo(), u.id_asociado,
+					new MedicoCrearCitasControlador(
+							new CrearCitaMedicoVista()));
+			MenuMedicoControlador mmc = new MenuMedicoControlador(
+					new MenuMedicoVista(), controller);
+			mmc.initializate(u.id_asociado);
 		break;
 	    }
 	    case "ADMINISTRATIVO": {

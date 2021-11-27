@@ -20,11 +20,11 @@ public class MenuMedicoControlador {
 		this.lcc = lcc;
 	}
 
-	public void initializate() {
+	public void initializate(int idMedico) {
 		mmv.getBtnGestion().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> lcc.inicializar()));
 		mmv.getBtnMensajeria().addActionListener(e -> SwingUtil
-				.exceptionWrapper(() -> mc.showBandejaDeEntrada()));
+				.exceptionWrapper(() -> mc.showBandejaDeEntrada(idMedico)));
 		lcc.actionProponer(mmv);
 		lcc.citasMod(mmv);
 

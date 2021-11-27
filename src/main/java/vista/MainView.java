@@ -70,7 +70,7 @@ public class MainView {
 									new CrearCitaMedicoVista()));
 					MenuMedicoControlador mmc = new MenuMedicoControlador(
 							new MenuMedicoVista(), controller);
-					mmc.initializate();
+					mmc.initializate(Integer.valueOf(idMedico));
 				} else if (idMedico == null) {
 					JOptionPane.showMessageDialog(null,
 							"Introduzca un id válido");

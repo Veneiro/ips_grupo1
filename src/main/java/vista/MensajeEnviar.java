@@ -71,8 +71,8 @@ public class MensajeEnviar extends JDialog {
 	private JLabel lblNewLabel_1;
 	private JScrollPane scrollPane;
 	private JTextArea txtAreaMessage;
-	private JComboBox comboBox;
-	private JComboBox comboBox_1;
+	private JComboBox cbRemitente;
+	private JComboBox cbDestinatarios;
 	private JPanel panel_29;
 	private JPanel panel_30;
 	private JPanel panel_43;
@@ -81,6 +81,10 @@ public class MensajeEnviar extends JDialog {
 	private JPanel panel_46;
 	private JPanel panel_47;
 	private JPanel panel_48;
+	private JButton btnEnviar;
+	private JPanel panel_49;
+	private JPanel panel_50;
+	private JPanel panel_51;
 
 	/**
 	 * Create the dialog.
@@ -271,7 +275,7 @@ public class MensajeEnviar extends JDialog {
 			panel_14.add(getPanel_32(), BorderLayout.WEST);
 			panel_14.add(getPanel_33(), BorderLayout.SOUTH);
 			panel_14.add(getPanel_34(), BorderLayout.EAST);
-			panel_14.add(getComboBox(), BorderLayout.CENTER);
+			panel_14.add(getCbRemitente(), BorderLayout.CENTER);
 		}
 		return panel_14;
 	}
@@ -283,7 +287,7 @@ public class MensajeEnviar extends JDialog {
 			panel_15.add(getPanel_36(), BorderLayout.WEST);
 			panel_15.add(getPanel_37(), BorderLayout.SOUTH);
 			panel_15.add(getPanel_38(), BorderLayout.EAST);
-			panel_15.add(getComboBox_1(), BorderLayout.CENTER);
+			panel_15.add(getCbDestinatarios(), BorderLayout.CENTER);
 		}
 		return panel_15;
 	}
@@ -467,7 +471,7 @@ public class MensajeEnviar extends JDialog {
 		}
 		return lblAsunto;
 	}
-	private JTextField getTxtAsunto() {
+	public JTextField getTxtAsunto() {
 		if (txtAsunto == null) {
 			txtAsunto = new JTextField();
 			txtAsunto.setColumns(10);
@@ -488,23 +492,24 @@ public class MensajeEnviar extends JDialog {
 		}
 		return scrollPane;
 	}
-	private JTextArea getTxtAreaMessage() {
+	public JTextArea getTxtAreaMessage() {
 		if (txtAreaMessage == null) {
 			txtAreaMessage = new JTextArea();
 		}
 		return txtAreaMessage;
 	}
-	private JComboBox getComboBox() {
-		if (comboBox == null) {
-			comboBox = new JComboBox();
+	public JComboBox getCbRemitente() {
+		if (cbRemitente == null) {
+			cbRemitente = new JComboBox();
+			cbRemitente.setEnabled(false);
 		}
-		return comboBox;
+		return cbRemitente;
 	}
-	private JComboBox getComboBox_1() {
-		if (comboBox_1 == null) {
-			comboBox_1 = new JComboBox();
+	public JComboBox getCbDestinatarios() {
+		if (cbDestinatarios == null) {
+			cbDestinatarios = new JComboBox();
 		}
-		return comboBox_1;
+		return cbDestinatarios;
 	}
 	private JPanel getPanel_29() {
 		if (panel_29 == null) {
@@ -545,6 +550,11 @@ public class MensajeEnviar extends JDialog {
 	private JPanel getPanel_47() {
 		if (panel_47 == null) {
 			panel_47 = new JPanel();
+			panel_47.setLayout(new BorderLayout(0, 0));
+			panel_47.add(getBtnEnviar());
+			panel_47.add(getPanel_49(), BorderLayout.WEST);
+			panel_47.add(getPanel_50(), BorderLayout.SOUTH);
+			panel_47.add(getPanel_51(), BorderLayout.EAST);
 		}
 		return panel_47;
 	}
@@ -553,5 +563,30 @@ public class MensajeEnviar extends JDialog {
 			panel_48 = new JPanel();
 		}
 		return panel_48;
+	}
+	public JButton getBtnEnviar() {
+		if (btnEnviar == null) {
+			btnEnviar = new JButton("ENVIAR");
+			btnEnviar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		}
+		return btnEnviar;
+	}
+	private JPanel getPanel_49() {
+		if (panel_49 == null) {
+			panel_49 = new JPanel();
+		}
+		return panel_49;
+	}
+	private JPanel getPanel_50() {
+		if (panel_50 == null) {
+			panel_50 = new JPanel();
+		}
+		return panel_50;
+	}
+	private JPanel getPanel_51() {
+		if (panel_51 == null) {
+			panel_51 = new JPanel();
+		}
+		return panel_51;
 	}
 }
