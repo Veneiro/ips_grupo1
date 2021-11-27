@@ -81,8 +81,13 @@ public class AdministradorControlador {
 	}
 
 	private void showModificarCita() {
-
-		cpdto = citasPendientes.get(acv.getTable().getSelectedRow());
+		int idcita = (int) acv.getTable()
+				.getValueAt(acv.getTable().getSelectedRow(), 0);
+		for (CitaPendienteDto citaPendienteDto : citasPendientes) {
+			if (citaPendienteDto.getID() == idcita) {
+				cpdto = citaPendienteDto;
+			}
+		}
 		initializeAdminModify(cpdto);
 		mcav.getBtnModificar().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> updateDB(cpdto)));
@@ -169,7 +174,7 @@ public class AdministradorControlador {
 
 	private PacienteDto getPacienteById(int id) {
 		for (PacienteDto p : pm.getListaPacientes()) {
-			if(p.getId() == id) {
+			if (p.getId() == id) {
 				return p;
 			}
 		}
@@ -301,10 +306,10 @@ public class AdministradorControlador {
 
 		acv.getTable().setModel(dm);
 	}
-	
+
 	private MedicoDto getMedicoByID(int id) {
 		for (MedicoDto medico : mm.getListaMedicos()) {
-			if(medico.getId() == id) {
+			if (medico.getId() == id) {
 				return medico;
 			}
 		}
