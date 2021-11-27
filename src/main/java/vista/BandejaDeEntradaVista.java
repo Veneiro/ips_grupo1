@@ -130,7 +130,7 @@ public class BandejaDeEntradaVista extends JDialog {
 		return scrollPane;
 	}
 
-	private JTable getTableMessages() {
+	public JTable getTableMessages() {
 		if (tableMessages == null) {
 			tableMessages = new JTable();
 			tableMessages.setModel(new DefaultTableModel(new Object[][] {},

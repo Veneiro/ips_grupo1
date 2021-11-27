@@ -1,12 +1,17 @@
 package controlador;
 
 import java.io.File;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
 
+import dtos.CitaPendienteDto;
 import dtos.MedicoDto;
 import dtos.MensajesDto;
+import dtos.PacienteDto;
 import modelo.MedicoModelo;
 import modelo.MensajesModelo;
 import util.SwingUtil;
@@ -24,6 +29,7 @@ public class MensajesControlador {
 	private MedicoModelo mm = new MedicoModelo();
 	private MensajesModelo msjm = new MensajesModelo();
 	private int idMedico;
+	private File f;
 
 	public MensajesControlador(BandejaDeEntradaVista bev,
 			MensajeCompletoVista mcv, MensajeEnviar me) {
@@ -34,6 +40,7 @@ public class MensajesControlador {
 
 	public void showBandejaDeEntrada(int idMedico) {
 		this.idMedico = idMedico;
+		initializateTable();
 		bev.getBtnSend().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> showSendMessage()));
 		bev.setLocationRelativeTo(null);
@@ -59,17 +66,18 @@ public class MensajesControlador {
 		MensajesDto mdto = new MensajesDto();
 		String Asunto = me.getTxtAsunto().getText();
 		String Mensaje = me.getTxtAreaMessage().getText();
-		String Remitente = ((MedicoDto) me.getCbRemitente().getSelectedItem())
-				.getNombre();
-		String Destinatario = ((MedicoDto) me.getCbDestinatarios()
-				.getSelectedItem()).getNombre();
-		
-		
+		int Remitente = ((MedicoDto) me.getCbRemitente().getSelectedItem())
+				.getId();
+		int Destinatario = ((MedicoDto) me.getCbDestinatarios()
+				.getSelectedItem()).getId();
+		if (f != null) {
+			String Adjunto = f.getPath();
+			mdto.setADJUNTO(Adjunto);
+		}
 		mdto.setASUNTO(Asunto);
 		mdto.setMENSAJE(Mensaje);
 		mdto.setREMITENTE(Remitente);
 		mdto.setDESTINATARIO(Destinatario);
-		
 		msjm.sendMensaje(mdto);
 		me.setVisible(false);
 	}
@@ -94,17 +102,41 @@ public class MensajesControlador {
 	}
 
 	private void chooseFile() {
-		fc.setMultiSelectionEnabled(true);
 		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		int selection = fc.showOpenDialog(me);
 		if (selection == JFileChooser.APPROVE_OPTION) {
-			File[] f = fc.getSelectedFiles();
-			for (File file : f) {
-				System.out.println(file.getPath());
-			}
+			f = fc.getSelectedFile();
 		} else if (selection == JFileChooser.CANCEL_OPTION) {
 			fc.setVisible(false);
 		}
+	}
+
+	private void initializateTable() {
+		DefaultTableModel dm = new DefaultTableModel(0, 0);
+		String header[] = new String[] { "Enviado por: ", "Asunto", "Mensaje" };
+		dm.setColumnIdentifiers(header);
+
+		List<MensajesDto> mensajes = msjm.getMensajes();
+		for (MensajesDto m : mensajes) {
+			if ((int) m.getDESTINATARIO() == idMedico) {
+				Vector<Object> data = new Vector<Object>();
+				data.add(getMedicoByID(m.getREMITENTE()).getNombre());
+				data.add(m.getASUNTO());
+				data.add(m.getMENSAJE());
+				dm.addRow(data);
+			}
+		}
+
+		bev.getTableMessages().setModel(dm);
+	}
+
+	private MedicoDto getMedicoByID(int remitente) {
+		for (MedicoDto medico : mm.getListaMedicos()) {
+			if (medico.getId() == remitente) {
+				return medico;
+			}
+		}
+		return null;
 	}
 
 }

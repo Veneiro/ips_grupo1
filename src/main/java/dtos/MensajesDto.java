@@ -9,7 +9,7 @@ public class MensajesDto {
 
 	private String ASUNTO;
 	private String MENSAJE;
-	private String REMITENTE;
-	private String DESTINATARIO;
+	private int REMITENTE;
+	private int DESTINATARIO;
 	private String ADJUNTO;
 }

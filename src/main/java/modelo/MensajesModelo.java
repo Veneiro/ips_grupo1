@@ -1,5 +1,8 @@
 package modelo;
 
+import java.util.List;
+
+import dtos.CauseDto;
 import dtos.MensajesDto;
 import util.Database;
 
@@ -13,5 +16,10 @@ public class MensajesModelo {
 
 		db.executeUpdate(sql, mdto.getASUNTO(), mdto.getMENSAJE(),
 				mdto.getREMITENTE(), mdto.getDESTINATARIO(), mdto.getADJUNTO());
+	}
+	
+	public List<MensajesDto> getMensajes() {
+		String sql = "SELECT * FROM TMENSAJES";
+		return db.executeQueryPojo(MensajesDto.class, sql);
 	}
 }
