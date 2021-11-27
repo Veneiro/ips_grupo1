@@ -30,6 +30,7 @@ public class MensajesControlador {
 
 	private void showSendMessage() {
 		me = new MensajeEnviar();
+		
 		me.getBtnBack().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> me.setVisible(false)));
 		me.getBtnAdjunto().addActionListener(
