@@ -115,7 +115,7 @@ public class HistorialControlador {
 			data.add(paciente.get(0).getNombre());
 			data.add(antecedente.getAntecedente());
 			data.add(antecedente.getFecha_comienzo());
-			data.add(historial.get(0).getInformacionAdicional());
+			data.add(antecedente.getInformacion());
 			dm.addRow(data);
 		}
 

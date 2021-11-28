@@ -55,7 +55,7 @@ public class ListaCalendarioCitasControlador {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = new Date(System.currentTimeMillis());
 		cargarCalendarioCitas(formatter.format(date), idMedico);
-		primeraCargaCalendario(idMedico);
+		//primeraCargaCalendario(idMedico);
 
 		lccv.getBtnBuscar().addActionListener(new ActionListener() {
 			@Override
