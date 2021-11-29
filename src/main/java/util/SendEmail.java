@@ -9,6 +9,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.JOptionPane;
 
 public class SendEmail {
 
@@ -69,6 +70,7 @@ public class SendEmail {
 			// Send message
 			Transport.send(message);
 			System.out.println("Sent message successfully....");
+			JOptionPane.showMessageDialog(null, "Mensaje Enviado con éxito");
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
 		}
