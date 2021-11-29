@@ -1,11 +1,17 @@
 package controlador;
 
 import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import dtos.MedicoDto;
@@ -16,6 +22,9 @@ import util.SwingUtil;
 import vista.BandejaDeEntradaVista;
 import vista.MensajeCompletoVista;
 import vista.MensajeEnviar;
+import vista.MostrarArchivoVista;
+
+import java.awt.Image;
 
 public class MensajesControlador {
 
@@ -28,8 +37,12 @@ public class MensajesControlador {
 	private MensajesModelo msjm = new MensajesModelo();
 	private int idMedico;
 	private File f;
+	private String path;
 
-	public MensajesControlador(BandejaDeEntradaVista bev, MensajeCompletoVista mcv, MensajeEnviar me) {
+	private LocalDateTime ldt = LocalDateTime.now();
+
+	public MensajesControlador(BandejaDeEntradaVista bev,
+			MensajeCompletoVista mcv, MensajeEnviar me) {
 		this.bev = bev;
 		this.mcv = mcv;
 		this.me = me;
@@ -38,38 +51,120 @@ public class MensajesControlador {
 	public void showBandejaDeEntrada(int idMedico) {
 		this.idMedico = idMedico;
 		initializateTable();
-		bev.getBtnSend().addActionListener(e -> SwingUtil.exceptionWrapper(() -> showSendMessage()));
-		bev.getBtnOpen().addActionListener(e -> SwingUtil.exceptionWrapper(() -> showOpenMessage()));
+		bev.getBtnSend().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> showSendMessage()));
+		bev.getBtnOpen().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> showOpenMessage()));
 		bev.setLocationRelativeTo(null);
 		bev.setVisible(true);
 	}
 
 	private void showOpenMessage() {
-		loadData();
-		setButtons();
-		mcv.setLocationRelativeTo(bev);
-		mcv.setVisible(true);
+		if (bev.getTableMessages().getSelectedRow() != -1) {
+			loadData();
+			setButtons();
+			mcv.setLocationRelativeTo(bev);
+			mcv.setVisible(true);
+		} else {
+			JOptionPane.showMessageDialog(bev,
+					"Por favor seleccione un mensaje");
+		}
 	}
 
 	private void setButtons() {
-		mcv.getBtnBack().addActionListener(e -> SwingUtil.exceptionWrapper(() -> mcv.setVisible(false)));
+		mcv.getBtnBack().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> mcv.setVisible(false)));
+		mcv.getBtnResponder().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> responderMensaje()));
+		mcv.getBtnAdjunto().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> openFile()));
+	}
+
+	private void openFile() {
+		if (path == null) {
+			JOptionPane.showMessageDialog(mcv,
+					"El mensaje no contiene archivos adjuntos");
+		} else {
+			MostrarArchivoVista mav = new MostrarArchivoVista();
+			mav.setLocationRelativeTo(mcv);
+			mav.setVisible(true);
+			adaptImage(mav.getLblImage(), path);
+			mav.setBounds(100, 100, mav.getLblImage().getIcon().getIconWidth(),
+					mav.getLblImage().getIcon().getIconHeight());
+			mav.setLocationRelativeTo(mcv);
+		}
+	}
+
+	private void adaptImage(JLabel label, String imagePath) {
+		ImageIcon tmpImagen = new ImageIcon(imagePath);
+		float delta = ((label.getWidth() * 100) / tmpImagen.getIconWidth())
+				/ 100f;
+		if (tmpImagen.getIconHeight() > label.getHeight())
+			delta = ((label.getHeight() * 100) / tmpImagen.getIconHeight())
+					/ 100f;
+		int ancho = (int) (tmpImagen.getIconWidth() * delta);
+		int alto = (int) (tmpImagen.getIconHeight() * delta);
+		label.setIcon(new ImageIcon(tmpImagen.getImage()
+				.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH)));
+	}
+
+	private void responderMensaje() {
+		me = new MensajeEnviar();
+
+		setCbModels();
+		loadDataResponder();
+
+		me.getBtnEnviar().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> sendMensaje()));
+		me.getBtnBack().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> me.setVisible(false)));
+		me.getBtnAdjunto().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> chooseFile()));
+		me.setLocationRelativeTo(bev);
+		me.setVisible(true);
+	}
+
+	private void loadDataResponder() {
+		String Remitente = mcv.getTxtRemitente().getText();
+		String Destinatario = mcv.getTxtDestinatario().getText();
+		String Asunto = mcv.getTxtAsunto().getText();
+
+		for (int i = 0; i < me.getCbRemitente().getModel().getSize(); i++) {
+			if (Remitente
+					.equals(me.getCbRemitente().getModel().getElementAt(i))) {
+				me.getCbRemitente().setSelectedIndex(i);
+			}
+			if (Destinatario.equals(
+					me.getCbDestinatarios().getModel().getElementAt(i))) {
+				me.getCbDestinatarios().setSelectedIndex(i);
+			}
+		}
+
+		me.getTxtAsunto().setText("Re: " + Asunto);
 	}
 
 	private void loadData() {
 		MensajesDto mdto = new MensajesDto();
-		String Remitente = (String) bev.getTableMessages().getValueAt(bev.getTableMessages().getSelectedRow(), 0);
-		String Asunto = (String) bev.getTableMessages().getValueAt(bev.getTableMessages().getSelectedRow(), 1);
-		String Mensaje = (String) bev.getTableMessages().getValueAt(bev.getTableMessages().getSelectedRow(), 2);
+		String Remitente = (String) bev.getTableMessages()
+				.getValueAt(bev.getTableMessages().getSelectedRow(), 0);
+		String Asunto = (String) bev.getTableMessages()
+				.getValueAt(bev.getTableMessages().getSelectedRow(), 1);
+		String Mensaje = (String) bev.getTableMessages()
+				.getValueAt(bev.getTableMessages().getSelectedRow(), 2);
 		for (MensajesDto mensaje : msjm.getMensajes()) {
-			if ((getMedicoById(mensaje.getREMITENTE()).getNombre().equals(Remitente))
-					&& mensaje.getASUNTO().equals(Asunto) && mensaje.getMENSAJE().equals(Mensaje)) {
+			if ((getMedicoById(mensaje.getREMITENTE()).getNombre()
+					.equals(Remitente)) && mensaje.getASUNTO().equals(Asunto)
+					&& mensaje.getMENSAJE().equals(Mensaje)) {
 				mdto = mensaje;
 			}
 		}
-		mcv.getTxtRemitente().setText((getMedicoById(mdto.getREMITENTE()).getNombre()));
-		mcv.getTxtDestinatario().setText((getMedicoById(mdto.getDESTINATARIO()).getNombre()));
+		mcv.getTxtRemitente()
+				.setText((getMedicoById(mdto.getREMITENTE()).getNombre()));
+		mcv.getTxtDestinatario()
+				.setText((getMedicoById(mdto.getDESTINATARIO()).getNombre()));
 		mcv.getTxtAsunto().setText(mdto.getASUNTO());
 		mcv.getTxtAreaMessage().setText(mdto.getMENSAJE());
+		this.path = mdto.getADJUNTO();
 	}
 
 	private MedicoDto getMedicoById(int id) {
@@ -86,9 +181,12 @@ public class MensajesControlador {
 
 		setCbModels();
 
-		me.getBtnEnviar().addActionListener(e -> SwingUtil.exceptionWrapper(() -> sendMensaje()));
-		me.getBtnBack().addActionListener(e -> SwingUtil.exceptionWrapper(() -> me.setVisible(false)));
-		me.getBtnAdjunto().addActionListener(e -> SwingUtil.exceptionWrapper(() -> chooseFile()));
+		me.getBtnEnviar().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> sendMensaje()));
+		me.getBtnBack().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> me.setVisible(false)));
+		me.getBtnAdjunto().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> chooseFile()));
 		me.setLocationRelativeTo(bev);
 		me.setVisible(true);
 	}
@@ -97,8 +195,10 @@ public class MensajesControlador {
 		MensajesDto mdto = new MensajesDto();
 		String Asunto = me.getTxtAsunto().getText();
 		String Mensaje = me.getTxtAreaMessage().getText();
-		int Remitente = ((MedicoDto) me.getCbRemitente().getSelectedItem()).getId();
-		int Destinatario = ((MedicoDto) me.getCbDestinatarios().getSelectedItem()).getId();
+		int Remitente = ((MedicoDto) me.getCbRemitente().getSelectedItem())
+				.getId();
+		int Destinatario = ((MedicoDto) me.getCbDestinatarios()
+				.getSelectedItem()).getId();
 		if (f != null) {
 			String Adjunto = f.getPath();
 			mdto.setADJUNTO(Adjunto);
@@ -109,6 +209,7 @@ public class MensajesControlador {
 		mdto.setDESTINATARIO(Destinatario);
 		msjm.sendMensaje(mdto);
 		me.setVisible(false);
+		mcv.setVisible(false);
 	}
 
 	private void setCbModels() {

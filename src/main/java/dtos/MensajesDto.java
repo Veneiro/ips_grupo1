@@ -12,4 +12,5 @@ public class MensajesDto {
 	private int REMITENTE;
 	private int DESTINATARIO;
 	private String ADJUNTO;
+	private String HORA_DE_ENVIO;
 }
