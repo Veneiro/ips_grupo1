@@ -46,6 +46,7 @@ public class AdministradorControlador {
 	private CitaPendienteModelo cpm = new CitaPendienteModelo();
 	private AprobarCitasVista acv;
 	private CitaPendienteDto cpdto;
+	private CitaPendienteDto cita = new CitaPendienteDto();
 	private List<CitaPendienteDto> citasPendientes;
 	private ModificarCitaAdminVista mcav = new ModificarCitaAdminVista();
 	private DefaultListModel modelMedicos = new DefaultListModel();
@@ -88,6 +89,15 @@ public class AdministradorControlador {
 				cpdto = citaPendienteDto;
 			}
 		}
+		
+		cita.setID(cpdto.getID());
+		cita.setFECHA(cpdto.getFECHA());
+		cita.setHORA_ENTRADA(cpdto.getHORA_ENTRADA());
+		cita.setHORA_SALIDA(cpdto.getHORA_SALIDA());
+		cita.setID_PACIENTE(cpdto.getID_PACIENTE());
+		cita.setID_MEDICO(cpdto.getID_MEDICO());
+		cita.setUBICACION(cpdto.getUBICACION());
+		
 		initializeAdminModify(cpdto);
 		mcav.getBtnModificar().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> updateDB(cpdto)));
@@ -260,19 +270,77 @@ public class AdministradorControlador {
 		JOptionPane.showConfirmDialog(mcav, "Si confirma la opción esta cita "
 				+ "será redirigida al médico para obtener confirmación de los "
 				+ "valores cambiados");
-		CitaPendienteDto cita = cpdto;
 		updateDataBase(cpdto);
 		cpm.updateCita(cpdto);
 		mcav.setVisible(false);
-		sendMailAdviseMedic(cita);
+		sendMailAdviseMedic(this.cita);
 
 	}
 
 	private void sendMailAdviseMedic(CitaPendienteDto cita) {
 
 		String msg = "";
-		msg += "Se le ha modificado una cita propuesta recientemente, "
-				+ "por favor confirme o rehaga los cambios";
+		msg += "<h2 style=\"text-align: center;\"><span style=\"color: #ff0000;\"><strong>SE LE HA MODIFICADO UNA CITA PROPUESTA</strong></span></h2>";
+		msg += "<h4><em>A continuaci&oacute;n se muestran su propuesta de cita y la modificada por el Administrativo para que pueda comprobar y revisar los datos:</em></h4>";
+		msg += "<p><em>Modificada:</em></p>";
+		msg += "<table style=\"border-collapse: collapse; width: 100%; height: 108px;\" border=\"1\">";
+		msg += "<tbody>";
+		msg += "<tr style=\"height: 18px;\">";
+		msg += "<td style=\"width: 50%; height: 18px;\"><span style=\"background-color: #ffff99;\">Fecha</span></td>";
+		msg += "<td style=\"width: 50%; height: 18px;\">" + cpdto.getFECHA() + "</td>";
+		msg += "</tr>";
+		msg += "<tr style=\"height: 18px;\">";
+		msg += "<td style=\"width: 50%; height: 18px;\"><span style=\"background-color: #ffff99;\">Hora Entrada</span></td>";
+		msg += "<td style=\"width: 50%; height: 18px;\">" + cpdto.getHORA_ENTRADA() + "</td>";
+		msg += "</tr>";
+		msg += "<tr style=\"height: 18px;\">";
+		msg += "<td style=\"width: 50%; height: 18px;\"><span style=\"background-color: #ffff99;\">Hora Salida</span></td>";
+		msg += "<td style=\"width: 50%; height: 18px;\">" + cpdto.getHORA_SALIDA() + "</td>";
+		msg += "</tr>";
+		msg += "<tr style=\"height: 18px;\">";
+		msg += "<td style=\"width: 50%; height: 18px;\"><span style=\"background-color: #ffff99;\">Paciente</span></td>";
+		msg += "<td style=\"width: 50%; height: 18px;\">" + getPacienteById(cpdto.getID_PACIENTE()) + "</td>";
+		msg += "</tr>";
+		msg += "<tr style=\"height: 18px;\">";
+		msg += "<td style=\"width: 50%; height: 18px;\"><span style=\"background-color: #ffff99;\">M&eacute;dicos</span></td>";
+		msg += "<td style=\"width: 50%; height: 18px;\">" + getMedicoByID(cpdto.getID_MEDICO()) + "</td>";
+		msg += "</tr>";
+		msg += "<tr style=\"height: 18px;\">";
+		msg += "<td style=\"width: 50%; height: 18px;\"><span style=\"background-color: #ffff99;\">Ubicaci&oacute;n</span></td>";
+		msg += "<td style=\"width: 50%; height: 18px;\">" + cpdto.getUBICACION() + "</td>";
+		msg += "</tr>";
+		msg += "</tbody>";
+		msg += "</table>";
+		msg += "<p><em>Original:</em></p>";
+		msg += "<table style=\"border-collapse: collapse; width: 100%;\" border=\"1\">";
+		msg += "<tbody>";
+		msg += "<tr>";
+		msg += "<td style=\"width: 50%;\"><span style=\"background-color: #ffff99;\">Fecha</span></td>";
+		msg += "<td style=\"width: 50%;\">" + cita.getFECHA() + "</td>";
+		msg += "</tr>";
+		msg += "<tr>";
+		msg += "<td style=\"width: 50%;\"><span style=\"background-color: #ffff99;\">Hora Entrada</span></td>";
+		msg += "<td style=\"width: 50%;\">" + cita.getHORA_ENTRADA() + "</td>";
+		msg += "</tr>";
+		msg += "<tr>";
+		msg += "<td style=\"width: 50%;\"><span style=\"background-color: #ffff99;\">Hora Salida</span></td>";
+		msg += "<td style=\"width: 50%;\">" + cita.getHORA_SALIDA() + "</td>";
+		msg += "</tr>";
+		msg += "<tr>";
+		msg += "<td style=\"width: 50%;\"><span style=\"background-color: #ffff99;\">Paciente</span></td>";
+		msg += "<td style=\"width: 50%;\">" + getPacienteById(cita.getID_PACIENTE()) + "</td>";
+		msg += "</tr>";
+		msg += "<tr>";
+		msg += "<td style=\"width: 50%;\"><span style=\"background-color: #ffff99;\">M&eacute;dicos</span></td>";
+		msg += "<td style=\"width: 50%;\">" + getMedicoByID(cita.getID_MEDICO()) + "</td>";
+		msg += "</tr>";
+		msg += "<tr>";
+		msg += "<td style=\"width: 50%;\"><span style=\"background-color: #ffff99;\">Ubicaci&oacute;n</span></td>";
+		msg += "<td style=\"width: 50%;\">" + cita.getUBICACION() + "</td>";
+		msg += "</tr>";
+		msg += "</tbody>";
+		msg += "</table>";
+		
 		MedicoDto m = null;
 		for (MedicoDto medico : mm.getListaMedicos()) {
 			if (medico.getId() == cpdto.getID_MEDICO()) {
