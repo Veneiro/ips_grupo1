@@ -1,15 +1,17 @@
 package controlador;
 
 import java.io.File;
-import java.time.LocalDate;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import dtos.MedicoDto;
@@ -21,6 +23,8 @@ import vista.BandejaDeEntradaVista;
 import vista.MensajeCompletoVista;
 import vista.MensajeEnviar;
 import vista.MostrarArchivoVista;
+
+import java.awt.Image;
 
 public class MensajesControlador {
 
@@ -56,10 +60,15 @@ public class MensajesControlador {
 	}
 
 	private void showOpenMessage() {
-		loadData();
-		setButtons();
-		mcv.setLocationRelativeTo(bev);
-		mcv.setVisible(true);
+		if (bev.getTableMessages().getSelectedRow() != -1) {
+			loadData();
+			setButtons();
+			mcv.setLocationRelativeTo(bev);
+			mcv.setVisible(true);
+		} else {
+			JOptionPane.showMessageDialog(bev,
+					"Por favor seleccione un mensaje");
+		}
 	}
 
 	private void setButtons() {
@@ -67,14 +76,36 @@ public class MensajesControlador {
 				e -> SwingUtil.exceptionWrapper(() -> mcv.setVisible(false)));
 		mcv.getBtnResponder().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> responderMensaje()));
-		mcv.getBtnAdjunto().addActionListener(e -> SwingUtil.exceptionWrapper(() -> openFile()));
+		mcv.getBtnAdjunto().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> openFile()));
 	}
 
 	private void openFile() {
-		MostrarArchivoVista mav = new MostrarArchivoVista();
-		mav.setLocationRelativeTo(mcv);
-		mav.getLblImage().setIcon(new ImageIcon(path));
-		mav.setVisible(true);
+		if (path == null) {
+			JOptionPane.showMessageDialog(mcv,
+					"El mensaje no contiene archivos adjuntos");
+		} else {
+			MostrarArchivoVista mav = new MostrarArchivoVista();
+			mav.setLocationRelativeTo(mcv);
+			mav.setVisible(true);
+			adaptImage(mav.getLblImage(), path);
+			mav.setBounds(100, 100, mav.getLblImage().getIcon().getIconWidth(),
+					mav.getLblImage().getIcon().getIconHeight());
+			mav.setLocationRelativeTo(mcv);
+		}
+	}
+
+	private void adaptImage(JLabel label, String imagePath) {
+		ImageIcon tmpImagen = new ImageIcon(imagePath);
+		float delta = ((label.getWidth() * 100) / tmpImagen.getIconWidth())
+				/ 100f;
+		if (tmpImagen.getIconHeight() > label.getHeight())
+			delta = ((label.getHeight() * 100) / tmpImagen.getIconHeight())
+					/ 100f;
+		int ancho = (int) (tmpImagen.getIconWidth() * delta);
+		int alto = (int) (tmpImagen.getIconHeight() * delta);
+		label.setIcon(new ImageIcon(tmpImagen.getImage()
+				.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH)));
 	}
 
 	private void responderMensaje() {
@@ -178,6 +209,7 @@ public class MensajesControlador {
 		mdto.setDESTINATARIO(Destinatario);
 		msjm.sendMensaje(mdto);
 		me.setVisible(false);
+		mcv.setVisible(false);
 	}
 
 	private void setCbModels() {
