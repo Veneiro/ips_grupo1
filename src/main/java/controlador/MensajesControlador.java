@@ -29,8 +29,7 @@ public class MensajesControlador {
 	private int idMedico;
 	private File f;
 
-	public MensajesControlador(BandejaDeEntradaVista bev,
-			MensajeCompletoVista mcv, MensajeEnviar me) {
+	public MensajesControlador(BandejaDeEntradaVista bev, MensajeCompletoVista mcv, MensajeEnviar me) {
 		this.bev = bev;
 		this.mcv = mcv;
 		this.me = me;
@@ -39,8 +38,7 @@ public class MensajesControlador {
 	public void showBandejaDeEntrada(int idMedico) {
 		this.idMedico = idMedico;
 		initializateTable();
-		bev.getBtnSend().addActionListener(
-				e -> SwingUtil.exceptionWrapper(() -> showSendMessage()));
+		bev.getBtnSend().addActionListener(e -> SwingUtil.exceptionWrapper(() -> showSendMessage()));
 		bev.getBtnOpen().addActionListener(e -> SwingUtil.exceptionWrapper(() -> showOpenMessage()));
 		bev.setLocationRelativeTo(null);
 		bev.setVisible(true);
@@ -53,7 +51,29 @@ public class MensajesControlador {
 	}
 
 	private void loadData() {
-//		MensajesDto mdto = bev.getTableMessages().getValueAt(,);
+		MensajesDto mdto = new MensajesDto();
+		String Remitente = (String) bev.getTableMessages().getValueAt(bev.getTableMessages().getSelectedRow(), 0);
+		String Asunto = (String) bev.getTableMessages().getValueAt(bev.getTableMessages().getSelectedRow(), 1);
+		String Mensaje = (String) bev.getTableMessages().getValueAt(bev.getTableMessages().getSelectedRow(), 2);
+		for (MensajesDto mensaje : msjm.getMensajes()) {
+			if ((getMedicoById(mensaje.getREMITENTE()).getNombre().equals(Remitente))
+					&& mensaje.getASUNTO().equals(Asunto) && mensaje.getMENSAJE().equals(Mensaje)) {
+				mdto = mensaje;
+			}
+		}
+		mcv.getTxtRemitente().setText((getMedicoById(mdto.getREMITENTE()).getNombre()));
+		mcv.getTxtDestinatario().setText((getMedicoById(mdto.getDESTINATARIO()).getNombre()));
+		mcv.getTxtAsunto().setText(mdto.getASUNTO());
+		mcv.getTxtAreaMessage().setText(mdto.getMENSAJE());
+	}
+
+	private MedicoDto getMedicoById(int id) {
+		for (MedicoDto medico : mm.getListaMedicos()) {
+			if (medico.getId() == id) {
+				return medico;
+			}
+		}
+		return null;
 	}
 
 	private void showSendMessage() {
@@ -61,12 +81,9 @@ public class MensajesControlador {
 
 		setCbModels();
 
-		me.getBtnEnviar().addActionListener(
-				e -> SwingUtil.exceptionWrapper(() -> sendMensaje()));
-		me.getBtnBack().addActionListener(
-				e -> SwingUtil.exceptionWrapper(() -> me.setVisible(false)));
-		me.getBtnAdjunto().addActionListener(
-				e -> SwingUtil.exceptionWrapper(() -> chooseFile()));
+		me.getBtnEnviar().addActionListener(e -> SwingUtil.exceptionWrapper(() -> sendMensaje()));
+		me.getBtnBack().addActionListener(e -> SwingUtil.exceptionWrapper(() -> me.setVisible(false)));
+		me.getBtnAdjunto().addActionListener(e -> SwingUtil.exceptionWrapper(() -> chooseFile()));
 		me.setLocationRelativeTo(bev);
 		me.setVisible(true);
 	}
@@ -75,10 +92,8 @@ public class MensajesControlador {
 		MensajesDto mdto = new MensajesDto();
 		String Asunto = me.getTxtAsunto().getText();
 		String Mensaje = me.getTxtAreaMessage().getText();
-		int Remitente = ((MedicoDto) me.getCbRemitente().getSelectedItem())
-				.getId();
-		int Destinatario = ((MedicoDto) me.getCbDestinatarios()
-				.getSelectedItem()).getId();
+		int Remitente = ((MedicoDto) me.getCbRemitente().getSelectedItem()).getId();
+		int Destinatario = ((MedicoDto) me.getCbDestinatarios().getSelectedItem()).getId();
 		if (f != null) {
 			String Adjunto = f.getPath();
 			mdto.setADJUNTO(Adjunto);

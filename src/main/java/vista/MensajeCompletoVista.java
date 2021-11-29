@@ -466,7 +466,7 @@ public class MensajeCompletoVista extends JDialog {
 		}
 		return lblAsunto;
 	}
-	private JTextField getTxtRemitente() {
+	public JTextField getTxtRemitente() {
 		if (txtRemitente == null) {
 			txtRemitente = new JTextField();
 			txtRemitente.setEditable(false);
@@ -474,7 +474,7 @@ public class MensajeCompletoVista extends JDialog {
 		}
 		return txtRemitente;
 	}
-	private JTextField getTxtDestinatario() {
+	public JTextField getTxtDestinatario() {
 		if (txtDestinatario == null) {
 			txtDestinatario = new JTextField();
 			txtDestinatario.setEditable(false);
@@ -482,7 +482,7 @@ public class MensajeCompletoVista extends JDialog {
 		}
 		return txtDestinatario;
 	}
-	private JTextField getTxtAsunto() {
+	public JTextField getTxtAsunto() {
 		if (txtAsunto == null) {
 			txtAsunto = new JTextField();
 			txtAsunto.setEditable(false);
@@ -504,7 +504,7 @@ public class MensajeCompletoVista extends JDialog {
 		}
 		return scrollPane;
 	}
-	private JTextArea getTxtAreaMessage() {
+	public JTextArea getTxtAreaMessage() {
 		if (txtAreaMessage == null) {
 			txtAreaMessage = new JTextArea();
 			txtAreaMessage.setEditable(false);
