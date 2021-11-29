@@ -15,5 +15,6 @@ public class AntecedenteDto {
 	private int paciente_id;
 	private String antecedente;
 	private String fecha_comienzo;
+	private String informacion;
 
 }

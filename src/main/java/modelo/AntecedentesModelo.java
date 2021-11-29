@@ -15,9 +15,9 @@ public class AntecedentesModelo {
 		return db.executeQueryPojo(AntecedenteDto.class, sql, idPaciente);
 	}
 	
-	public void addAntecedente(int idPaciente, String antecedente, String fecha) {
-		String sql = "insert into TAntecedentes (paciente_id,antecedente,fecha_comienzo) values (?,?,?)";
-		db.executeUpdate(sql, idPaciente, antecedente, fecha);
+	public void addAntecedente(int idPaciente, String antecedente, String fecha, String informacion) {
+		String sql = "insert into TAntecedentes (paciente_id,antecedente,fecha_comienzo,informacion) values (?,?,?,?)";
+		db.executeUpdate(sql, idPaciente, antecedente, fecha, informacion);
 	}
 
 	public List<AntecedenteDto> getAntecedentesByPacienteId(int idPaciente) {

@@ -17,6 +17,7 @@ import javax.swing.SpinnerNumberModel;
 import java.awt.FlowLayout;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JScrollPane;
+import javax.swing.JList;
 
 public class CrearCitaMedicoVista extends JDialog {
 
@@ -67,15 +68,26 @@ public class CrearCitaMedicoVista extends JDialog {
 	private JPanel panel_18;
 	private JLabel lblNewLabel_2;
 	private JPanel panel_3;
-	private JLabel lblNewLabel_6;
 	private JPanel panel_19;
 	private JScrollPane scrollPane;
+	private JComboBox cbMedicos;
+	private JButton btnAdd;
+	private JList listMedicos;
+	private JPanel panel_20;
+	private JPanel panel_21;
+	private JPanel panel_22;
+	private JPanel panel_23;
+	private JPanel panel_24;
+	private JPanel panel_25;
+	private JPanel panel_26;
+	private JPanel panel_27;
+	private JPanel panel_28;
 
 	/**
 	 * Create the dialog.
 	 */
 	public CrearCitaMedicoVista() {
-		setBounds(100, 100, 667, 594);
+		setBounds(100, 100, 926, 606);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -464,30 +476,109 @@ public class CrearCitaMedicoVista extends JDialog {
 	private JPanel getPanel_3() {
 		if (panel_3 == null) {
 			panel_3 = new JPanel();
-			panel_3.setLayout(new GridLayout(3, 0, 0, 0));
-			panel_3.add(getLblNewLabel_6());
+			panel_3.setLayout(new GridLayout(2, 0, 0, 0));
 			panel_3.add(getPanel_19());
 			panel_3.add(getScrollPane());
 		}
 		return panel_3;
 	}
-	private JLabel getLblNewLabel_6() {
-		if (lblNewLabel_6 == null) {
-			lblNewLabel_6 = new JLabel("New label");
-		}
-		return lblNewLabel_6;
-	}
 	private JPanel getPanel_19() {
 		if (panel_19 == null) {
 			panel_19 = new JPanel();
-			panel_19.setLayout(new GridLayout(0, 3, 0, 0));
+			panel_19.setLayout(new GridLayout(0, 2, 0, 0));
+			panel_19.add(getPanel_20());
+			panel_19.add(getPanel_21());
 		}
 		return panel_19;
 	}
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
+			scrollPane.setViewportView(getListMedicos());
 		}
 		return scrollPane;
+	}
+	public JComboBox getCbMedicos() {
+		if (cbMedicos == null) {
+			cbMedicos = new JComboBox();
+		}
+		return cbMedicos;
+	}
+	public JButton getBtnAdd() {
+		if (btnAdd == null) {
+			btnAdd = new JButton("Add");
+		}
+		return btnAdd;
+	}
+	public JList getListMedicos() {
+		if (listMedicos == null) {
+			listMedicos = new JList();
+		}
+		return listMedicos;
+	}
+	private JPanel getPanel_20() {
+		if (panel_20 == null) {
+			panel_20 = new JPanel();
+			panel_20.setLayout(new BorderLayout(0, 0));
+			panel_20.add(getCbMedicos());
+			panel_20.add(getPanel_22(), BorderLayout.NORTH);
+			panel_20.add(getPanel_23(), BorderLayout.SOUTH);
+			panel_20.add(getPanel_28(), BorderLayout.WEST);
+		}
+		return panel_20;
+	}
+	private JPanel getPanel_21() {
+		if (panel_21 == null) {
+			panel_21 = new JPanel();
+			panel_21.setLayout(new BorderLayout(0, 0));
+			panel_21.add(getBtnAdd());
+			panel_21.add(getPanel_24(), BorderLayout.NORTH);
+			panel_21.add(getPanel_25(), BorderLayout.WEST);
+			panel_21.add(getPanel_26(), BorderLayout.SOUTH);
+			panel_21.add(getPanel_27(), BorderLayout.EAST);
+		}
+		return panel_21;
+	}
+	private JPanel getPanel_22() {
+		if (panel_22 == null) {
+			panel_22 = new JPanel();
+		}
+		return panel_22;
+	}
+	private JPanel getPanel_23() {
+		if (panel_23 == null) {
+			panel_23 = new JPanel();
+		}
+		return panel_23;
+	}
+	private JPanel getPanel_24() {
+		if (panel_24 == null) {
+			panel_24 = new JPanel();
+		}
+		return panel_24;
+	}
+	private JPanel getPanel_25() {
+		if (panel_25 == null) {
+			panel_25 = new JPanel();
+		}
+		return panel_25;
+	}
+	private JPanel getPanel_26() {
+		if (panel_26 == null) {
+			panel_26 = new JPanel();
+		}
+		return panel_26;
+	}
+	private JPanel getPanel_27() {
+		if (panel_27 == null) {
+			panel_27 = new JPanel();
+		}
+		return panel_27;
+	}
+	private JPanel getPanel_28() {
+		if (panel_28 == null) {
+			panel_28 = new JPanel();
+		}
+		return panel_28;
 	}
 }

@@ -9,7 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -66,12 +68,30 @@ public class ModificarCitaAdminVista extends JDialog {
 	private JPanel panel_16;
 	private JPanel panel_17;
 	private JPanel panel_18;
+	private JLabel lblNewLabel_2;
+	private JPanel panel_19;
+	private JPanel panel_20;
+	private JComboBox cbMedicos;
+	private JButton btnAdd;
+	private JList listMedicos;
+	private JScrollPane scrollPane;
+	private JPanel panel_21;
+	private JButton btnRemove;
+	private JPanel panel_22;
+	private JPanel panel_23;
+	private JPanel panel_24;
+	private JPanel panel_25;
+	private JPanel panel_26;
+	private JPanel panel_27;
+	private JPanel panel_28;
+	private JPanel panel_29;
+	private JPanel panel_30;
 
 	/**
 	 * Create the dialog.
 	 */
 	public ModificarCitaAdminVista() {
-		setBounds(100, 100, 647, 506);
+		setBounds(100, 100, 926, 606);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -116,12 +136,13 @@ public class ModificarCitaAdminVista extends JDialog {
 	private JPanel getPnLabels() {
 		if (pnLabels == null) {
 			pnLabels = new JPanel();
-			pnLabels.setLayout(new GridLayout(5, 0, 0, 0));
+			pnLabels.setLayout(new GridLayout(6, 0, 0, 0));
 			pnLabels.add(getLblFecha());
 			pnLabels.add(getLblHoraEntrada());
 			pnLabels.add(getLblHoraSalida());
-			pnLabels.add(getLblUbicación());
 			pnLabels.add(getLblPaciente());
+			pnLabels.add(getLblNewLabel_2());
+			pnLabels.add(getLblUbicación());
 		}
 		return pnLabels;
 	}
@@ -129,12 +150,13 @@ public class ModificarCitaAdminVista extends JDialog {
 	private JPanel getPanel_3() {
 		if (panel_3 == null) {
 			panel_3 = new JPanel();
-			panel_3.setLayout(new GridLayout(5, 0, 0, 0));
+			panel_3.setLayout(new GridLayout(6, 0, 0, 0));
 			panel_3.add(getPanel_11());
 			panel_3.add(getPanel_5());
 			panel_3.add(getPanel_6());
+			panel_3.add(getPanel_25());
+			panel_3.add(getPanel_22());
 			panel_3.add(getPanel_7());
-			panel_3.add(getPanel_8());
 		}
 		return panel_3;
 	}
@@ -448,4 +470,138 @@ public class ModificarCitaAdminVista extends JDialog {
 		return panel_18;
 	}
 
+	private JLabel getLblNewLabel_2() {
+		if (lblNewLabel_2 == null) {
+			lblNewLabel_2 = new JLabel("M\u00C9DICOS DE LA CITA:");
+			lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+			lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		}
+		return lblNewLabel_2;
+	}
+	private JPanel getPanel_19() {
+		if (panel_19 == null) {
+			panel_19 = new JPanel();
+			panel_19.setLayout(new GridLayout(2, 0, 0, 0));
+			panel_19.add(getPanel_20());
+			panel_19.add(getScrollPane_1());
+		}
+		return panel_19;
+	}
+	
+	public JList getListMedicos() {
+		if (listMedicos == null) {
+			listMedicos = new JList();
+		}
+		return listMedicos;
+	}
+	
+	private JPanel getPanel_20() {
+		if (panel_20 == null) {
+			panel_20 = new JPanel();
+			panel_20.setLayout(new GridLayout(0, 2, 0, 0));
+			panel_20.add(getPanel_28());
+			panel_20.add(getPanel_21());
+		}
+		return panel_20;
+	}
+	public JComboBox getCbMedicos() {
+		if (cbMedicos == null) {
+			cbMedicos = new JComboBox();
+		}
+		return cbMedicos;
+	}
+	public JButton getBtnAdd() {
+		if (btnAdd == null) {
+			btnAdd = new JButton("Add");
+		}
+		return btnAdd;
+	}
+	private JScrollPane getScrollPane_1() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setViewportView(getListMedicos());
+		}
+		return scrollPane;
+	}
+	private JPanel getPanel_21() {
+		if (panel_21 == null) {
+			panel_21 = new JPanel();
+			panel_21.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 9));
+			panel_21.add(getBtnAdd());
+			panel_21.add(getBtnRemove());
+		}
+		return panel_21;
+	}
+	public JButton getBtnRemove() {
+		if (btnRemove == null) {
+			btnRemove = new JButton("Remove");
+		}
+		return btnRemove;
+	}
+	private JPanel getPanel_22() {
+		if (panel_22 == null) {
+			panel_22 = new JPanel();
+			panel_22.setLayout(new BorderLayout(0, 0));
+			panel_22.add(getPanel_19(), BorderLayout.CENTER);
+			panel_22.add(getPanel_23(), BorderLayout.WEST);
+			panel_22.add(getPanel_24(), BorderLayout.EAST);
+		}
+		return panel_22;
+	}
+	private JPanel getPanel_23() {
+		if (panel_23 == null) {
+			panel_23 = new JPanel();
+		}
+		return panel_23;
+	}
+	private JPanel getPanel_24() {
+		if (panel_24 == null) {
+			panel_24 = new JPanel();
+		}
+		return panel_24;
+	}
+	private JPanel getPanel_25() {
+		if (panel_25 == null) {
+			panel_25 = new JPanel();
+			panel_25.setLayout(new BorderLayout(0, 0));
+			panel_25.add(getPanel_8());
+			panel_25.add(getPanel_26(), BorderLayout.WEST);
+			panel_25.add(getPanel_27(), BorderLayout.EAST);
+		}
+		return panel_25;
+	}
+	private JPanel getPanel_26() {
+		if (panel_26 == null) {
+			panel_26 = new JPanel();
+		}
+		return panel_26;
+	}
+	private JPanel getPanel_27() {
+		if (panel_27 == null) {
+			panel_27 = new JPanel();
+		}
+		return panel_27;
+	}
+	private JPanel getPanel_28() {
+		if (panel_28 == null) {
+			panel_28 = new JPanel();
+			panel_28.setLayout(new BorderLayout(0, 0));
+			panel_28.add(getCbMedicos());
+			panel_28.add(getPanel_29(), BorderLayout.NORTH);
+			panel_28.add(getPanel_30(), BorderLayout.SOUTH);
+		}
+		return panel_28;
+	}
+	private JPanel getPanel_29() {
+		if (panel_29 == null) {
+			panel_29 = new JPanel();
+		}
+		return panel_29;
+	}
+	private JPanel getPanel_30() {
+		if (panel_30 == null) {
+			panel_30 = new JPanel();
+		}
+		return panel_30;
+	}
 }

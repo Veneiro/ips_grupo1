@@ -37,9 +37,9 @@ public class NuevoAntecedenteControlador {
 	private void insertarVacuna() {
 		String fecha = nav.getTextFecha().getText();
 		String antecedente = nav.getTextAntecedente().getText();
+		String informacion = nav.getTextInformacion().getText();
 		
-		
-		am.addAntecedente(idPaciente, antecedente, fecha);
+		am.addAntecedente(idPaciente, antecedente, fecha, informacion);
 		hc.cargarHistorial(idPaciente);
 		nav.setVisible(false);
 	}

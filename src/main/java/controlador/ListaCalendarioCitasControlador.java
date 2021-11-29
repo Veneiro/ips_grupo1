@@ -17,7 +17,9 @@ import modelo.PacienteModelo;
 import modelo.RegistroModelo;
 import util.SwingUtil;
 import vista.AppointmentView;
+import vista.AprobarCitasVistaMedico;
 import vista.ListaCalendarioCitasVista;
+import vista.MenuMedicoVista;
 
 public class ListaCalendarioCitasControlador {
 
@@ -46,7 +48,6 @@ public class ListaCalendarioCitasControlador {
 	public void inicializarVistaListaCalendarioCitas() {
 		RegistroModelo.addRegistro(new RegistroDto("Médico " + idMedico,
 				"Consulta calendario citas"));
-		lccv.setVisible(true);
 	}
 
 	public void inicializar() {
@@ -68,8 +69,23 @@ public class ListaCalendarioCitasControlador {
 				.addActionListener(e -> SwingUtil.exceptionWrapper(() -> pc
 						.initialize(citas.get(lccv.getTable().getSelectedRow()),
 								p.getNombre())));
-		lccv.getBtnProponerCita().addActionListener(e -> SwingUtil
-				.exceptionWrapper(() -> mccc.initializate(idMedico)));
+		lccv.setVisible(true);
+	}
+	
+	public void citasMod(MenuMedicoVista mmv) {
+		mmv.getBtnCitasModificadas().addActionListener(e -> SwingUtil
+				.exceptionWrapper(() -> loadCitasMod()));
+	}
+	
+	public void actionProponer(MenuMedicoVista mmv) {
+		mmv.getBtnProponer().addActionListener(
+				e -> SwingUtil.exceptionWrapper(() -> mccc.initializate(idMedico)));
+	}
+
+	private void loadCitasMod() {
+		CitasModificadasMedicoControlador cmmc = new CitasModificadasMedicoControlador(
+				new AprobarCitasVistaMedico());
+		cmmc.initializeAprobarCitas(idMedico);
 	}
 
 	private void cargarCalendarioCitas(String fecha, int idMedico) {
@@ -98,7 +114,7 @@ public class ListaCalendarioCitasControlador {
 		}
 		lccv.getTable().setModel(dm);
 	}
-	
+
 	private void primeraCargaCalendario(int idMedico) {
 
 		citas = cm.getCitasMedico(idMedico);

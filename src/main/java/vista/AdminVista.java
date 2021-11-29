@@ -54,7 +54,7 @@ public class AdminVista {
      */
     private void initialize() {
 	frmIhospitalMain = new JFrame();
-	frmIhospitalMain.setTitle("iHospital : Main Window");
+	frmIhospitalMain.setTitle("iHospital : Administrativo");
 	frmIhospitalMain.setBounds(100, 100, 453, 319);
 	frmIhospitalMain.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	frmIhospitalMain.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));

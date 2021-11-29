@@ -20,12 +20,15 @@ public class NuevoAntecendenteVista extends JDialog {
 	private JTextField textAntecedente;
 	private JTextField textFecha;
 	private JButton btnAceptar;
+	private JLabel lblInformacion;
+	private JTextField textInformacion;
 	
 	public NuevoAntecendenteVista() {
 		getContentPane().setLayout(null);
-		setBounds(new Rectangle(300, 300, 300, 170));
+		setBounds(new Rectangle(300, 300, 300, 200));
 		setResizable(false);
 		setLocationRelativeTo(null);
+		setTitle("Nuevo antecedente");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		JLabel lblTitulo = new JLabel("Nuevo Antecedente");
@@ -34,16 +37,16 @@ public class NuevoAntecendenteVista extends JDialog {
 		getContentPane().add(lblTitulo);
 		
 		JLabel lblNewLabel = new JLabel("Antecedente:");
-		lblNewLabel.setBounds(42, 33, 45, 13);
+		lblNewLabel.setBounds(42, 33, 76, 13);
 		getContentPane().add(lblNewLabel);
 		
 		textAntecedente = new JTextField();
-		textAntecedente.setBounds(97, 30, 96, 19);
+		textAntecedente.setBounds(128, 30, 96, 19);
 		getContentPane().add(textAntecedente);
 		textAntecedente.setColumns(10);
 		
 		textFecha = new JTextField();
-		textFecha.setBounds(97, 59, 96, 19);
+		textFecha.setBounds(128, 59, 96, 19);
 		getContentPane().add(textFecha);
 		textFecha.setColumns(10);
 		
@@ -52,8 +55,17 @@ public class NuevoAntecendenteVista extends JDialog {
 		getContentPane().add(lblHora);
 		
 		btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBounds(97, 101, 85, 21);
+		btnAceptar.setBounds(97, 118, 85, 21);
 		getContentPane().add(btnAceptar);
+		
+		lblInformacion = new JLabel("Informaci\u00F3n:");
+		lblInformacion.setBounds(42, 91, 76, 13);
+		getContentPane().add(lblInformacion);
+		
+		textInformacion = new JTextField();
+		textInformacion.setBounds(128, 88, 96, 19);
+		getContentPane().add(textInformacion);
+		textInformacion.setColumns(10);
 		
 	}
 }

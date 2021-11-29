@@ -42,8 +42,10 @@ public class ModificarAntecedenteControlador {
 			public void actionPerformed(ActionEvent e) {
 				String antecedente = JOptionPane.showInputDialog("Introduzca la antecedente");
 				String fecha = JOptionPane.showInputDialog("Introduzca la fecha en la que se produjo");
+				String informacion = JOptionPane.showInputDialog("Introduzca la nueva informacion");
 				String antecedenteA = String.valueOf(mav.getTableAntecedentes().getValueAt(mav.getTableAntecedentes().getSelectedRow(), 0));
 				String fechaA  = String.valueOf(mav.getTableAntecedentes().getValueAt(mav.getTableAntecedentes().getSelectedRow(), 1));
+				String informacionA = String.valueOf(mav.getTableAntecedentes().getValueAt(mav.getTableAntecedentes().getSelectedRow(), 2));
 				if (antecedente.isEmpty()) {
 					antecedente = antecedenteA;
 				}
@@ -51,9 +53,11 @@ public class ModificarAntecedenteControlador {
 				if (fecha.isEmpty()) {
 					fecha = fechaA;
 				}
+				if (informacion.isEmpty()) {
+					informacion = informacionA;
+				}
 				
-				
-				am.addAntecedente(idPaciente, antecedente, fecha);
+				am.addAntecedente(idPaciente, antecedente, fecha, informacion);
 				
 				am.updateAntecedente(antecedenteA + "-ERROR", fechaA, antecedenteA, fechaA, idPaciente);
 				
@@ -68,13 +72,14 @@ public class ModificarAntecedenteControlador {
 
 	private void cargarListaAntecedentes() {
 		DefaultTableModel dm = new DefaultTableModel(0, 0);
-		String[] header = new String[] { "Antecedente", "Fecha Comienzo" };
+		String[] header = new String[] { "Antecedente", "Fecha Comienzo", "Informacion" };
 		dm.setColumnIdentifiers(header);
 		List<AntecedenteDto> antecedentes = am.getAntecedentesByPacienteId(idPaciente);
 		for (AntecedenteDto antecedente : antecedentes) {
 			Vector<Object> data = new Vector<Object>();
 			data.add(antecedente.getAntecedente());
 			data.add(antecedente.getFecha_comienzo());
+			data.add(antecedente.getInformacion());
 			dm.addRow(data);
 		}
 		
