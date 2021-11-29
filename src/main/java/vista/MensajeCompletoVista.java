@@ -80,6 +80,10 @@ public class MensajeCompletoVista extends JDialog {
 	private JPanel panel_46;
 	private JPanel panel_47;
 	private JPanel panel_48;
+	private JButton btnResponder;
+	private JPanel panel_49;
+	private JPanel panel_50;
+	private JPanel panel_51;
 
 	/**
 	 * Create the dialog.
@@ -550,6 +554,11 @@ public class MensajeCompletoVista extends JDialog {
 	private JPanel getPanel_47() {
 		if (panel_47 == null) {
 			panel_47 = new JPanel();
+			panel_47.setLayout(new BorderLayout(0, 0));
+			panel_47.add(getBtnResponder());
+			panel_47.add(getPanel_49(), BorderLayout.WEST);
+			panel_47.add(getPanel_50(), BorderLayout.SOUTH);
+			panel_47.add(getPanel_51(), BorderLayout.EAST);
 		}
 		return panel_47;
 	}
@@ -558,5 +567,30 @@ public class MensajeCompletoVista extends JDialog {
 			panel_48 = new JPanel();
 		}
 		return panel_48;
+	}
+	public JButton getBtnResponder() {
+		if (btnResponder == null) {
+			btnResponder = new JButton("Responder");
+			btnResponder.setFont(new Font("Tahoma", Font.BOLD, 14));
+		}
+		return btnResponder;
+	}
+	private JPanel getPanel_49() {
+		if (panel_49 == null) {
+			panel_49 = new JPanel();
+		}
+		return panel_49;
+	}
+	private JPanel getPanel_50() {
+		if (panel_50 == null) {
+			panel_50 = new JPanel();
+		}
+		return panel_50;
+	}
+	private JPanel getPanel_51() {
+		if (panel_51 == null) {
+			panel_51 = new JPanel();
+		}
+		return panel_51;
 	}
 }

@@ -53,6 +53,36 @@ public class MensajesControlador {
 
 	private void setButtons() {
 		mcv.getBtnBack().addActionListener(e -> SwingUtil.exceptionWrapper(() -> mcv.setVisible(false)));
+		mcv.getBtnResponder().addActionListener(e -> SwingUtil.exceptionWrapper(() -> responderMensaje()));
+	}
+
+	private void responderMensaje() {
+		me = new MensajeEnviar();
+
+		setCbModels();
+		loadDataResponder();
+
+		me.getBtnEnviar().addActionListener(e -> SwingUtil.exceptionWrapper(() -> sendMensaje()));
+		me.getBtnBack().addActionListener(e -> SwingUtil.exceptionWrapper(() -> me.setVisible(false)));
+		me.getBtnAdjunto().addActionListener(e -> SwingUtil.exceptionWrapper(() -> chooseFile()));
+		me.setLocationRelativeTo(bev);
+		me.setVisible(true);
+	}
+
+	private void loadDataResponder() {
+		String Remitente = mcv.getTxtRemitente().getText();
+		String Destinatario = mcv.getTxtDestinatario().getText();
+		String Asunto = mcv.getTxtAsunto().getText();
+		
+		for (int i = 0; i < me.getCbRemitente().getModel().getSize(); i++) {
+			if(Remitente.equals(me.getCbRemitente().getModel().getElementAt(i))) {
+				me.getCbRemitente().setSelectedIndex(i);
+			} if(Destinatario.equals(me.getCbDestinatarios().getModel().getElementAt(i))) {
+				me.getCbDestinatarios().setSelectedIndex(i);
+			}
+		}
+		
+		me.getTxtAsunto().setText("Re: " + Asunto);
 	}
 
 	private void loadData() {
