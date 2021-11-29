@@ -34,6 +34,9 @@ public class AddDiagnosticoControlador {
 	public void inicializar() {
 		adv.getTextHora().setText(
 				String.valueOf(LocalDateTime.now().getHour()) + ":" + String.valueOf(LocalDateTime.now().getMinute()));
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		String fecha = dtf.format(LocalDateTime.now());
+		adv.getTextFecha().setText(fecha);
 		adv.getBtnAceptar().addActionListener(e -> SwingUtil.exceptionWrapper(() -> addDiagnostico()));
 	}
 
@@ -46,9 +49,7 @@ public class AddDiagnosticoControlador {
 			}
 			DiagnosticoDto diagnostico = new DiagnosticoDto();
 			diagnostico.setDiagnostico(adv.getTextDiagnostico().getText());
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			String fecha = dtf.format(LocalDateTime.now());
-			diagnostico.setFecha(fecha);
+			diagnostico.setFecha(adv.getTextFecha().getText());
 			diagnostico.setId_paciente(idPaciente);
 			diagnostico.setId_medico(idMedico);
 			diagnostico.setHora_creacion(adv.getTextHora().getText());

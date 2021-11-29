@@ -1,249 +1,249 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/mateo/Documentos/GitHub/ips_grupo1/db/ihospital.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3394"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,13:mainTANTECEDENTES"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="TANTECEDENTES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="83"/><column index="3" value="91"/><column index="4" value="112"/><column index="5" value="83"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TASIGNADOA" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="77"/><column index="2" value="79"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TASIGNADOAPENDIENTE" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="60"/><column index="2" value="79"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TCITAS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="77"/><column index="2" value="116"/><column index="3" value="172"/><column index="4" value="77"/><column index="5" value="90"/><column index="6" value="79"/><column index="7" value="57"/><column index="8" value="73"/><column index="9" value="96"/><column index="10" value="101"/><column index="11" value="113"/><column index="12" value="102"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TCITASPENDIENTES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="77"/><column index="2" value="113"/><column index="3" value="102"/><column index="4" value="77"/><column index="5" value="90"/><column index="6" value="79"/><column index="7" value="73"/><column index="8" value="131"/><column index="9" value="88"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TPACIENTES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="60"/><column index="3" value="110"/><column index="4" value="116"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TREGISTRO" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="88"/><column index="3" value="173"/><column index="4" value="73"/><column index="5" value="45"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TUSERS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="40"/><column index="3" value="82"/><column index="4" value="75"/><column index="5" value="98"/><column index="6" value="48"/><column index="7" value="85"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">BEGIN TRANSACTION;
-CREATE TABLE IF NOT EXISTS &quot;TANTECEDENTES&quot; (
-	&quot;id&quot;	INTEGER,
-	&quot;paciente_id&quot;	INTEGER,
-	&quot;antecedente&quot;	TEXT,
-	&quot;fecha_comienzo&quot;	TEXT,
-	&quot;informacion&quot;	TEXT,
-	FOREIGN KEY(&quot;paciente_id&quot;) REFERENCES &quot;THISTORIALES&quot;(&quot;idPaciente&quot;),
-	PRIMARY KEY(&quot;id&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TASIGNADOA&quot; (
-	&quot;ID_CITA&quot;	INTEGER,
-	&quot;ID_MEDICO&quot;	INTEGER,
-	FOREIGN KEY(&quot;ID_CITA&quot;) REFERENCES &quot;TCITAS&quot;(&quot;ID&quot;),
-	FOREIGN KEY(&quot;ID_MEDICO&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;),
-	PRIMARY KEY(&quot;ID_CITA&quot;,&quot;ID_MEDICO&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TASIGNADOAPENDIENTE&quot; (
-	&quot;ID_CITA&quot;	INTEGER,
-	&quot;ID_MEDICO&quot;	INTEGER,
-	FOREIGN KEY(&quot;ID_CITA&quot;) REFERENCES &quot;TCITASPENDIENTES&quot;(&quot;ID&quot;),
-	FOREIGN KEY(&quot;ID_MEDICO&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;),
-	PRIMARY KEY(&quot;ID_CITA&quot;,&quot;ID_MEDICO&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TCAUSA&quot; (
-	&quot;OBSERVATIONS&quot;	TEXT,
-	&quot;DATE&quot;	TEXT NOT NULL,
-	&quot;HOUR&quot;	TEXT NOT NULL,
-	&quot;NAME&quot;	TEXT NOT NULL,
-	&quot;ID&quot;	INTEGER NOT NULL,
-	FOREIGN KEY(&quot;ID&quot;) REFERENCES &quot;TCITAS&quot;(&quot;ID&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TCITAS&quot; (
-	&quot;ID&quot;	NUMERIC,
-	&quot;HORARIO_INICIO&quot;	TEXT,
-	&quot;HORARIO_FIN&quot;	TEXT,
-	&quot;UBICACION&quot;	TEXT,
-	&quot;ID_PACIENTE&quot;	INTEGER NOT NULL,
-	&quot;ID_MEDICO&quot;	BLOB,
-	&quot;ACUDIO&quot;	TEXT,
-	&quot;FECHA&quot;	TEXT,
-	&quot;INFORMACION&quot;	TEXT,
-	&quot;ESPECIALIDAD&quot;	TEXT,
-	&quot;HORA_ENTRADA&quot;	TEXT,
-	&quot;HORA_SALIDA&quot;	TEXT,
-	FOREIGN KEY(&quot;ID_PACIENTE&quot;) REFERENCES &quot;TPACIENTES&quot;(&quot;ID&quot;),
-	FOREIGN KEY(&quot;ID_MEDICO&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;),
-	PRIMARY KEY(&quot;ID&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TCITASPENDIENTES&quot; (
-	&quot;ID&quot;	INTEGER,
-	&quot;HORA_ENTRADA&quot;	TEXT,
-	&quot;HORA_SALIDA&quot;	TEXT,
-	&quot;UBICACION&quot;	TEXT,
-	&quot;ID_PACIENTE&quot;	INTEGER,
-	&quot;ID_MEDICO&quot;	INTEGER,
-	&quot;FECHA&quot;	TEXT,
-	FOREIGN KEY(&quot;ID_PACIENTE&quot;) REFERENCES &quot;TPACIENTES&quot;(&quot;ID&quot;),
-	FOREIGN KEY(&quot;ID_MEDICO&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TDIAGNOSTICOS&quot; (
-	&quot;id&quot;	INTEGER,
-	&quot;id_paciente&quot;	INTEGER,
-	&quot;diagnostico&quot;	TEXT,
-	&quot;fecha&quot;	TEXT,
-	&quot;id_medico&quot;	INTEGER,
-	&quot;hora_creacion&quot;	TEXT,
-	&quot;actual&quot;	INTEGER,
-	FOREIGN KEY(&quot;id_medico&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;),
-	FOREIGN KEY(&quot;id_paciente&quot;) REFERENCES &quot;THISTORIALES&quot;(&quot;idPaciente&quot;),
-	PRIMARY KEY(&quot;id&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TENFERMEROS&quot; (
-	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
-	&quot;NOMBRE&quot;	TEXT,
-	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT)
-);
-CREATE TABLE IF NOT EXISTS &quot;THISTORIALES&quot; (
-	&quot;IDPACIENTE&quot;	INTEGER,
-	&quot;INFORMACIONADICIONAL&quot;	TEXT,
-	FOREIGN KEY(&quot;IDPACIENTE&quot;) REFERENCES &quot;TPACIENTES&quot;(&quot;ID&quot;),
-	PRIMARY KEY(&quot;IDPACIENTE&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TJORNADALABORAL&quot; (
-	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
-	&quot;ID_TRABAJADOR&quot;	INTEGER NOT NULL,
-	&quot;DIA_COMIENZO&quot;	TEXT NOT NULL,
-	&quot;HORA_ENTRADA&quot;	TEXT NOT NULL,
-	&quot;DIA_FIN&quot;	TEXT NOT NULL,
-	&quot;HORA_SALIDA&quot;	TEXT NOT NULL,
-	&quot;LUNES&quot;	INTEGER DEFAULT 0,
-	&quot;MARTES&quot;	INTEGER DEFAULT 0,
-	&quot;MIERCOLES&quot;	INTEGER DEFAULT 0,
-	&quot;JUEVES&quot;	INTEGER DEFAULT 0,
-	&quot;VIERNES&quot;	INTEGER DEFAULT 0,
-	&quot;SABADO&quot;	INTEGER DEFAULT 0,
-	&quot;DOMINGO&quot;	INTEGER DEFAULT 0,
-	FOREIGN KEY(&quot;ID_TRABAJADOR&quot;) REFERENCES &quot;TTRABAJADORES&quot;(&quot;ID&quot;),
-	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT)
-);
-CREATE TABLE IF NOT EXISTS &quot;TMEDICOS&quot; (
-	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
-	&quot;NOMBRE&quot;	TEXT,
-	&quot;ESPECIALIDAD&quot;	TEXT,
-	&quot;EMAIL&quot;	TEXT,
-	PRIMARY KEY(&quot;ID&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TPACIENTES&quot; (
-	&quot;ID&quot;	INTEGER NOT NULL,
-	&quot;NOMBRE&quot;	TEXT,
-	&quot;INFO_CONTACTO&quot;	TEXT,
-	&quot;APELLIDO&quot;	TEXT,
-	PRIMARY KEY(&quot;ID&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TPRESCRIPCIONES&quot; (
-	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
-	&quot;PACIENTE_ID&quot;	INTEGER,
-	&quot;NOMBRE&quot;	TEXT NOT NULL,
-	&quot;INDICACIONES&quot;	TEXT NOT NULL,
-	&quot;MEDICAMENTO&quot;	INTEGER,
-	&quot;CANTIDAD&quot;	TEXT,
-	&quot;INTERVALO&quot;	TEXT,
-	&quot;DURACION&quot;	TEXT,
-	&quot;FECHA&quot;	TEXT,
-	&quot;HORA&quot;	TEXT,
-	FOREIGN KEY(&quot;PACIENTE_ID&quot;) REFERENCES &quot;TPACIENTES&quot;(&quot;ID&quot;),
-	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT)
-);
-CREATE TABLE IF NOT EXISTS &quot;TPROCEDIMIENTOS&quot; (
-	&quot;id&quot;	INTEGER,
-	&quot;cita_id&quot;	INTEGER,
-	&quot;procedimiento&quot;	TEXT,
-	&quot;fecha&quot;	TEXT,
-	&quot;hora&quot;	TEXT,
-	FOREIGN KEY(&quot;cita_id&quot;) REFERENCES &quot;TCITAS&quot;(&quot;id&quot;),
-	PRIMARY KEY(&quot;id&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TREGISTRO&quot; (
-	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
-	&quot;QUIEN&quot;	TEXT,
-	&quot;QUE&quot;	TEXT,
-	&quot;FECHA&quot;	TEXT,
-	&quot;HORA&quot;	TEXT,
-	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT),
-	FOREIGN KEY(&quot;QUIEN&quot;) REFERENCES &quot;TUSERS&quot;(&quot;USER&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TVACUNAS&quot; (
-	&quot;ID&quot;	INTEGER,
-	&quot;PACIENTE_ID&quot;	INTEGER,
-	&quot;VACUNA&quot;	TEXT,
-	&quot;FECHA&quot;	TEXT,
-	&quot;HORA&quot;	TEXT,
-	PRIMARY KEY(&quot;ID&quot;),
-	FOREIGN KEY(&quot;PACIENTE_ID&quot;) REFERENCES &quot;TPACIENTES&quot;(&quot;ID&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TTRABAJADORES&quot; (
-	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
-	&quot;CATEGORIA&quot;	TEXT NOT NULL,
-	&quot;ID_MEDICO&quot;	INTEGER,
-	&quot;ID_ENFERMERO&quot;	INTEGER,
-	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT),
-	FOREIGN KEY(&quot;ID_ENFERMERO&quot;) REFERENCES &quot;TENFERMEROS&quot;(&quot;ID&quot;),
-	FOREIGN KEY(&quot;ID_MEDICO&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;)
-);
-CREATE TABLE IF NOT EXISTS &quot;TUSERS&quot; (
-	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
-	&quot;USER&quot;	TEXT NOT NULL UNIQUE,
-	&quot;PASSWORD&quot;	TEXT,
-	&quot;CATEGORY&quot;	TEXT NOT NULL,
-	&quot;ID_ASOCIADO&quot;	INTEGER NOT NULL,
-	&quot;EMAIL&quot;	TEXT NOT NULL UNIQUE,
-	&quot;EXPIRATION&quot;	BLOB,
-	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT)
-);
-
-CREATE TABLE IF NOT EXISTS &quot;TMENSAJES&quot; (
-	&quot;ASUNTO&quot;	TEXT,
-	&quot;MENSAJE&quot;	TEXT,
-	&quot;REMITENTE&quot;	INTEGER,
-	&quot;DESTINATARIO&quot;	INTEGER,
-	&quot;ADJUNTO&quot;	TEXT, 
-	&quot;HORA_DE_ENVIO&quot;	TEXT
-	);
-
-
-
-
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (1,'med_1','Consulta calendario citas','2021-11-26','12:27');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (2,'admin_1','Consulta registro','2021-11-26','12:29');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (3,'admin_1','Consulta registro','2021-11-26','12:29');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (4,'med_1','Consulta calendario citas','2021-11-26','12:29');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (5,'med_1','Consulta calendario citas','2021-11-26','12:29');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (6,'med_1','Consulta calendario citas','2021-11-26','12:29');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (7,'med_1','Consulta calendario citas','2021-11-26','12:29');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (8,'med_1','Consulta calendario citas','2021-11-26','12:33');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (9,'admin_1','Consulta registro','2021-11-26','12:33');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (10,'med_2','Consulta calendario citas','2021-11-26','12:36');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (11,'med_2','Ha informado de una EDO: null','2021-11-26','12:36');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (12,'med_2','Consulta historial de paciente 1','2021-11-26','12:37');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (13,'med_2','Indica que el paciente 1 Acudio','2021-11-26','12:40');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (14,'med_2','Indica que el paciente 1 Acudio','2021-11-26','12:40');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (15,'ger_1','Consulta estadísticas','2021-11-26','12:40');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (16,'ger_1','Consulta estadísticas','2021-11-26','12:44');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (17,'med_1','Consulta calendario citas','2021-11-26','12:45');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (18,'med_2','Consulta calendario citas','2021-11-26','13:03');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (19,'med_2','Consulta calendario citas','2021-11-26','13:04');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (20,'med_2','Ha informado de una EDO. Nombre: null. Observaciones: Sin definir','2021-11-26','13:05');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (21,'med_2','Consulta calendario citas','2021-11-26','13:14');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (22,'med_2','Ha informado de una EDO. Nombre: Sin definir. Observaciones: Tiene mala pinta','2021-11-26','13:14');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (23,'med_2','Consulta calendario citas','2021-11-26','13:28');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (24,'med_2','Consulta calendario citas','2021-11-26','13:53');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (25,'med_2','Consulta calendario citas','2021-11-26','14:11');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (26,'admin_1','Asigna jornada','2021-11-26','14:12');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (27,'admin_1','Asigna jornada','2021-11-26','15:21');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (28,'admin_1','Asigna jornada','2021-11-26','15:43');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (29,'admin_1','Asigna jornada','2021-11-26','16:13');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (30,'admin_1','Asigna jornada','2021-11-26','16:13');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (31,'admin_1','Asigna jornada','2021-11-26','16:13');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (32,'admin_1','Asigna jornada','2021-11-26','16:15');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (33,'admin_1','Asigna jornada','2021-11-26','16:17');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (34,'admin_1','Asigna jornada','2021-11-26','16:17');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (35,'admin_1','Asigna jornada','2021-11-26','16:20');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (36,'admin_1','Asigna jornada','2021-11-26','16:21');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (37,'admin_1','Asigna jornada','2021-11-26','16:21');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (38,'admin_1','Asigna jornada','2021-11-26','16:21');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (39,'admin_1','Asigna jornada','2021-11-26','16:21');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (40,'admin_1','Asigna jornada','2021-11-26','16:22');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (41,'admin_1','Asigna jornada','2021-11-26','16:22');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (42,'admin_1','Asigna jornada','2021-11-26','16:22');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (43,'admin_1','Consulta lista de jornadas','2021-11-26','16:27');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (44,'admin_1','Asigna jornada','2021-11-26','16:31');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (45,'admin_1','Consulta lista de jornadas','2021-11-26','16:31');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (46,'admin_1','Consulta lista de jornadas','2021-11-26','16:46');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (47,'admin_1','Actualiza jornada16','2021-11-26','16:47');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (48,'admin_1','Consulta lista de jornadas','2021-11-26','16:55');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (49,'admin_1','Consulta lista de jornadas','2021-11-26','16:57');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (50,'admin_1','Consulta lista de jornadas','2021-11-26','16:59');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (51,'admin_1','Consulta lista de jornadas','2021-11-26','17:00');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (52,'admin_1','Asigna jornada','2021-11-26','17:00');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (53,'admin_1','Consulta lista de jornadas','2021-11-26','17:01');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (54,'admin_1','Consulta lista de jornadas','2021-11-26','17:02');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (55,'admin_1','Consulta lista de jornadas','2021-11-26','17:20');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (56,'admin_1','Consulta lista de jornadas','2021-11-26','17:21');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (57,'admin_1','Consulta lista de jornadas','2021-11-26','18:07');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (58,'admin_1','Consulta lista de jornadas','2021-11-26','18:08');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (59,'admin_1','Consulta lista de jornadas','2021-11-26','18:14');
-INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (60,'admin_1','Consulta lista de jornadas','2021-11-26','18:19');
-COMMIT;
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/mateo/Documentos/GitHub/ips_grupo1/db/ihospital.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3394"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,13:mainTANTECEDENTES"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="TANTECEDENTES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="83"/><column index="3" value="91"/><column index="4" value="112"/><column index="5" value="83"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TASIGNADOA" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="77"/><column index="2" value="79"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TASIGNADOAPENDIENTE" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="60"/><column index="2" value="79"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TCITAS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="77"/><column index="2" value="116"/><column index="3" value="172"/><column index="4" value="77"/><column index="5" value="90"/><column index="6" value="79"/><column index="7" value="57"/><column index="8" value="73"/><column index="9" value="96"/><column index="10" value="101"/><column index="11" value="113"/><column index="12" value="102"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TCITASPENDIENTES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="77"/><column index="2" value="113"/><column index="3" value="102"/><column index="4" value="77"/><column index="5" value="90"/><column index="6" value="79"/><column index="7" value="73"/><column index="8" value="131"/><column index="9" value="88"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TPACIENTES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="60"/><column index="3" value="110"/><column index="4" value="116"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TREGISTRO" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="88"/><column index="3" value="173"/><column index="4" value="73"/><column index="5" value="45"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="TUSERS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="40"/><column index="3" value="82"/><column index="4" value="75"/><column index="5" value="98"/><column index="6" value="48"/><column index="7" value="85"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS &quot;TANTECEDENTES&quot; (
+	&quot;id&quot;	INTEGER,
+	&quot;paciente_id&quot;	INTEGER,
+	&quot;antecedente&quot;	TEXT,
+	&quot;fecha_comienzo&quot;	TEXT,
+	&quot;informacion&quot;	TEXT,
+	FOREIGN KEY(&quot;paciente_id&quot;) REFERENCES &quot;THISTORIALES&quot;(&quot;idPaciente&quot;),
+	PRIMARY KEY(&quot;id&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TASIGNADOA&quot; (
+	&quot;ID_CITA&quot;	INTEGER,
+	&quot;ID_MEDICO&quot;	INTEGER,
+	FOREIGN KEY(&quot;ID_CITA&quot;) REFERENCES &quot;TCITAS&quot;(&quot;ID&quot;),
+	FOREIGN KEY(&quot;ID_MEDICO&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;),
+	PRIMARY KEY(&quot;ID_CITA&quot;,&quot;ID_MEDICO&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TASIGNADOAPENDIENTE&quot; (
+	&quot;ID_CITA&quot;	INTEGER,
+	&quot;ID_MEDICO&quot;	INTEGER,
+	FOREIGN KEY(&quot;ID_CITA&quot;) REFERENCES &quot;TCITASPENDIENTES&quot;(&quot;ID&quot;),
+	FOREIGN KEY(&quot;ID_MEDICO&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;),
+	PRIMARY KEY(&quot;ID_CITA&quot;,&quot;ID_MEDICO&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TCAUSA&quot; (
+	&quot;OBSERVATIONS&quot;	TEXT,
+	&quot;DATE&quot;	TEXT NOT NULL,
+	&quot;HOUR&quot;	TEXT NOT NULL,
+	&quot;NAME&quot;	TEXT NOT NULL,
+	&quot;ID&quot;	INTEGER NOT NULL,
+	FOREIGN KEY(&quot;ID&quot;) REFERENCES &quot;TCITAS&quot;(&quot;ID&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TCITAS&quot; (
+	&quot;ID&quot;	NUMERIC,
+	&quot;HORARIO_INICIO&quot;	TEXT,
+	&quot;HORARIO_FIN&quot;	TEXT,
+	&quot;UBICACION&quot;	TEXT,
+	&quot;ID_PACIENTE&quot;	INTEGER NOT NULL,
+	&quot;ID_MEDICO&quot;	BLOB,
+	&quot;ACUDIO&quot;	TEXT,
+	&quot;FECHA&quot;	TEXT,
+	&quot;INFORMACION&quot;	TEXT,
+	&quot;ESPECIALIDAD&quot;	TEXT,
+	&quot;HORA_ENTRADA&quot;	TEXT,
+	&quot;HORA_SALIDA&quot;	TEXT,
+	FOREIGN KEY(&quot;ID_PACIENTE&quot;) REFERENCES &quot;TPACIENTES&quot;(&quot;ID&quot;),
+	FOREIGN KEY(&quot;ID_MEDICO&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;),
+	PRIMARY KEY(&quot;ID&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TCITASPENDIENTES&quot; (
+	&quot;ID&quot;	INTEGER,
+	&quot;HORA_ENTRADA&quot;	TEXT,
+	&quot;HORA_SALIDA&quot;	TEXT,
+	&quot;UBICACION&quot;	TEXT,
+	&quot;ID_PACIENTE&quot;	INTEGER,
+	&quot;ID_MEDICO&quot;	INTEGER,
+	&quot;FECHA&quot;	TEXT,
+	FOREIGN KEY(&quot;ID_PACIENTE&quot;) REFERENCES &quot;TPACIENTES&quot;(&quot;ID&quot;),
+	FOREIGN KEY(&quot;ID_MEDICO&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TDIAGNOSTICOS&quot; (
+	&quot;id&quot;	INTEGER,
+	&quot;id_paciente&quot;	INTEGER,
+	&quot;diagnostico&quot;	TEXT,
+	&quot;fecha&quot;	TEXT,
+	&quot;id_medico&quot;	INTEGER,
+	&quot;hora_creacion&quot;	TEXT,
+	&quot;actual&quot;	INTEGER,
+	FOREIGN KEY(&quot;id_medico&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;),
+	FOREIGN KEY(&quot;id_paciente&quot;) REFERENCES &quot;THISTORIALES&quot;(&quot;idPaciente&quot;),
+	PRIMARY KEY(&quot;id&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TENFERMEROS&quot; (
+	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
+	&quot;NOMBRE&quot;	TEXT,
+	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS &quot;THISTORIALES&quot; (
+	&quot;IDPACIENTE&quot;	INTEGER,
+	&quot;INFORMACIONADICIONAL&quot;	TEXT,
+	FOREIGN KEY(&quot;IDPACIENTE&quot;) REFERENCES &quot;TPACIENTES&quot;(&quot;ID&quot;),
+	PRIMARY KEY(&quot;IDPACIENTE&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TJORNADALABORAL&quot; (
+	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
+	&quot;ID_TRABAJADOR&quot;	INTEGER NOT NULL,
+	&quot;DIA_COMIENZO&quot;	TEXT NOT NULL,
+	&quot;HORA_ENTRADA&quot;	TEXT NOT NULL,
+	&quot;DIA_FIN&quot;	TEXT NOT NULL,
+	&quot;HORA_SALIDA&quot;	TEXT NOT NULL,
+	&quot;LUNES&quot;	INTEGER DEFAULT 0,
+	&quot;MARTES&quot;	INTEGER DEFAULT 0,
+	&quot;MIERCOLES&quot;	INTEGER DEFAULT 0,
+	&quot;JUEVES&quot;	INTEGER DEFAULT 0,
+	&quot;VIERNES&quot;	INTEGER DEFAULT 0,
+	&quot;SABADO&quot;	INTEGER DEFAULT 0,
+	&quot;DOMINGO&quot;	INTEGER DEFAULT 0,
+	FOREIGN KEY(&quot;ID_TRABAJADOR&quot;) REFERENCES &quot;TTRABAJADORES&quot;(&quot;ID&quot;),
+	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS &quot;TMEDICOS&quot; (
+	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
+	&quot;NOMBRE&quot;	TEXT,
+	&quot;ESPECIALIDAD&quot;	TEXT,
+	&quot;EMAIL&quot;	TEXT,
+	PRIMARY KEY(&quot;ID&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TPACIENTES&quot; (
+	&quot;ID&quot;	INTEGER NOT NULL,
+	&quot;NOMBRE&quot;	TEXT,
+	&quot;INFO_CONTACTO&quot;	TEXT,
+	&quot;APELLIDO&quot;	TEXT,
+	PRIMARY KEY(&quot;ID&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TPRESCRIPCIONES&quot; (
+	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
+	&quot;PACIENTE_ID&quot;	INTEGER,
+	&quot;NOMBRE&quot;	TEXT NOT NULL,
+	&quot;INDICACIONES&quot;	TEXT NOT NULL,
+	&quot;MEDICAMENTO&quot;	INTEGER,
+	&quot;CANTIDAD&quot;	TEXT,
+	&quot;INTERVALO&quot;	TEXT,
+	&quot;DURACION&quot;	TEXT,
+	&quot;FECHA&quot;	TEXT,
+	&quot;HORA&quot;	TEXT,
+	FOREIGN KEY(&quot;PACIENTE_ID&quot;) REFERENCES &quot;TPACIENTES&quot;(&quot;ID&quot;),
+	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS &quot;TPROCEDIMIENTOS&quot; (
+	&quot;id&quot;	INTEGER,
+	&quot;cita_id&quot;	INTEGER,
+	&quot;procedimiento&quot;	TEXT,
+	&quot;fecha&quot;	TEXT,
+	&quot;hora&quot;	TEXT,
+	FOREIGN KEY(&quot;cita_id&quot;) REFERENCES &quot;TCITAS&quot;(&quot;id&quot;),
+	PRIMARY KEY(&quot;id&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TREGISTRO&quot; (
+	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
+	&quot;QUIEN&quot;	TEXT,
+	&quot;QUE&quot;	TEXT,
+	&quot;FECHA&quot;	TEXT,
+	&quot;HORA&quot;	TEXT,
+	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT),
+	FOREIGN KEY(&quot;QUIEN&quot;) REFERENCES &quot;TUSERS&quot;(&quot;USER&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TVACUNAS&quot; (
+	&quot;ID&quot;	INTEGER,
+	&quot;PACIENTE_ID&quot;	INTEGER,
+	&quot;VACUNA&quot;	TEXT,
+	&quot;FECHA&quot;	TEXT,
+	&quot;HORA&quot;	TEXT,
+	PRIMARY KEY(&quot;ID&quot;),
+	FOREIGN KEY(&quot;PACIENTE_ID&quot;) REFERENCES &quot;TPACIENTES&quot;(&quot;ID&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TTRABAJADORES&quot; (
+	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
+	&quot;CATEGORIA&quot;	TEXT NOT NULL,
+	&quot;ID_MEDICO&quot;	INTEGER,
+	&quot;ID_ENFERMERO&quot;	INTEGER,
+	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT),
+	FOREIGN KEY(&quot;ID_ENFERMERO&quot;) REFERENCES &quot;TENFERMEROS&quot;(&quot;ID&quot;),
+	FOREIGN KEY(&quot;ID_MEDICO&quot;) REFERENCES &quot;TMEDICOS&quot;(&quot;ID&quot;)
+);
+CREATE TABLE IF NOT EXISTS &quot;TUSERS&quot; (
+	&quot;ID&quot;	INTEGER NOT NULL UNIQUE,
+	&quot;USER&quot;	TEXT NOT NULL UNIQUE,
+	&quot;PASSWORD&quot;	TEXT,
+	&quot;CATEGORY&quot;	TEXT NOT NULL,
+	&quot;ID_ASOCIADO&quot;	INTEGER NOT NULL,
+	&quot;EMAIL&quot;	TEXT NOT NULL UNIQUE,
+	&quot;EXPIRATION&quot;	BLOB,
+	PRIMARY KEY(&quot;ID&quot; AUTOINCREMENT)
+);
+
+CREATE TABLE IF NOT EXISTS &quot;TMENSAJES&quot; (
+	&quot;ASUNTO&quot;	TEXT,
+	&quot;MENSAJE&quot;	TEXT,
+	&quot;REMITENTE&quot;	INTEGER,
+	&quot;DESTINATARIO&quot;	INTEGER,
+	&quot;ADJUNTO&quot;	TEXT, 
+	&quot;HORA_DE_ENVIO&quot;	TEXT
+	);
+
+
+
+
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (1,'med_1','Consulta calendario citas','2021-11-26','12:27');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (2,'admin_1','Consulta registro','2021-11-26','12:29');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (3,'admin_1','Consulta registro','2021-11-26','12:29');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (4,'med_1','Consulta calendario citas','2021-11-26','12:29');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (5,'med_1','Consulta calendario citas','2021-11-26','12:29');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (6,'med_1','Consulta calendario citas','2021-11-26','12:29');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (7,'med_1','Consulta calendario citas','2021-11-26','12:29');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (8,'med_1','Consulta calendario citas','2021-11-26','12:33');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (9,'admin_1','Consulta registro','2021-11-26','12:33');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (10,'med_2','Consulta calendario citas','2021-11-26','12:36');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (11,'med_2','Ha informado de una EDO: null','2021-11-26','12:36');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (12,'med_2','Consulta historial de paciente 1','2021-11-26','12:37');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (13,'med_2','Indica que el paciente 1 Acudio','2021-11-26','12:40');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (14,'med_2','Indica que el paciente 1 Acudio','2021-11-26','12:40');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (15,'ger_1','Consulta estadísticas','2021-11-26','12:40');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (16,'ger_1','Consulta estadísticas','2021-11-26','12:44');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (17,'med_1','Consulta calendario citas','2021-11-26','12:45');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (18,'med_2','Consulta calendario citas','2021-11-26','13:03');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (19,'med_2','Consulta calendario citas','2021-11-26','13:04');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (20,'med_2','Ha informado de una EDO. Nombre: null. Observaciones: Sin definir','2021-11-26','13:05');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (21,'med_2','Consulta calendario citas','2021-11-26','13:14');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (22,'med_2','Ha informado de una EDO. Nombre: Sin definir. Observaciones: Tiene mala pinta','2021-11-26','13:14');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (23,'med_2','Consulta calendario citas','2021-11-26','13:28');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (24,'med_2','Consulta calendario citas','2021-11-26','13:53');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (25,'med_2','Consulta calendario citas','2021-11-26','14:11');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (26,'admin_1','Asigna jornada','2021-11-26','14:12');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (27,'admin_1','Asigna jornada','2021-11-26','15:21');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (28,'admin_1','Asigna jornada','2021-11-26','15:43');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (29,'admin_1','Asigna jornada','2021-11-26','16:13');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (30,'admin_1','Asigna jornada','2021-11-26','16:13');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (31,'admin_1','Asigna jornada','2021-11-26','16:13');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (32,'admin_1','Asigna jornada','2021-11-26','16:15');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (33,'admin_1','Asigna jornada','2021-11-26','16:17');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (34,'admin_1','Asigna jornada','2021-11-26','16:17');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (35,'admin_1','Asigna jornada','2021-11-26','16:20');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (36,'admin_1','Asigna jornada','2021-11-26','16:21');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (37,'admin_1','Asigna jornada','2021-11-26','16:21');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (38,'admin_1','Asigna jornada','2021-11-26','16:21');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (39,'admin_1','Asigna jornada','2021-11-26','16:21');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (40,'admin_1','Asigna jornada','2021-11-26','16:22');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (41,'admin_1','Asigna jornada','2021-11-26','16:22');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (42,'admin_1','Asigna jornada','2021-11-26','16:22');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (43,'admin_1','Consulta lista de jornadas','2021-11-26','16:27');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (44,'admin_1','Asigna jornada','2021-11-26','16:31');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (45,'admin_1','Consulta lista de jornadas','2021-11-26','16:31');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (46,'admin_1','Consulta lista de jornadas','2021-11-26','16:46');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (47,'admin_1','Actualiza jornada16','2021-11-26','16:47');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (48,'admin_1','Consulta lista de jornadas','2021-11-26','16:55');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (49,'admin_1','Consulta lista de jornadas','2021-11-26','16:57');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (50,'admin_1','Consulta lista de jornadas','2021-11-26','16:59');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (51,'admin_1','Consulta lista de jornadas','2021-11-26','17:00');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (52,'admin_1','Asigna jornada','2021-11-26','17:00');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (53,'admin_1','Consulta lista de jornadas','2021-11-26','17:01');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (54,'admin_1','Consulta lista de jornadas','2021-11-26','17:02');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (55,'admin_1','Consulta lista de jornadas','2021-11-26','17:20');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (56,'admin_1','Consulta lista de jornadas','2021-11-26','17:21');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (57,'admin_1','Consulta lista de jornadas','2021-11-26','18:07');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (58,'admin_1','Consulta lista de jornadas','2021-11-26','18:08');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (59,'admin_1','Consulta lista de jornadas','2021-11-26','18:14');
+INSERT INTO &quot;TREGISTRO&quot; (&quot;ID&quot;,&quot;QUIEN&quot;,&quot;QUE&quot;,&quot;FECHA&quot;,&quot;HORA&quot;) VALUES (60,'admin_1','Consulta lista de jornadas','2021-11-26','18:19');
+COMMIT;
 </sql><current_tab id="0"/></tab_sql></sqlb_project>

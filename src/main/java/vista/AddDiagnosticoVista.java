@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 public class AddDiagnosticoVista extends JDialog{
 	public AddDiagnosticoVista() {
-		setBounds(new Rectangle(300, 300, 450, 200));
+		setBounds(new Rectangle(300, 300, 450, 240));
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -36,7 +36,7 @@ public class AddDiagnosticoVista extends JDialog{
 		getContentPane().add(lblHora);
 		
 		btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBounds(179, 140, 85, 21);
+		btnAceptar.setBounds(182, 172, 85, 21);
 		getContentPane().add(btnAceptar);
 		
 		textDiagnostico = new JTextField();
@@ -48,6 +48,16 @@ public class AddDiagnosticoVista extends JDialog{
 		textHora.setBounds(217, 89, 96, 19);
 		getContentPane().add(textHora);
 		textHora.setColumns(10);
+		
+		JLabel lblFecha = new JLabel("Fecha:");
+		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblFecha.setBounds(128, 126, 79, 23);
+		getContentPane().add(lblFecha);
+		
+		textFecha = new JTextField();
+		textFecha.setBounds(217, 129, 96, 19);
+		getContentPane().add(textFecha);
+		textFecha.setColumns(10);
 	}
 
 	/**
@@ -57,4 +67,5 @@ public class AddDiagnosticoVista extends JDialog{
 	private JTextField textDiagnostico;
 	private JTextField textHora;
 	private JButton btnAceptar;
+	private JTextField textFecha;
 }

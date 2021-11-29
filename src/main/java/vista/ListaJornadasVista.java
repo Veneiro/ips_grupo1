@@ -100,9 +100,11 @@ public class ListaJornadasVista extends JFrame {
 
 	horaSalidaSpinner = new JSpinner();
 	horaSalidaSpinner.setEnabled(false);
+
 	horaSalidaSpinner.setModel(new SpinnerDateModel(Date.from(Instant.now()), null, null, Calendar.HOUR_OF_DAY));
 	he = new JSpinner.DateEditor(horaEntradaSpinner, "HH:mm");
 	horaSalidaSpinner.setEditor(he);
+
 	horaSalidaSpinner.setBounds(113, 153, 50, 20);
 	panelIntroducirFecha.add(horaSalidaSpinner);
 
