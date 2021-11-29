@@ -97,12 +97,11 @@ public class CitasModificadasMedicoControlador {
 
 				// El médicoo tendrá que volver a proponer otra cita si no
 				// estaba conforme con los cambios del admin
-				for (int j2 = 0; j2 < acvm.getTable().getColumnCount(); j2++) {
-					CitaDto cdto = new CitaDto();
-					cdto.setId((Integer) acvm.getTable().getValueAt(i, j2));
-					macm.removeMedicos(cdto.getId());
-					cim.updateCitaPendiente(cdto.getId());
-				}
+				CitaDto cdto = new CitaDto();
+				cdto.setId((int) acvm.getTable().getValueAt(i, 0));
+				macm.removeMedicos(cdto.getId());
+				cim.updateCitaPendiente(cdto.getId());
+				JOptionPane.showMessageDialog(acvm, "Citas removidas con éxito");
 			}
 		}
 	}

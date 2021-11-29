@@ -22,14 +22,13 @@ public class CauseModel {
 		int id = cidto.getId();
 		String sql = "UPDATE TCITAS "
 				+ "SET horario_inicio = ?, horario_fin = ?, "
-				+ "ubicacion = ?, contacto = ?, id_paciente = ?, id_medico = ?"
+				+ "ubicacion = ?, id_paciente = ?, id_medico = ?"
 				+ ", acudio = ?, fecha = ?, informacion = ?"
 				+ ", hora_entrada = ?, hora_salida = ?"
 				+ "WHERE id = " + id;
 
 		db.executeUpdate(sql, cidto.getHorario_inicio(), cidto.getHorario_fin(),
-				cidto.getUbicacion(), cidto.getContacto(),
-				cidto.getId_paciente(), cidto.getId_medico(), cidto.getAcudio(),
+				cidto.getUbicacion(), cidto.getId_paciente(), cidto.getId_medico(), cidto.getAcudio(),
 				cidto.getFecha(), cidto.getInformacion(), cidto.getHora_entrada(),
 				cidto.getHora_salida());
 	}

@@ -129,13 +129,16 @@ public class AdministradorControlador {
 		PacienteDto pSel = null;
 		DefaultComboBoxModel dcm = new DefaultComboBoxModel();
 		for (PacienteDto p : pm.getListaPacientes()) {
-			dcm.addElement(p);
 			if (p.getId() == (citaPendiente.getID_PACIENTE())) {
-				pSel = getPacienteById(p.getId());
+				dcm.addElement(p);
+			}
+		}
+		for (PacienteDto p : pm.getListaPacientes()) {
+			if (p.getId() != (citaPendiente.getID_PACIENTE())) {
+				dcm.addElement(p);
 			}
 		}
 		mcav.getCbPacientes().setModel(dcm);
-		mcav.getCbPacientes().setSelectedItem(pSel);
 
 		DefaultComboBoxModel dlm = new DefaultComboBoxModel();
 		for (MedicoDto medico : mm.getListaMedicos()) {
@@ -257,18 +260,19 @@ public class AdministradorControlador {
 		JOptionPane.showConfirmDialog(mcav, "Si confirma la opción esta cita "
 				+ "será redirigida al médico para obtener confirmación de los "
 				+ "valores cambiados");
+		CitaPendienteDto cita = cpdto;
 		updateDataBase(cpdto);
 		cpm.updateCita(cpdto);
 		mcav.setVisible(false);
-		sendMailAdviseMedic(cpdto);
+		sendMailAdviseMedic(cita);
 
 	}
 
-	private void sendMailAdviseMedic(CitaPendienteDto cpdto) {
+	private void sendMailAdviseMedic(CitaPendienteDto cita) {
 
 		String msg = "";
 		msg += "Se le ha modificado una cita propuesta recientemente, "
-				+ "por favor confirme o rechace los cambios";
+				+ "por favor confirme o rehaga los cambios";
 		MedicoDto m = null;
 		for (MedicoDto medico : mm.getListaMedicos()) {
 			if (medico.getId() == cpdto.getID_MEDICO()) {
