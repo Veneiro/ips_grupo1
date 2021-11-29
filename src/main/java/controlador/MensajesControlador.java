@@ -8,10 +8,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
-import dtos.CitaPendienteDto;
 import dtos.MedicoDto;
 import dtos.MensajesDto;
-import dtos.PacienteDto;
 import modelo.MedicoModelo;
 import modelo.MensajesModelo;
 import util.SwingUtil;
@@ -43,8 +41,19 @@ public class MensajesControlador {
 		initializateTable();
 		bev.getBtnSend().addActionListener(
 				e -> SwingUtil.exceptionWrapper(() -> showSendMessage()));
+		bev.getBtnOpen().addActionListener(e -> SwingUtil.exceptionWrapper(() -> showOpenMessage()));
 		bev.setLocationRelativeTo(null);
 		bev.setVisible(true);
+	}
+
+	private void showOpenMessage() {
+		loadData();
+		mcv.setLocationRelativeTo(bev);
+		mcv.setVisible(true);
+	}
+
+	private void loadData() {
+//		MensajesDto mdto = bev.getTableMessages().getValueAt(,);
 	}
 
 	private void showSendMessage() {
