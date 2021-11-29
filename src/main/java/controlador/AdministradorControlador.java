@@ -20,6 +20,7 @@ import dtos.CitaDto;
 import dtos.CitaPendienteDto;
 import dtos.MedicoDto;
 import dtos.PacienteDto;
+import dtos.RegistroDto;
 import lombok.Getter;
 import lombok.Setter;
 import modelo.CauseModel;
@@ -28,6 +29,7 @@ import modelo.CitaPendienteModelo;
 import modelo.MedicoAsignadoACitaModelo;
 import modelo.MedicoModelo;
 import modelo.PacienteModelo;
+import modelo.RegistroModelo;
 import util.SendEmail;
 import util.SwingUtil;
 import vista.AprobarCitasVista;
@@ -136,7 +138,6 @@ public class AdministradorControlador {
 
 		mcav.getTxtUbicacion().setText(citaPendiente.getUBICACION());
 
-		PacienteDto pSel = null;
 		DefaultComboBoxModel dcm = new DefaultComboBoxModel();
 		for (PacienteDto p : pm.getListaPacientes()) {
 			if (p.getId() == (citaPendiente.getID_PACIENTE())) {
@@ -274,7 +275,11 @@ public class AdministradorControlador {
 		cpm.updateCita(cpdto);
 		mcav.setVisible(false);
 		sendMailAdviseMedic(this.cita);
-
+		
+		RegistroModelo.addRegistro(new RegistroDto("Admin",
+				"Ha modificado la cita propuesta. Médico: "
+					+ new MedicoModelo().getListaMedicosById(cpdto.getID_MEDICO()).get(0).getNombre() + "Día: "
+					+ cpdto.getFECHA() + "Hora: " + cpdto.getHORA_ENTRADA() + "-" + cpdto.getHORA_SALIDA()));
 	}
 
 	private void sendMailAdviseMedic(CitaPendienteDto cita) {

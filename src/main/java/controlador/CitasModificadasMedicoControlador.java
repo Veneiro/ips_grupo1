@@ -11,11 +11,13 @@ import dtos.CitaDto;
 import dtos.CitaPendienteDto;
 import dtos.MedicoDto;
 import dtos.PacienteDto;
+import dtos.RegistroDto;
 import modelo.CitaModelo;
 import modelo.CitaPendienteModelo;
 import modelo.MedicoAsignadoACitaModelo;
 import modelo.MedicoModelo;
 import modelo.PacienteModelo;
+import modelo.RegistroModelo;
 import util.SwingUtil;
 import vista.AprobarCitasVistaMedico;
 
@@ -81,11 +83,25 @@ public class CitasModificadasMedicoControlador {
 				insertMedicosAsignadosConfirmados(cdto.getId());
 				cim.updateCitaPendiente(cdto.getId());
 				acvm.setVisible(false);
+
+				RegistroModelo.addRegistro(new RegistroDto(
+						"Médico " + getMedicoByID(cdto.getId_medico())
+								.getNombre(),
+						"Ha modificado la cita propuesta. Médico: "
+								+ new MedicoModelo()
+										.getListaMedicosById(
+												cdto.getId_medico())
+										.get(0).getNombre()
+								+ "Día: " + cdto.getFecha() + "Hora: "
+								+ cdto.getHora_entrada() + "-"
+								+ cdto.getHora_salida()));
+				
 			} else if (!acvm.getTable().getValueAt(i, 8).equals("true")
 					&& !acvm.getTable().getValueAt(i, 8).equals("false")) {
 				JOptionPane.showMessageDialog(acvm,
 						"The introduced value is not correct : "
 								+ "Please introduce True or False");
+				
 			} else if (acvm.getTable().getValueAt(i, 8).equals("false")) {
 				JOptionPane.showConfirmDialog(acvm,
 						"Are you sure you want to close? The appointments not "
@@ -101,7 +117,8 @@ public class CitasModificadasMedicoControlador {
 				cdto.setId((int) acvm.getTable().getValueAt(i, 0));
 				macm.removeMedicos(cdto.getId());
 				cim.updateCitaPendiente(cdto.getId());
-				JOptionPane.showMessageDialog(acvm, "Citas removidas con éxito");
+				JOptionPane.showMessageDialog(acvm,
+						"Citas removidas con éxito");
 			}
 		}
 	}
