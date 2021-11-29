@@ -111,14 +111,14 @@ public class MensajeCompletoVista extends JDialog {
 		return buttonPane;
 	}
 
-	private JButton getBtnAdjunto() {
+	public JButton getBtnAdjunto() {
 		if (btnAdjunto == null) {
 			btnAdjunto = new JButton("Archivo Adjunto");
 			btnAdjunto.setFont(new Font("Tahoma", Font.BOLD, 14));
 		}
 		return btnAdjunto;
 	}
-	private JButton getBtnBack() {
+	public JButton getBtnBack() {
 		if (btnBack == null) {
 			btnBack = new JButton("Atr\u00E1s");
 			btnBack.setFont(new Font("Tahoma", Font.BOLD, 14));

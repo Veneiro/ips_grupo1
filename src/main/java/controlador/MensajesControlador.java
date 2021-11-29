@@ -46,8 +46,13 @@ public class MensajesControlador {
 
 	private void showOpenMessage() {
 		loadData();
+		setButtons();
 		mcv.setLocationRelativeTo(bev);
 		mcv.setVisible(true);
+	}
+
+	private void setButtons() {
+		mcv.getBtnBack().addActionListener(e -> SwingUtil.exceptionWrapper(() -> mcv.setVisible(false)));
 	}
 
 	private void loadData() {
